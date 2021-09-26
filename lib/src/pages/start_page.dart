@@ -33,12 +33,13 @@ class StartPage extends StatelessWidget {
   }
 
   redirectOnTimeout(BuildContext context) {
-    getFutureTimeout(context).then((route) => Navigator.push(context, route));
+    getFutureTimeout(context)
+        .then((route) => Navigator.pushReplacement(context, route));
   }
 
   Future<MaterialPageRoute> getFutureTimeout(BuildContext context) {
     return Future.delayed(
-      const Duration(seconds: 20),
+      const Duration(seconds: 1),
       () {
         return MaterialPageRoute(builder: (context) => const LoginPage());
       },

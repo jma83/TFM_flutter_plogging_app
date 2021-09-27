@@ -14,6 +14,7 @@ class InputText {
             : dateField
                 ? TextInputType.datetime
                 : TextInputType.name;
+
     return Stack(children: [
       TextField(
           maxLength: 50,

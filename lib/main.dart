@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/pages/start_page.dart';
+import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 
 void main() {
   runApp(const MyApp());

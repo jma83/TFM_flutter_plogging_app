@@ -5,45 +5,40 @@ import 'package:flutter_plogging/src/ui/components/button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  BuildContext? _pageContext;
-
-  @override
   Widget build(BuildContext context) {
-    _setContext(context);
     return ViewModelBuilder<RegisterPageViewModel>.reactive(
         viewModelBuilder: () => getIt<RegisterPageViewModel>(),
-        builder: (context, RegisterPageViewModel viewModel, child) => Scaffold(
-            appBar: AppBar(title: const Text("Plogging Challenge")),
-            body: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white,
-                    Colors.white38,
-                    Colors.green,
-                  ],
-                )),
-                child: Center(
-                    child: ListView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  children: [
-                    const SizedBox(height: 20),
-                    _getTitle(),
-                    const Divider(height: 40),
-                    _getForm(viewModel)
-                  ],
-                )))));
+        builder: (context, RegisterPageViewModel viewModel, child) {
+          viewModel.addListener(() => _navigateToHome(context));
+          return Scaffold(
+              appBar: AppBar(title: const Text("Plogging Challenge")),
+              body: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white,
+                      Colors.white38,
+                      Colors.green,
+                    ],
+                  )),
+                  child: Center(
+                      child: ListView(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 20),
+                    children: [
+                      const SizedBox(height: 20),
+                      _getTitle(),
+                      const Divider(height: 40),
+                      _getForm(viewModel)
+                    ],
+                  ))));
+        });
   }
 
   Widget _getTitle() {
@@ -56,7 +51,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _getForm(RegisterPageViewModel viewModel) {
-    viewModel.addListener(_navigateToHome);
     return Column(
       children: [
         InputText.createInput("Email", "Type your email",
@@ -74,25 +68,14 @@ class _RegisterPageState extends State<RegisterPage> {
             const Icon(Icons.date_range), viewModel.setAge),
         InputText.createInput("Gender", "Select your gender",
             const Icon(Icons.all_inclusive_sharp), viewModel.setGender),
-        Button.createButtonWithIcon(0, () => _submitForm(viewModel),
+        Button.createButtonWithIcon(0, () => viewModel.validateForm,
             const Text("Register"), const Icon(Icons.login)),
       ],
     );
   }
 
-  void _setContext(BuildContext context) {
-    setState(() {
-      _pageContext = context;
-    });
-  }
-
-  void _submitForm(RegisterPageViewModel viewModel) {
-    viewModel.addListener(_navigateToHome);
-    viewModel.validateForm();
-  }
-
-  void _navigateToHome() {
-    Navigator.push(_pageContext!,
-        MaterialPageRoute(builder: (context) => const RegisterPage()));
+  void _navigateToHome(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const RegisterPage()));
   }
 }

@@ -37,6 +37,7 @@ dependencies:
   stacked: ^2.2.5
   get_it: ^7.2.0
   injectable: ^1.5.0
+  property_change_notifier: ^0.3.0
 
 dev_dependencies:
   flutter_test:

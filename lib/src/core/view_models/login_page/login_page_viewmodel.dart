@@ -20,10 +20,14 @@ class LoginPageViewModel extends ChangeNotifier {
   }
 
   void validateUserResponse() {
-    if (!_userViewModel.valid) {
-      notifyListeners();
-      return;
+    if (_userViewModel.valid) {
+      // Call db
     }
+    notifyListeners();
+  }
+
+  void manageRegisterNavigation() {
+    notifyListeners();
   }
 
   void setEmail(String email) {

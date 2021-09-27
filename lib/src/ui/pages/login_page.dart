@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/login_page/login_page_viewmodel.dart';
+import 'package:flutter_plogging/src/core/view_models/login_page/login_page_viewmodel.dart';
+import 'package:flutter_plogging/src/injection.config.dart';
 import 'package:flutter_plogging/src/ui/pages/home_page.dart';
 import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:stacked/stacked.dart';
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     _setContext(context);
     return ViewModelBuilder<LoginPageViewModel>.reactive(
-        viewModelBuilder: () => LoginPageViewModel(),
+        viewModelBuilder: () => getIt<LoginPageViewModel>(),
         builder: (context, LoginPageViewModel viewModel, child) => Scaffold(
             appBar: AppBar(title: const Text("Plogging Challenge")),
             body: Container(

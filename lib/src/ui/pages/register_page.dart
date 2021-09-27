@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/register_page/register_page_viewmodel.dart';
+import 'package:flutter_plogging/src/core/view_models/register_page/register_page_viewmodel.dart';
+import 'package:flutter_plogging/src/injection.config.dart';
 import 'package:flutter_plogging/src/ui/components/button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';
@@ -18,7 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     _setContext(context);
     return ViewModelBuilder<RegisterPageViewModel>.reactive(
-        viewModelBuilder: () => RegisterPageViewModel(),
+        viewModelBuilder: () => getIt<RegisterPageViewModel>(),
         builder: (context, RegisterPageViewModel viewModel, child) => Scaffold(
             appBar: AppBar(title: const Text("Plogging Challenge")),
             body: Container(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/injection.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 
 void main() {
+  configureInjection(Env.Default);
   runApp(const MyApp());
 }
 

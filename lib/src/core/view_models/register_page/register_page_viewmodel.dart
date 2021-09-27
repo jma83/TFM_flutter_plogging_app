@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_plogging/src/core/view_models/user/user_viewmodel.dart';
+import 'package:injectable/injectable.dart';
 
 enum Gender { NotDefined, Female, Male }
 
+@injectable
 class RegisterPageViewModel extends ChangeNotifier {
   String _email = "";
   String _username = "";
@@ -10,6 +13,9 @@ class RegisterPageViewModel extends ChangeNotifier {
   int _age = 0;
   Gender _gender = Gender.NotDefined;
 
+  final UserViewModel _userViewModel;
+
+  RegisterPageViewModel(this._userViewModel);
   void validateForm() {
     if (_email.isEmpty ||
         _username.isEmpty ||

@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_plogging/src/core/entities/user/user_viewmodel_strategies.dart';
+import 'package:flutter_plogging/src/core/view_models/user/user_viewmodel_strategies.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class UserViewModel extends ChangeNotifier {
-  bool valid = false;
-  String errorMessage = "";
+  bool _valid = false;
+  String _errorMessage = "";
 
   void validateLogin(String email) {
     final emailValidation = UserEmailStrategy();
@@ -21,11 +23,11 @@ class UserViewModel extends ChangeNotifier {
       UserGenderStrategy()
     ];
     List<String> values = [email, username, password1, age.toString(), gender];
-    valid = true;
+    _valid = true;
     for (UserViewModelStrategy element in strategies) {
       int index = strategies.indexOf(element);
       executeValidation(element, values[index]);
-      if (!valid) {
+      if (!_valid) {
         break;
       }
     }
@@ -36,18 +38,26 @@ class UserViewModel extends ChangeNotifier {
   void executeValidation(UserViewModelStrategy strategy, String value) {
     strategy.execute(value);
     if (!strategy.isApply()) {
-      valid = false;
-      errorMessage = strategy.getErrorMessage();
+      _valid = false;
+      _errorMessage = strategy.getErrorMessage();
     }
   }
 
   void validateConfirmPasswords(String password1, String password2) {
-    if (valid) {
+    if (_valid) {
       final equalPasswords = UserPasswordsEquals();
       if (!equalPasswords.validate(password1, password2)) {
-        valid = false;
-        errorMessage = equalPasswords.getErrorMessage();
+        _valid = false;
+        _errorMessage = equalPasswords.getErrorMessage();
       }
     }
+  }
+
+  get errorMessage {
+    return _errorMessage;
+  }
+
+  get valid {
+    return _valid;
   }
 }

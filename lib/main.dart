@@ -1,10 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/core/di/injection.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp();
   configureInjection(Env.Default);
   runApp(const MyApp());
 }

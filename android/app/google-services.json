@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "668854426510",
+    "project_id": "flutterplogging",
+    "storage_bucket": "flutterplogging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668854426510:android:7aa65b22cf7afc2f1162df",
+        "android_client_info": {
+          "package_name": "es.upsa.mimo.v2021.flutter_plogging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "668854426510-ctm1vufg4un6bn692vlc2d7lj388mjs0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmAheHZlGOw-GWYQJxBbw0rUcGiD50R-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "668854426510-ctm1vufg4un6bn692vlc2d7lj388mjs0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "668854426510-a4gq3u5kgb07nu99godkg1nlc59385bm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "es.upsa.mimo.v2021.flutter-plogging"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

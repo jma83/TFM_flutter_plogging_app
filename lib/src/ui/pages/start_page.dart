@@ -10,8 +10,8 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<StartPageViewModel>.reactive(
         viewModelBuilder: () => getIt<StartPageViewModel>(),
+        onModelReady: (viewModel) => viewModel.getFutureTimeout(),
         builder: (context, StartPageViewModel viewModel, child) {
-          viewModel.getFutureTimeout();
           return Scaffold(
               backgroundColor: Colors.white,
               body: Center(

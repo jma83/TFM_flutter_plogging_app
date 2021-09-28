@@ -13,7 +13,6 @@ class RegisterPage extends StatelessWidget {
     return ViewModelBuilder<RegisterPageViewModel>.reactive(
         viewModelBuilder: () => getIt<RegisterPageViewModel>(),
         builder: (context, RegisterPageViewModel viewModel, child) {
-          viewModel.addListener(() => _navigateToHome(context));
           return Scaffold(
               appBar: AppBar(title: const Text("Plogging Challenge")),
               body: Container(
@@ -72,10 +71,5 @@ class RegisterPage extends StatelessWidget {
             const Text("Register"), const Icon(Icons.login)),
       ],
     );
-  }
-
-  void _navigateToHome(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const RegisterPage()));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_plogging/src/core/view_models/user/user_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/register_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 
 enum Gender { NotDefined, Female, Male }
@@ -14,8 +15,8 @@ class RegisterPageViewModel extends ChangeNotifier {
   Gender _gender = Gender.NotDefined;
 
   final UserViewModel _userViewModel;
-
-  RegisterPageViewModel(this._userViewModel);
+  final RegisterPageRouteCoordinator _routeCoordinator;
+  RegisterPageViewModel(this._routeCoordinator, this._userViewModel);
   void validateForm() {
     if (_email.isEmpty ||
         _username.isEmpty ||

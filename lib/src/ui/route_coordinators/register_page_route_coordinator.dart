@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
-import 'package:flutter_plogging/src/ui/pages/login_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class StartPageRouteCoordinator extends ParentRouteCoordinator {
+class RegisterPageRouteCoordinator extends ParentRouteCoordinator {
   final NavigationService _navigationService;
-  StartPageRouteCoordinator(this._navigationService);
+  RegisterPageRouteCoordinator(this._navigationService);
 
-  navigateToLogin() {
-    final route = routeBuild(const LoginPage());
+  navigateToHome() {
+    final route = routeBuild(const HomePage());
     _navigationService.navigateAndReplaceTo(route);
+  }
+
+  returnToLogin() {
+    _navigationService.goBack();
   }
 }

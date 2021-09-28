@@ -15,7 +15,6 @@ class LoginPage extends StatelessWidget {
     return ViewModelBuilder<LoginPageViewModel>.reactive(
         viewModelBuilder: () => getIt<LoginPageViewModel>(),
         builder: (context, LoginPageViewModel viewModel, child) {
-          createListeners(viewModel, context);
           return Scaffold(
               appBar: AppBar(title: const Text("Plogging Challenge")),
               body: Container(
@@ -43,11 +42,6 @@ class LoginPage extends StatelessWidget {
         });
   }
 
-  void createListeners(LoginPageViewModel viewModel, BuildContext context) {
-    viewModel.addListener(() => _navigateToHome(context));
-    viewModel.addListener(() => _navigateToRegister(context));
-  }
-
   Widget _getTitle() {
     return const Center(
         child: Text(
@@ -69,19 +63,9 @@ class LoginPage extends StatelessWidget {
         Button.createButtonWithIcon(0, viewModel.validateForm,
             const Text("Login"), const Icon(Icons.login)),
         const SizedBox(height: 15),
-        Button.createButtonWithIcon(1, () => viewModel.manageRegisterNavigation,
+        Button.createButtonWithIcon(1, viewModel.manageRegisterNavigation,
             const Text("Register"), const Icon(Icons.person_add))
       ],
     );
-  }
-
-  void _navigateToRegister(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const RegisterPage()));
-  }
-
-  void _navigateToHome(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
   }
 }

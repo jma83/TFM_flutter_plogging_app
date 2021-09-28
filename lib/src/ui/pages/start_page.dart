@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/view_models/start_page/start_page_viewmodel.dart';
 import 'package:flutter_plogging/src/injection.config.dart';
-import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:stacked/stacked.dart';
 
 class StartPage extends StatelessWidget {

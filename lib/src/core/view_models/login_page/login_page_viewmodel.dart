@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_plogging/src/core/view_models/user/user_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/login_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -8,8 +9,9 @@ class LoginPageViewModel extends ChangeNotifier {
   String _password = "";
 
   final UserViewModel _userViewModel;
+  final LoginPageRouteCoordinator _routeCoordinator;
 
-  LoginPageViewModel(this._userViewModel);
+  LoginPageViewModel(this._routeCoordinator, this._userViewModel);
 
   void validateForm() {
     if (_email.isEmpty || _password.isEmpty) {
@@ -27,7 +29,8 @@ class LoginPageViewModel extends ChangeNotifier {
   }
 
   void manageRegisterNavigation() {
-    notifyListeners();
+    print("manageRegisterNavigation");
+    _routeCoordinator.navigateToRegister();
   }
 
   void setEmail(String email) {

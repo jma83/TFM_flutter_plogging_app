@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class InputText {
   static Widget createInput(
-      String label, String hint, Icon icon, Function onChange,
+      String label, String hint, Icon icon, int maxLength, Function onChange,
       {bool emailField = false,
       bool passwordField = false,
       bool numericField = false,
-      bool dateField = false}) {
+      bool dateField = false,
+      double bottomHeight = 5}) {
     final keyboardType = emailField
         ? TextInputType.emailAddress
         : numericField
@@ -15,9 +16,9 @@ class InputText {
                 ? TextInputType.datetime
                 : TextInputType.name;
 
-    return Stack(children: [
+    return Column(children: [
       TextField(
-          maxLength: 50,
+          maxLength: maxLength == 0 ? null : maxLength,
           obscureText: passwordField,
           keyboardType: keyboardType,
           textCapitalization: TextCapitalization.sentences,
@@ -30,7 +31,7 @@ class InputText {
               hintText: hint,
               suffixIcon: icon),
           onChanged: (value) => onChange(value)),
-      const SizedBox(height: 15)
+      SizedBox(height: bottomHeight)
     ]);
   }
 }

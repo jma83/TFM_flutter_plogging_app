@@ -13,7 +13,7 @@ class RegisterPageRouteCoordinator extends ParentRouteCoordinator {
     _navigationService.navigateAndReplaceTo(route);
   }
 
-  returnToLogin() {
+  returnToPrevious() {
     _navigationService.goBack();
   }
 }

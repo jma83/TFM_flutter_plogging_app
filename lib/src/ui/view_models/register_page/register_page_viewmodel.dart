@@ -1,30 +1,61 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_plogging/src/ui/view_models/user/user_viewmodel.dart';
+// ignore_for_file: constant_identifier_names
+import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/register_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
 
-enum Gender { NotDefined, Female, Male }
+abstract class Gender {
+  static const NotDefined = "Gender - Not defined";
+  static const Female = "Female";
+  static const Male = "Male";
+
+  static const NotDefinedIndex = 0;
+  static const FemaleIndex = 1;
+  static const MaleIndex = 2;
+}
 
 @injectable
-class RegisterPageViewModel extends ChangeNotifier {
+class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   String _email = "";
   String _username = "";
   String _password = "";
   String _confirmPassword = "";
-  int _age = 0;
-  Gender _gender = Gender.NotDefined;
+  String _age = "";
+  String _gender = Gender.NotDefined;
 
   final UserViewModel _userViewModel;
   final RegisterPageRouteCoordinator _routeCoordinator;
   RegisterPageViewModel(this._routeCoordinator, this._userViewModel);
   void validateForm() {
-    if (_email.isEmpty ||
-        _username.isEmpty ||
-        _password.isEmpty ||
-        _confirmPassword.isEmpty) {
-      return;
+    _userViewModel.addListener(validationOkResponse, ["valid_register"]);
+    _userViewModel.addListener(validationErrorResponse, ["invalid_register"]);
+    _userViewModel.validateRegister(_email, _username, _password,
+        _confirmPassword, _age, getGenderIndex().toString());
+  }
+
+  void validationOkResponse() {
+    //call db
+  }
+
+  void validationErrorResponse() {
+    notifyListeners("invalid_register");
+  }
+
+  getGenderIndex() {
+    switch (_gender) {
+      case Gender.NotDefined:
+        return Gender.NotDefinedIndex;
+      case Gender.Female:
+        return Gender.FemaleIndex;
+      case Gender.Male:
+        return Gender.MaleIndex;
+      default:
+        return -1;
     }
-    notifyListeners();
+  }
+
+  void dismissAlert() {
+    _routeCoordinator.returnToPrevious();
   }
 
   void setEmail(String email) {
@@ -43,11 +74,23 @@ class RegisterPageViewModel extends ChangeNotifier {
     _confirmPassword = confirmPassword;
   }
 
-  void setAge(int age) {
+  void setAge(String age) {
     _age = age;
   }
 
-  void setGender(Gender gender) {
+  void setGender(String gender) {
     _gender = gender;
+  }
+
+  get gender {
+    return _gender;
+  }
+
+  get valid {
+    _userViewModel.valid;
+  }
+
+  get errorMessage {
+    return _userViewModel.errorMessage;
   }
 }

@@ -18,4 +18,8 @@ class LoginPageRouteCoordinator extends ParentRouteCoordinator {
     final route = routeBuild(const HomePage());
     _navigationService.navigateAndReplaceTo(route);
   }
+
+  returnToPrevious() {
+    _navigationService.goBack();
+  }
 }

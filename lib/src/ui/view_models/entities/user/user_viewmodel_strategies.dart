@@ -1,9 +1,10 @@
 import 'package:flutter_plogging/src/utils/regex_validator.dart';
 
-const usernamePattern = "^[a-zA-Z0-9_]{2,20}\$";
-const passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{3,30}\$";
-const emailPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,30}";
+const usernamePattern = r"^[a-zA-Z0-9_]{2,20}$";
+const passwordPattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,30}$";
+const emailPattern = r"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,30}";
 const genderPattern = "[0-9]{1,1}";
+const agePattern = "[0-9]{1,3}";
 
 abstract class UserViewModelStrategy {
   bool validResult = false;
@@ -33,7 +34,7 @@ class UserEmailStrategy extends UserViewModelStrategy {
 class UserPasswordStrategy extends UserViewModelStrategy {
   @override
   void execute(String value) {
-    validResult = RegexValidator.matchRegex(emailPattern, value);
+    validResult = RegexValidator.matchRegex(passwordPattern, value);
   }
 
   @override
@@ -67,7 +68,8 @@ class UserNameStrategy extends UserViewModelStrategy {
 class UserAgeStrategy extends UserViewModelStrategy {
   @override
   void execute(String value) {
-    validResult = int.parse(value) >= 12;
+    validResult = int.tryParse(value) != null &&
+        RegexValidator.matchRegex(agePattern, value);
   }
 
   @override

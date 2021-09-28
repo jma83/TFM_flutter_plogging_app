@@ -1,20 +1,45 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel_strategies.dart';
 import 'package:injectable/injectable.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
 
 @injectable
-class UserViewModel extends ChangeNotifier {
+class UserViewModel extends PropertyChangeNotifier<String> {
   bool _valid = false;
   String _errorMessage = "";
 
-  void validateLogin(String email) {
-    final emailValidation = UserEmailStrategy();
-    executeValidation(emailValidation, email);
-    notifyListeners();
+  void validateLogin(String email, String password) {
+    _valid = true;
+
+    validateEmptyFields([email, password]);
+    print("validateLogin $_valid");
+    if (_valid) {
+      executeValidation(UserEmailStrategy(), email);
+    }
+    print("validateLogin2 $_valid");
+    _valid ? notifyListeners("valid_login") : notifyListeners("invalid_login");
   }
 
   void validateRegister(String email, String username, String password1,
-      String password2, int age, String gender) {
+      String password2, String age, String gender) {
+    _valid = true;
+    validateEmptyFields([email, username, password1, password2, age, gender]);
+    print("validateRegister1 $_valid");
+    if (_valid) {
+      validateRegisterFields(
+          email, username, password1, password2, age, gender);
+    }
+    print("validateRegister2 $_valid");
+    if (_valid) {
+      validateConfirmPasswords(password1, password2);
+    }
+    print("validateRegister3 $_valid");
+    _valid
+        ? notifyListeners("valid_register")
+        : notifyListeners("invalid_register");
+  }
+
+  void validateRegisterFields(String email, String username, String password1,
+      String password2, String age, String gender) {
     List<UserViewModelStrategy> strategies = [
       UserEmailStrategy(),
       UserNameStrategy(),
@@ -22,8 +47,7 @@ class UserViewModel extends ChangeNotifier {
       UserAgeStrategy(),
       UserGenderStrategy()
     ];
-    List<String> values = [email, username, password1, age.toString(), gender];
-    _valid = true;
+    List<String> values = [email, username, password1, age, gender];
     for (UserViewModelStrategy element in strategies) {
       int index = strategies.indexOf(element);
       executeValidation(element, values[index]);
@@ -31,8 +55,25 @@ class UserViewModel extends ChangeNotifier {
         break;
       }
     }
-    validateConfirmPasswords(password1, password2);
-    notifyListeners();
+  }
+
+  void validateConfirmPasswords(String password1, String password2) {
+    final equalPasswords = UserPasswordsEquals();
+    if (!equalPasswords.validate(password1, password2)) {
+      _valid = false;
+      _errorMessage = equalPasswords.getErrorMessage();
+    }
+  }
+
+  void validateEmptyFields(List<String> fields) {
+    for (String field in fields) {
+      if (field.isEmpty) {
+        _errorMessage =
+            "Fields can't be empty. Please complete them and try again";
+        _valid = false;
+        break;
+      }
+    }
   }
 
   void executeValidation(UserViewModelStrategy strategy, String value) {
@@ -40,16 +81,6 @@ class UserViewModel extends ChangeNotifier {
     if (!strategy.isApply()) {
       _valid = false;
       _errorMessage = strategy.getErrorMessage();
-    }
-  }
-
-  void validateConfirmPasswords(String password1, String password2) {
-    if (_valid) {
-      final equalPasswords = UserPasswordsEquals();
-      if (!equalPasswords.validate(password1, password2)) {
-        _valid = false;
-        _errorMessage = equalPasswords.getErrorMessage();
-      }
     }
   }
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/view_models/login_page/login_page_viewmodel.dart';
-import 'package:flutter_plogging/src/injection.config.dart';
+import 'package:flutter_plogging/src/core/di/injection.config.dart';
+import 'package:flutter_plogging/src/ui/view_models/login_page/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/components/button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
-import 'package:flutter_plogging/src/ui/pages/home_page.dart';
-import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginPage extends StatelessWidget {

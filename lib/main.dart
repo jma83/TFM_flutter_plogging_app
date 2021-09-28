@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/core/di/injection.config.dart';
+import 'package:flutter_plogging/src/core/di/injection.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
-import 'package:flutter_plogging/src/injection.config.dart';
-import 'package:flutter_plogging/src/injection.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 
 void main() {

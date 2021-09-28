@@ -5,6 +5,6 @@ class RegexValidator {
     print("firstMatch : " + regExp.firstMatch(value).toString());
     print("hasMatch : " + regExp.hasMatch(value).toString());
     print("stringMatch : " + regExp.stringMatch(value).toString());
-    return false;
+    return regExp.hasMatch(value);
   }
 }

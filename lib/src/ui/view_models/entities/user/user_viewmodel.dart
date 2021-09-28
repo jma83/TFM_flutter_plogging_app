@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_plogging/src/core/view_models/entities/user/user_viewmodel_strategies.dart';
+import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel_strategies.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

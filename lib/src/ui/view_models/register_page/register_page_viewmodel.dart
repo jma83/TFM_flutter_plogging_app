@@ -1,4 +1,5 @@
 // ignore_for_file: constant_identifier_names
+import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/register_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
@@ -25,19 +26,27 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
 
   final UserViewModel _userViewModel;
   final RegisterPageRouteCoordinator _routeCoordinator;
-  RegisterPageViewModel(this._routeCoordinator, this._userViewModel);
-  void validateForm() {
+  final AuthenticationService _authenticationService;
+  RegisterPageViewModel(this._routeCoordinator, this._userViewModel,
+      this._authenticationService) {
     _userViewModel.addListener(validationOkResponse, ["valid_register"]);
     _userViewModel.addListener(validationErrorResponse, ["invalid_register"]);
+    _authenticationService.addListener(signUpErrorResponse, ["error_signup"]);
+  }
+  void validateForm() {
     _userViewModel.validateRegister(_email, _username, _password,
         _confirmPassword, _age, getGenderIndex().toString());
   }
 
   void validationOkResponse() {
-    //call db
+    _authenticationService.signUp(email: _email, password: _password);
   }
 
   void validationErrorResponse() {
+    notifyListeners("invalid_register");
+  }
+
+  void signUpErrorResponse() {
     notifyListeners("invalid_register");
   }
 

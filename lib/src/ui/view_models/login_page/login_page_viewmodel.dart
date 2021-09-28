@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/login_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
@@ -10,21 +11,30 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
 
   final UserViewModel _userViewModel;
   final LoginPageRouteCoordinator _routeCoordinator;
+  final AuthenticationService _authenticationService;
 
-  LoginPageViewModel(this._routeCoordinator, this._userViewModel);
-
-  void validateForm() {
+  LoginPageViewModel(this._routeCoordinator, this._userViewModel,
+      this._authenticationService) {
     _userViewModel.addListener(validationOkResponse, ["valid_login"]);
     _userViewModel.addListener(validationErrorResponse, ["invalid_login"]);
+    _authenticationService
+        .addListener(validationErrorResponse, ["error_signin"]);
+  }
+
+  void validateForm() {
     _userViewModel.validateLogin(_email, _password);
   }
 
-  void validationOkResponse() {
-    // call db
+  Future<void> validationOkResponse() async {
+    _authenticationService.signIn(email: _email, password: _password);
   }
 
   void validationErrorResponse() {
     notifyListeners("invalid_login");
+  }
+
+  void signInErrorResponse() {
+    notifyListeners("error_signin");
   }
 
   void manageRegisterNavigation() {
@@ -47,7 +57,11 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
     _userViewModel.valid;
   }
 
-  get errorMessage {
+  get errorValidationMessage {
     return _userViewModel.errorMessage;
+  }
+
+  get errorMessage {
+    return "Error message!";
   }
 }

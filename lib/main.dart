@@ -6,6 +6,7 @@ import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   configureInjection(Env.Default);
   runApp(const MyApp());

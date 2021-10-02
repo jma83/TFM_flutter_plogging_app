@@ -23,6 +23,7 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   String _confirmPassword = "";
   String _age = "";
   String _gender = Gender.NotDefined;
+  String _errorMessage = "";
 
   final UserViewModel _userViewModel;
   final RegisterPageRouteCoordinator _routeCoordinator;
@@ -31,7 +32,7 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
       this._authenticationService) {
     _userViewModel.addListener(validationOkResponse, ["valid_register"]);
     _userViewModel.addListener(validationErrorResponse, ["invalid_register"]);
-    _authenticationService.addListener(signUpErrorResponse, ["error_signup"]);
+    _authenticationService.addListener(signUpErrorResponse, ["errorSignUp"]);
   }
   void validateForm() {
     _userViewModel.validateRegister(_email, _username, _password,
@@ -43,11 +44,13 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   void validationErrorResponse() {
-    notifyListeners("invalid_register");
+    _errorMessage = _userViewModel.errorMessage;
+    notifyListeners("error_signup");
   }
 
   void signUpErrorResponse() {
-    notifyListeners("invalid_register");
+    _errorMessage = _authenticationService.errorSignUp;
+    notifyListeners("error_signup");
   }
 
   getGenderIndex() {
@@ -100,6 +103,6 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   get errorMessage {
-    return _userViewModel.errorMessage;
+    return _errorMessage;
   }
 }

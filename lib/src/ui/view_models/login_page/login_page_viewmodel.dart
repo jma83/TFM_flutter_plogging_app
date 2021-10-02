@@ -8,6 +8,7 @@ import 'package:property_change_notifier/property_change_notifier.dart';
 class LoginPageViewModel extends PropertyChangeNotifier<String> {
   String _email = "";
   String _password = "";
+  String _errorMessage = "";
 
   final UserViewModel _userViewModel;
   final LoginPageRouteCoordinator _routeCoordinator;
@@ -18,7 +19,7 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
     _userViewModel.addListener(validationOkResponse, ["valid_login"]);
     _userViewModel.addListener(validationErrorResponse, ["invalid_login"]);
     _authenticationService
-        .addListener(validationErrorResponse, ["error_signin"]);
+        .addListener(validationErrorResponse, ["errorSignIn"]);
   }
 
   void validateForm() {
@@ -30,10 +31,12 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   void validationErrorResponse() {
-    notifyListeners("invalid_login");
+    _errorMessage = _userViewModel.errorMessage;
+    notifyListeners("error_signin");
   }
 
   void signInErrorResponse() {
+    _errorMessage = _authenticationService.errorSignIn;
     notifyListeners("error_signin");
   }
 
@@ -57,11 +60,7 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
     _userViewModel.valid;
   }
 
-  get errorValidationMessage {
-    return _userViewModel.errorMessage;
-  }
-
   get errorMessage {
-    return "Error message!";
+    return _errorMessage;
   }
 }

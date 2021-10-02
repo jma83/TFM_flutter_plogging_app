@@ -7,14 +7,19 @@ class AuthenticationService extends PropertyChangeNotifier<String> {
   final FirebaseAuth _firebaseAuth;
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   AuthenticationService(this._firebaseAuth);
+  String _errorSignIn = "";
+  String _errorSignUp = "";
+  String _errorSignOut = "";
 
   void signIn({required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      // e.message
-      notifyListeners("error_signin");
+      if (e.message != null) {
+        _errorSignIn = e.message!;
+      }
+      notifyListeners("errorSignIn");
     }
   }
 
@@ -23,9 +28,10 @@ class AuthenticationService extends PropertyChangeNotifier<String> {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      // e.message
-
-      notifyListeners("error_signup");
+      if (e.message != null) {
+        _errorSignUp = e.message!;
+      }
+      notifyListeners("errorSignUp");
     }
   }
 
@@ -33,7 +39,22 @@ class AuthenticationService extends PropertyChangeNotifier<String> {
     try {
       return await _firebaseAuth.signOut();
     } on FirebaseAuthException catch (e) {
-      return Future.value(e.message);
+      if (e.message != null) {
+        _errorSignOut = e.message!;
+      }
+      notifyListeners("errorSignOut");
     }
+  }
+
+  get errorSignIn {
+    return _errorSignIn;
+  }
+
+  get errorSignUp {
+    return _errorSignUp;
+  }
+
+  get errorSignOut {
+    return _errorSignOut;
   }
 }

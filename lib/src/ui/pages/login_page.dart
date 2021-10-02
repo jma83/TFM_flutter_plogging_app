@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
     return ViewModelBuilder<LoginPageViewModel>.reactive(
         viewModelBuilder: () => getIt<LoginPageViewModel>(),
         onModelReady: (viewModel) => viewModel.addListener(
-            () => showErrorAlert(context, viewModel), ["invalid_login"]),
+            () => showErrorAlert(context, viewModel), ["error_signin"]),
         builder: (context, LoginPageViewModel viewModel, child) {
           return Scaffold(
               appBar: AppBar(title: const Text("Plogging Challenge")),

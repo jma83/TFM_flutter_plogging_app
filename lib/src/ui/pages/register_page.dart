@@ -15,7 +15,7 @@ class RegisterPage extends StatelessWidget {
     return ViewModelBuilder<RegisterPageViewModel>.reactive(
         viewModelBuilder: () => getIt<RegisterPageViewModel>(),
         onModelReady: (viewModel) => viewModel.addListener(
-            () => showErrorAlert(context, viewModel), ["invalid_register"]),
+            () => showErrorAlert(context, viewModel), ["error_signup"]),
         builder: (context, RegisterPageViewModel viewModel, child) {
           return Scaffold(
               appBar: AppBar(title: const Text("Plogging Challenge")),

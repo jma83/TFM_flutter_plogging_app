@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_plogging/src/core/services/interfaces/i_authentication_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
-@injectable
-class AuthenticationService extends PropertyChangeNotifier<String> {
+@LazySingleton(as: IAuthenticationService)
+class AuthenticationService extends PropertyChangeNotifier<String>
+    implements IAuthenticationService {
   final FirebaseAuth _firebaseAuth;
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   AuthenticationService(this._firebaseAuth);
@@ -11,7 +13,8 @@ class AuthenticationService extends PropertyChangeNotifier<String> {
   String _errorSignUp = "";
   String _errorSignOut = "";
 
-  void signIn({required String email, required String password}) async {
+  @override
+  Future<void> signIn({required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -23,7 +26,8 @@ class AuthenticationService extends PropertyChangeNotifier<String> {
     }
   }
 
-  void signUp({required String email, required String password}) async {
+  @override
+  Future<void> signUp({required String email, required String password}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -35,6 +39,7 @@ class AuthenticationService extends PropertyChangeNotifier<String> {
     }
   }
 
+  @override
   Future<void> signOut() async {
     try {
       return await _firebaseAuth.signOut();
@@ -46,14 +51,17 @@ class AuthenticationService extends PropertyChangeNotifier<String> {
     }
   }
 
+  @override
   get errorSignIn {
     return _errorSignIn;
   }
 
+  @override
   get errorSignUp {
     return _errorSignUp;
   }
 
+  @override
   get errorSignOut {
     return _errorSignOut;
   }

@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
+import 'package:flutter_plogging/src/core/domain/user_entity.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
+import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/register_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
@@ -28,8 +30,10 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   final UserViewModel _userViewModel;
   final RegisterPageRouteCoordinator _routeCoordinator;
   final AuthenticationService _authenticationService;
+  final IStoreService _userStoreService;
+
   RegisterPageViewModel(this._routeCoordinator, this._userViewModel,
-      this._authenticationService) {
+      this._authenticationService, this._userStoreService) {
     _userViewModel.addListener(validationOkResponse, ["valid_register"]);
     _userViewModel.addListener(validationErrorResponse, ["invalid_register"]);
     _authenticationService.addListener(signUpErrorResponse, ["errorSignUp"]);
@@ -40,7 +44,9 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   void validationOkResponse() {
-    _authenticationService.signUp(email: _email, password: _password);
+    _authenticationService.signUp(email: _email, password: _password).then(
+        (value) => _userStoreService
+            .addElement(User(_username, int.parse(_age), int.parse(_gender))));
   }
 
   void validationErrorResponse() {

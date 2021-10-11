@@ -11,11 +11,9 @@ class UserViewModel extends PropertyChangeNotifier<String> {
     _valid = true;
 
     validateEmptyFields([email, password]);
-    print("validateLogin $_valid");
     if (_valid) {
       executeValidation(UserEmailStrategy(), email);
     }
-    print("validateLogin2 $_valid");
     _valid ? notifyListeners("valid_login") : notifyListeners("invalid_login");
   }
 
@@ -23,16 +21,13 @@ class UserViewModel extends PropertyChangeNotifier<String> {
       String password2, String age, String gender) {
     _valid = true;
     validateEmptyFields([email, username, password1, password2, age, gender]);
-    print("validateRegister1 $_valid");
     if (_valid) {
       validateRegisterFields(
           email, username, password1, password2, age, gender);
     }
-    print("validateRegister2 $_valid");
     if (_valid) {
       validateConfirmPasswords(password1, password2);
     }
-    print("validateRegister3 $_valid");
     _valid
         ? notifyListeners("valid_register")
         : notifyListeners("invalid_register");

@@ -3,7 +3,7 @@ import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/input_dropdown.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page/register_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/components/button.dart';
+import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';
 
@@ -56,28 +56,59 @@ class RegisterPage extends StatelessWidget {
   Widget _getForm(RegisterPageViewModel viewModel) {
     return Column(
       children: [
-        InputText.createInput("Email", "Type your email",
-            const Icon(Icons.alternate_email), 50, viewModel.setEmail,
-            emailField: true, bottomHeight: 10),
-        InputText.createInput("Username", "Type your username",
-            const Icon(Icons.person_outline), 25, viewModel.setUsername,
+        InputText(
+          inputType: TextInputType.emailAddress,
+          bottomHeight: 10,
+          label: "Email",
+          hint: "Type your email",
+          icon: const Icon(Icons.alternate_email),
+          maxLength: 50,
+          onChange: viewModel.setEmail,
+        ),
+        InputText(
+          inputType: TextInputType.emailAddress,
+          label: "Username",
+          hint: "Type your username",
+          icon: const Icon(Icons.person_outline),
+          maxLength: 25,
+          onChange: viewModel.setUsername,
+          bottomHeight: 10,
+        ),
+        InputText(
+            label: "Password",
+            hint: "Type your password",
+            icon: const Icon(Icons.lock_outline),
+            maxLength: 25,
+            onChange: viewModel.setPassword,
+            isPasswordField: true,
             bottomHeight: 10),
-        InputText.createInput("Password", "Type your password",
-            const Icon(Icons.lock_outline), 25, viewModel.setPassword,
-            passwordField: true, bottomHeight: 10),
-        InputText.createInput("Confirm password", "Confirm your password",
-            const Icon(Icons.lock_outline), 25, viewModel.setConfirmPassword,
-            passwordField: true, bottomHeight: 10),
-        InputText.createInput("Age", "Type your age",
-            const Icon(Icons.date_range), 3, viewModel.setAge,
-            bottomHeight: 10, numericField: true),
+        InputText(
+            label: "Confirm password",
+            hint: "Confirm your password",
+            icon: const Icon(Icons.lock_outline),
+            maxLength: 25,
+            onChange: viewModel.setConfirmPassword,
+            isPasswordField: true,
+            bottomHeight: 10),
+        InputText(
+          label: "Age",
+          hint: "Type your age",
+          icon: const Icon(Icons.date_range),
+          maxLength: 3,
+          onChange: viewModel.setAge,
+          inputType: TextInputType.number,
+          bottomHeight: 10,
+        ),
         InputDropdown(
             viewModel.gender,
             const [Gender.NotDefined, Gender.Female, Gender.Male],
             const Icon(Icons.all_inclusive_sharp),
             viewModel.setGender),
-        Button.createButtonWithIcon(0, viewModel.validateForm,
-            const Text("Register"), const Icon(Icons.login)),
+        InputButton(
+            label: const Text("Register"),
+            buttonType: InputButtonType.elevated,
+            onPress: viewModel.validateForm,
+            icon: const Icon(Icons.login)),
       ],
     );
   }

@@ -34,6 +34,10 @@ class UserStoreService extends PropertyChangeNotifier<String>
     notifyListeners("user_removed");
   }
 
+  Future<void> queryElementByCriteria(String key, String value) async {
+    // entity.where(key, isEqualTo: value).get().then((value) => );
+  }
+
   @override
   CollectionReference get entity {
     return _firebaseFirestore.collection(entityName);

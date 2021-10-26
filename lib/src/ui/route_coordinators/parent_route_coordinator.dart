@@ -4,11 +4,9 @@ import 'package:property_change_notifier/property_change_notifier.dart';
 
 class ParentRouteCoordinator {
   late final Widget mainWidget;
-  late final PropertyChangeNotifier<String> viewModel;
   late final NavigationService navigationService;
 
-  ParentRouteCoordinator(
-      this.mainWidget, this.viewModel, this.navigationService);
+  ParentRouteCoordinator(this.mainWidget, this.navigationService);
 
   routeBuild(Widget widgetRoute) {
     return PageRouteBuilder(

@@ -49,12 +49,9 @@ void $initGetIt({String environment = Env.Default}) {
     ..registerFactory<LoginPageViewModel>(() => LoginPageViewModel(
         getIt<UserViewModel>(), getIt<AuthenticationService>()))
     ..registerFactory(() => LoginPage(getIt<LoginPageViewModel>()))
-    ..registerFactory(() => LoginRouteCoordinator(getIt<LoginPage>(),
-        getIt<LoginPageViewModel>(), getIt<NavigationService>()))
+    ..registerFactory(() =>
+        LoginRouteCoordinator(getIt<LoginPage>(), getIt<NavigationService>()))
     ..registerFactory(() => StartPage(getIt<StartPageViewModel>()))
-    ..registerFactory(() => StartRouteCoordinator(
-        getIt<StartPage>(),
-        getIt<StartPageViewModel>(),
-        getIt<NavigationService>(),
-        getIt<LoginRouteCoordinator>()));
+    ..registerFactory(() => StartRouteCoordinator(getIt<StartPage>(),
+        getIt<NavigationService>(), getIt<LoginRouteCoordinator>()));
 }

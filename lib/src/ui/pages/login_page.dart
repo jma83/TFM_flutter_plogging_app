@@ -7,13 +7,13 @@ import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginPage extends StatelessWidget {
-  final LoginPageViewModel _viewModel;
-  const LoginPage(this._viewModel, {Key? key}) : super(key: key);
+  final LoginPageViewModel viewModel;
+  const LoginPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginPageViewModel>.reactive(
-        viewModelBuilder: () => _viewModel,
+        viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) => viewModel.addListener(
             () => showErrorAlert(context, viewModel), ["error_signin"]),
         builder: (context, LoginPageViewModel viewModel, child) {

@@ -5,13 +5,13 @@ import 'package:stacked/stacked.dart';
 
 @injectable
 class StartPage extends StatelessWidget {
-  final StartPageViewModel _viewModel;
-  const StartPage(this._viewModel, {Key? key}) : super(key: key);
+  final StartPageViewModel viewModel;
+  const StartPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<StartPageViewModel>.reactive(
-        viewModelBuilder: () => _viewModel,
+        viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) => viewModel.checkUserRedirection(),
         builder: (context, StartPageViewModel viewModel, child) =>
             getLoadingWidget());

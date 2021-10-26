@@ -11,11 +11,9 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
   String _errorMessage = "";
 
   final UserViewModel _userViewModel;
-  final LoginPageRouteCoordinator _routeCoordinator;
   final AuthenticationService _authenticationService;
 
-  LoginPageViewModel(this._routeCoordinator, this._userViewModel,
-      this._authenticationService) {
+  LoginPageViewModel(this._userViewModel, this._authenticationService) {
     _userViewModel.addListener(validationOkResponse, ["valid_login"]);
     _userViewModel.addListener(validationErrorResponse, ["invalid_login"]);
     _authenticationService
@@ -41,11 +39,11 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   void manageRegisterNavigation() {
-    _routeCoordinator.navigateToRegister();
+    // _routeCoordinator.navigateToRegister();
   }
 
   void dismissAlert() {
-    _routeCoordinator.returnToPrevious();
+    // _routeCoordinator.returnToPrevious();
   }
 
   void setEmail(String email) {

@@ -6,7 +6,12 @@ import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_navigation_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/core/services/user_store_service.dart';
+import 'package:flutter_plogging/src/ui/pages/login_page.dart';
+import 'package:flutter_plogging/src/ui/pages/start_page.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/login_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_page_route_coordinator.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
+import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page/register_page_viewmodel.dart';
@@ -30,21 +35,26 @@ void $initGetIt({String environment = Env.Default}) {
     ..registerLazySingleton<UserStoreService>(
         () => UserStoreService(FirebaseFirestore.instance))
     ..registerFactory<UserViewModel>(() => UserViewModel())
-    ..registerFactory<StartPageRouteCoordinator>(
-        () => StartPageRouteCoordinator(getIt<NavigationService>()))
     ..registerFactory<LoginPageRouteCoordinator>(
         () => LoginPageRouteCoordinator(getIt<NavigationService>()))
     ..registerFactory<RegisterPageRouteCoordinator>(
         () => RegisterPageRouteCoordinator(getIt<NavigationService>()))
-    ..registerFactory<StartPageViewModel>(() => StartPageViewModel(
-        getIt<StartPageRouteCoordinator>(), getIt<AuthenticationService>()))
+    ..registerFactory<StartPageViewModel>(
+        () => StartPageViewModel(getIt<AuthenticationService>()))
     ..registerFactory<RegisterPageViewModel>(() => RegisterPageViewModel(
         getIt<RegisterPageRouteCoordinator>(),
         getIt<UserViewModel>(),
         getIt<AuthenticationService>(),
         getIt<UserStoreService>()))
     ..registerFactory<LoginPageViewModel>(() => LoginPageViewModel(
-        getIt<LoginPageRouteCoordinator>(),
-        getIt<UserViewModel>(),
-        getIt<AuthenticationService>()));
+        getIt<UserViewModel>(), getIt<AuthenticationService>()))
+    ..registerFactory(() => LoginPage(getIt<LoginPageViewModel>()))
+    ..registerFactory(() => LoginRouteCoordinator(getIt<LoginPage>(),
+        getIt<LoginPageViewModel>(), getIt<NavigationService>()))
+    ..registerFactory(() => StartPage(getIt<StartPageViewModel>()))
+    ..registerFactory(() => StartRouteCoordinator(
+        getIt<StartPage>(),
+        getIt<StartPageViewModel>(),
+        getIt<NavigationService>(),
+        getIt<LoginRouteCoordinator>()));
 }

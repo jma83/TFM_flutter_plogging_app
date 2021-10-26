@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/core/di/injection.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
-import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
-import 'package:flutter_plogging/src/ui/routes/routes.dart';
+import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 
-Future<void> main() async {
+/*Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   configureInjection(Env.Default);
-  runApp(const MyApp2());
-}
+  runApp(const MyApp());
+}*/
 
-class MyApp2 extends StatelessWidget {
-  const MyApp2({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -27,7 +26,7 @@ class MyApp2 extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             color: Colors.black87,
           )),
-      home: getIt<StartRouteCoordinator>().mainWidget,
+      home: getIt<StartPage>(),
       navigatorKey: getIt<NavigationService>().navigatorKey,
     );
   }

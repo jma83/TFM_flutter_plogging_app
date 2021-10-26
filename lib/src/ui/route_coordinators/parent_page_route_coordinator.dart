@@ -2,14 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
-class ParentRouteCoordinator {
-  late final Widget mainWidget;
-  late final PropertyChangeNotifier<String> viewModel;
-  late final NavigationService navigationService;
-
-  ParentRouteCoordinator(
-      this.mainWidget, this.viewModel, this.navigationService);
-
+class ParentPageRouteCoordinator {
   routeBuild(Widget widgetRoute) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => widgetRoute,

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
-import 'package:flutter_plogging/src/ui/route_coordinators/start_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 

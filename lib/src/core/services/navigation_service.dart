@@ -33,6 +33,7 @@ class NavigationService implements INavigationService {
   @override
   Widget? getRouteWidget(String routeName) {
     Widget? routeWidget;
+    print("routeName $routeName");
     routes.forEach((key, value) => {if (key == routeName) routeWidget = value});
     return routeWidget;
   }

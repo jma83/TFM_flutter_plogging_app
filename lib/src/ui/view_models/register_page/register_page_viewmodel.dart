@@ -3,7 +3,6 @@ import 'package:flutter_plogging/src/core/domain/user_entity.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/route_coordinators/register_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
@@ -28,12 +27,11 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   String _errorMessage = "";
 
   final UserViewModel _userViewModel;
-  final RegisterPageRouteCoordinator _routeCoordinator;
   final AuthenticationService _authenticationService;
   final IStoreService _userStoreService;
 
-  RegisterPageViewModel(this._routeCoordinator, this._userViewModel,
-      this._authenticationService, this._userStoreService) {
+  RegisterPageViewModel(this._userViewModel, this._authenticationService,
+      this._userStoreService) {
     _userViewModel.addListener(validationOkResponse, ["valid_register"]);
     _userViewModel.addListener(validationErrorResponse, ["invalid_register"]);
     _authenticationService.addListener(signUpErrorResponse, ["errorSignUp"]);
@@ -73,7 +71,7 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   void dismissAlert() {
-    _routeCoordinator.returnToPrevious();
+    // _routeCoordinator.returnToPrevious();
   }
 
   void setEmail(String email) {

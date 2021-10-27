@@ -8,12 +8,13 @@ import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  final RegisterPageViewModel viewModel;
+  const RegisterPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RegisterPageViewModel>.reactive(
-        viewModelBuilder: () => getIt<RegisterPageViewModel>(),
+        viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) => viewModel.addListener(
             () => showErrorAlert(context, viewModel), ["error_signup"]),
         builder: (context, RegisterPageViewModel viewModel, child) {

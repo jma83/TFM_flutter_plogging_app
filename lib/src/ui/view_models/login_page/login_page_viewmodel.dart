@@ -1,6 +1,5 @@
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/route_coordinators/login_page_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
@@ -39,11 +38,11 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   void manageRegisterNavigation() {
-    // _routeCoordinator.navigateToRegister();
+    notifyListeners("loginRouteCoordinator_navigateToRegister");
   }
 
   void dismissAlert() {
-    // _routeCoordinator.returnToPrevious();
+    notifyListeners("loginRouteCoordinator_returnToPrevious");
   }
 
   void setEmail(String email) {

@@ -12,7 +12,7 @@ Map<String, WidgetBuilder> getRoutesBuilder() {
   return <String, WidgetBuilder>{
     Ruta.Start.getValue(): (BuildContext context) => getIt<StartPage>(),
     Ruta.Login.getValue(): (BuildContext context) => getIt<LoginPage>(),
-    Ruta.Register.getValue(): (BuildContext context) => const RegisterPage(),
+    Ruta.Register.getValue(): (BuildContext context) => getIt<RegisterPage>(),
     Ruta.Home.getValue(): (BuildContext context) => const HomePage(),
   };
 }
@@ -21,7 +21,7 @@ Map<String, Widget> getRoutes() {
   return <String, Widget>{
     Ruta.Start.getValue(): getIt<StartPage>(),
     Ruta.Login.getValue(): getIt<LoginPage>(),
-    Ruta.Register.getValue(): const RegisterPage(),
+    Ruta.Register.getValue(): getIt<RegisterPage>(),
     Ruta.Home.getValue(): const HomePage(),
   };
 }

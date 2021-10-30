@@ -17,8 +17,8 @@ void $initRouteCoordinators() {
         getIt<NavigationService>(),
         getIt<LoginRouteCoordinator>(),
         getIt<MainRouteCoordinator>()))
-    ..registerFactory(() => LoginRouteCoordinator(
-        getIt<LoginPage>(), getIt<NavigationService>(), getIt<RegisterPage>()))
+    ..registerFactory(() =>
+        LoginRouteCoordinator(getIt<LoginPage>(), getIt<NavigationService>()))
     ..registerFactory(() =>
         MainRouteCoordinator(getIt<HomeTabBar>(), getIt<NavigationService>()));
 }

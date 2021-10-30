@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
-import 'package:property_change_notifier/property_change_notifier.dart';
 
 class ParentRouteCoordinator {
   late final Widget mainWidget;

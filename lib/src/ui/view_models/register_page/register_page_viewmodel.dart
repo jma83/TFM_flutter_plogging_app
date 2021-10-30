@@ -32,29 +32,29 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
 
   RegisterPageViewModel(this._userViewModel, this._authenticationService,
       this._userStoreService) {
-    _userViewModel.addListener(validationOkResponse, ["valid_register"]);
-    _userViewModel.addListener(validationErrorResponse, ["invalid_register"]);
-    _authenticationService.addListener(signUpErrorResponse, ["errorSignUp"]);
+    print("mountRegisterPage");
   }
+
   void validateForm() {
-    _userViewModel.validateRegister(_email, _username, _password,
-        _confirmPassword, _age, getGenderIndex().toString());
+    if (!_userViewModel.validateRegister(_email, _username, _password,
+        _confirmPassword, _age, getGenderIndex().toString())) {
+      _errorMessage = _userViewModel.errorMessage;
+      notifyListeners("error_signup");
+      return;
+    }
+    validationOkResponse();
   }
 
-  void validationOkResponse() {
-    _authenticationService.signUp(email: _email, password: _password).then(
-        (value) => _userStoreService
-            .addElement(User(_username, int.parse(_age), int.parse(_gender))));
-  }
-
-  void validationErrorResponse() {
-    _errorMessage = _userViewModel.errorMessage;
-    notifyListeners("error_signup");
-  }
-
-  void signUpErrorResponse() {
-    _errorMessage = _authenticationService.errorSignUp;
-    notifyListeners("error_signup");
+  void validationOkResponse() async {
+    final String? result =
+        await _authenticationService.signUp(email: _email, password: _password);
+    if (result != null) {
+      _errorMessage = result;
+      notifyListeners("error_signup");
+      return;
+    }
+    _userStoreService
+        .addElement(User(_username, int.parse(_age), int.parse(_gender)));
   }
 
   getGenderIndex() {
@@ -71,7 +71,7 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   }
 
   void dismissAlert() {
-    // _routeCoordinator.returnToPrevious();
+    notifyListeners("loginRouteCoordinator_returnToPrevious");
   }
 
   void setEmail(String email) {
@@ -100,10 +100,6 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
 
   get gender {
     return _gender;
-  }
-
-  get valid {
-    _userViewModel.valid;
   }
 
   get errorMessage {

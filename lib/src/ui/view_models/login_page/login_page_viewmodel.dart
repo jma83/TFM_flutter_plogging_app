@@ -12,29 +12,24 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
   final UserViewModel _userViewModel;
   final AuthenticationService _authenticationService;
 
-  LoginPageViewModel(this._userViewModel, this._authenticationService) {
-    _userViewModel.addListener(validationOkResponse, ["valid_login"]);
-    _userViewModel.addListener(validationErrorResponse, ["invalid_login"]);
-    _authenticationService
-        .addListener(validationErrorResponse, ["errorSignIn"]);
-  }
+  LoginPageViewModel(this._userViewModel, this._authenticationService);
 
   void validateForm() {
-    _userViewModel.validateLogin(_email, _password);
+    if (!_userViewModel.validateLogin(_email, _password)) {
+      _errorMessage = _userViewModel.errorMessage;
+      notifyListeners("error_signin");
+      return;
+    }
+    validationOkResponse();
   }
 
   Future<void> validationOkResponse() async {
-    _authenticationService.signIn(email: _email, password: _password);
-  }
-
-  void validationErrorResponse() {
-    _errorMessage = _userViewModel.errorMessage;
-    notifyListeners("error_signin");
-  }
-
-  void signInErrorResponse() {
-    _errorMessage = _authenticationService.errorSignIn;
-    notifyListeners("error_signin");
+    final String? result =
+        await _authenticationService.signIn(email: _email, password: _password);
+    if (result != null) {
+      _errorMessage = result;
+      notifyListeners("error_signin");
+    }
   }
 
   void manageRegisterNavigation() {
@@ -51,10 +46,6 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
 
   void setPassword(String password) {
     _password = password;
-  }
-
-  get valid {
-    _userViewModel.valid;
   }
 
   get errorMessage {

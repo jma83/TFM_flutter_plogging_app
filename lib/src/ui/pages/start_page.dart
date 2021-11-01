@@ -6,7 +6,9 @@ import 'package:stacked/stacked.dart';
 @injectable
 class StartPage extends StatelessWidget {
   final StartPageViewModel viewModel;
-  const StartPage(this.viewModel, {Key? key}) : super(key: key);
+  StartPage(this.viewModel, {Key? key}) : super(key: key) {
+    print("StartPage!!");
+  }
 
   @override
   Widget build(BuildContext context) {

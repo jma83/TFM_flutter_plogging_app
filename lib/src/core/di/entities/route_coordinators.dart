@@ -6,7 +6,6 @@ import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinat
 import 'package:get_it/get_it.dart';
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
-import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 
 final getIt = GetIt.instance;
 
@@ -17,8 +16,8 @@ void $initRouteCoordinators() {
         getIt<NavigationService>(),
         getIt<LoginRouteCoordinator>(),
         getIt<MainRouteCoordinator>()))
-    ..registerFactory(() =>
-        LoginRouteCoordinator(getIt<LoginPage>(), getIt<NavigationService>()))
+    ..registerFactory(() => LoginRouteCoordinator(getIt<LoginPage>(),
+        getIt<NavigationService>(), getIt<MainRouteCoordinator>()))
     ..registerFactory(() =>
         MainRouteCoordinator(getIt<HomeTabBar>(), getIt<NavigationService>()));
 }

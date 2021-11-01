@@ -14,9 +14,9 @@ void $initViewModels() {
     ..registerFactory<StartPageViewModel>(
         () => StartPageViewModel(getIt<AuthenticationService>()))
     ..registerFactory<RegisterPageViewModel>(() => RegisterPageViewModel(
-        getIt<UserViewModel>(),
         getIt<AuthenticationService>(),
+        getIt<UserViewModel>(),
         getIt<UserStoreService>()))
     ..registerFactory<LoginPageViewModel>(() => LoginPageViewModel(
-        getIt<UserViewModel>(), getIt<AuthenticationService>()));
+        getIt<AuthenticationService>(), getIt<UserViewModel>()));
 }

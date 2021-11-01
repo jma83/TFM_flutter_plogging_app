@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "668854426510-3md27p04cuverunvotfqq4of10qil61f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.upsa.mimo.v2021.flutter_plogging",
+            "certificate_hash": "48c7c4e60998a69dd79d40af1c3110bac3acef87"
+          }
+        },
+        {
           "client_id": "668854426510-ctm1vufg4un6bn692vlc2d7lj388mjs0.apps.googleusercontent.com",
           "client_type": 3
         }

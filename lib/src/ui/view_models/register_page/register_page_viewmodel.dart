@@ -2,6 +2,7 @@
 import 'package:flutter_plogging/src/core/domain/user_entity.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
+import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
@@ -17,7 +18,7 @@ abstract class Gender {
 }
 
 @injectable
-class RegisterPageViewModel extends PropertyChangeNotifier<String> {
+class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   String _email = "";
   String _username = "";
   String _password = "";
@@ -27,12 +28,13 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
   String _errorMessage = "";
 
   final UserViewModel _userViewModel;
-  final AuthenticationService _authenticationService;
   final IStoreService _userStoreService;
 
-  RegisterPageViewModel(this._userViewModel, this._authenticationService,
-      this._userStoreService) {
-    print("mountRegisterPage");
+  RegisterPageViewModel(
+      authService, this._userViewModel, this._userStoreService)
+      : super(authService) {
+    print("RegisterPageViewModel");
+    createAuthListener();
   }
 
   void validateForm() {
@@ -47,14 +49,14 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
 
   void validationOkResponse() async {
     final String? result =
-        await _authenticationService.signUp(email: _email, password: _password);
+        await authService.signUp(email: _email, password: _password);
     if (result != null) {
       _errorMessage = result;
       notifyListeners("error_signup");
       return;
     }
-    _userStoreService
-        .addElement(User(_username, int.parse(_age), int.parse(_gender)));
+    /* await _userStoreService
+        .addElement(User(_username, int.parse(_age), getGenderIndex())); */
   }
 
   getGenderIndex() {
@@ -68,6 +70,11 @@ class RegisterPageViewModel extends PropertyChangeNotifier<String> {
       default:
         return -1;
     }
+  }
+
+  @override
+  notifyLoggedIn() {
+    notifyListeners("loginRouteCoordinator_navigateToHome");
   }
 
   void dismissAlert() {

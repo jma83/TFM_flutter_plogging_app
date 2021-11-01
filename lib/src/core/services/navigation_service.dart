@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: INavigationService)
 class NavigationService implements INavigationService {
   final GlobalKey<NavigatorState> navigatorKey;
-  final Map<String, Widget> routes = getRoutes();
 
   NavigationService(this.navigatorKey);
 
@@ -31,11 +30,9 @@ class NavigationService implements INavigationService {
   }
 
   @override
-  Widget? getRouteWidget(String routeName) {
-    Widget? routeWidget;
+  Widget getRouteWidget(String routeName) {
     print("routeName $routeName");
-    routes.forEach((key, value) => {if (key == routeName) routeWidget = value});
-    return routeWidget;
+    return getRoute(routeName);
   }
 
   @override

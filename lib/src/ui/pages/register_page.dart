@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/input_dropdown.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page/register_page_viewmodel.dart';

@@ -10,18 +10,24 @@ import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 
 Map<String, WidgetBuilder> getRoutesBuilder() {
   return <String, WidgetBuilder>{
-    Ruta.Start.getValue(): (BuildContext context) => getIt<StartPage>(),
-    Ruta.Login.getValue(): (BuildContext context) => getIt<LoginPage>(),
-    Ruta.Register.getValue(): (BuildContext context) => getIt<RegisterPage>(),
-    Ruta.Home.getValue(): (BuildContext context) => const HomePage(),
+    Ruta.Start: (BuildContext context) => getIt<StartPage>(),
+    Ruta.Login: (BuildContext context) => getIt<LoginPage>(),
+    Ruta.Register: (BuildContext context) => getIt<RegisterPage>(),
+    Ruta.Home: (BuildContext context) => const HomePage(),
   };
 }
 
-Map<String, Widget> getRoutes() {
-  return <String, Widget>{
-    Ruta.Start.getValue(): getIt<StartPage>(),
-    Ruta.Login.getValue(): getIt<LoginPage>(),
-    Ruta.Register.getValue(): getIt<RegisterPage>(),
-    Ruta.Home.getValue(): const HomePage(),
-  };
+Widget getRoute(String route) {
+  switch (route) {
+    case Ruta.Start:
+      return getIt<StartPage>();
+    case Ruta.Login:
+      return getIt<LoginPage>();
+    case Ruta.Register:
+      return getIt<RegisterPage>();
+    case Ruta.Home:
+      return const HomePage();
+    default:
+      return getIt<StartPage>();
+  }
 }

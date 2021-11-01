@@ -1,26 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_plogging/src/core/services/authentication_service.dart';
+import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:injectable/injectable.dart';
-import 'package:property_change_notifier/property_change_notifier.dart';
 
 @injectable
-class StartPageViewModel extends PropertyChangeNotifier<String> {
-  final AuthenticationService _authService;
-  StartPageViewModel(this._authService) {
-    print("creoo viewmodel!");
-  }
+class StartPageViewModel extends AuthPropertyChangeNotifier {
+  StartPageViewModel(_authService) : super(_authService);
 
   void checkUserRedirection() {
-    _authService.signOut();
-    Future.delayed(
-        const Duration(seconds: 1),
-        () => _authService.authStateChanges.listen((User? user) {
-              print("holaa! $user");
-              if (user == null) {
-                notifyListeners("startRouteCoordinator_navigateToLogin");
-              } else {
-                notifyListeners("startRouteCoordinator_navigateToHome");
-              }
-            }));
+    Future.delayed(const Duration(seconds: 1), () => createAuthListener());
+  }
+
+  @override
+  notifyLoggedIn() {
+    notifyListeners("startRouteCoordinator_navigateToHome");
+  }
+
+  @override
+  notifyNotLoggedIn() {
+    notifyListeners("startRouteCoordinator_navigateToLogin");
   }
 }

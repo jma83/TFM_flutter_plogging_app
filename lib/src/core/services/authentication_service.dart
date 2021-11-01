@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_authentication_service.dart';
 import 'package:injectable/injectable.dart';
-import 'package:property_change_notifier/property_change_notifier.dart';
 
 @LazySingleton(as: IAuthenticationService)
-class AuthenticationService extends PropertyChangeNotifier<String>
-    implements IAuthenticationService {
+class AuthenticationService implements IAuthenticationService {
   final FirebaseAuth _firebaseAuth;
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   AuthenticationService(this._firebaseAuth);

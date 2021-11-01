@@ -1,18 +1,20 @@
-import 'package:flutter_plogging/src/core/services/authentication_service.dart';
+import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
-import 'package:property_change_notifier/property_change_notifier.dart';
 
 @injectable
-class LoginPageViewModel extends PropertyChangeNotifier<String> {
+class LoginPageViewModel extends AuthPropertyChangeNotifier {
   String _email = "";
   String _password = "";
   String _errorMessage = "";
 
   final UserViewModel _userViewModel;
-  final AuthenticationService _authenticationService;
 
-  LoginPageViewModel(this._userViewModel, this._authenticationService);
+  LoginPageViewModel(_authenticationService, this._userViewModel)
+      : super(_authenticationService) {
+    print("mountLoginPage!!!!!!!!!");
+    createAuthListener();
+  }
 
   void validateForm() {
     if (!_userViewModel.validateLogin(_email, _password)) {
@@ -25,11 +27,16 @@ class LoginPageViewModel extends PropertyChangeNotifier<String> {
 
   Future<void> validationOkResponse() async {
     final String? result =
-        await _authenticationService.signIn(email: _email, password: _password);
+        await authService.signIn(email: _email, password: _password);
     if (result != null) {
       _errorMessage = result;
       notifyListeners("error_signin");
     }
+  }
+
+  @override
+  notifyLoggedIn() {
+    notifyListeners("loginRouteCoordinator_navigateToHome");
   }
 
   void manageRegisterNavigation() {

@@ -5,7 +5,7 @@ import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
 class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
-  late StreamSubscription<User?> subscription;
+  StreamSubscription<User?>? subscription;
   final AuthenticationService authService;
 
   AuthPropertyChangeNotifier(this.authService);
@@ -30,6 +30,6 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
   void dispose() {
     print("Dispose!!!!!!");
     super.dispose();
-    subscription.cancel();
+    subscription?.cancel();
   }
 }

@@ -4,18 +4,34 @@ import 'package:injectable/injectable.dart';
 @injectable
 class StartPageViewModel extends AuthPropertyChangeNotifier {
   StartPageViewModel(_authService) : super(_authService);
+  bool alreadyDisposed = false;
 
   void checkUserRedirection() {
-    Future.delayed(const Duration(seconds: 1), () => createAuthListener());
+    Future.delayed(const Duration(seconds: 1), () {
+      createAuthListener();
+    });
   }
 
   @override
   notifyLoggedIn() {
+    if (alreadyDisposed) {
+      return;
+    }
     notifyListeners("startRouteCoordinator_navigateToHome");
   }
 
   @override
   notifyNotLoggedIn() {
+    if (alreadyDisposed) {
+      return;
+    }
     notifyListeners("startRouteCoordinator_navigateToLogin");
+  }
+
+  @override
+  void dispose() {
+    print("Dispose!!!!!!");
+    super.dispose();
+    alreadyDisposed = true;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
@@ -7,6 +8,7 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   String _email = "";
   String _password = "";
   String _errorMessage = "";
+  bool _isLoading = false;
 
   final UserViewModel _userViewModel;
 
@@ -17,21 +19,37 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   }
 
   void validateForm() {
+    toggleLoading();
     if (!_userViewModel.validateLogin(_email, _password)) {
-      _errorMessage = _userViewModel.errorMessage;
-      notifyListeners("error_signin");
+      setError(_userViewModel.errorMessage);
       return;
     }
     validationOkResponse();
   }
 
   Future<void> validationOkResponse() async {
-    final String? result =
-        await authService.signIn(email: _email, password: _password);
-    if (result != null) {
-      _errorMessage = result;
-      notifyListeners("error_signin");
+    try {
+      final String? result =
+          await authService.signIn(email: _email, password: _password);
+      if (result != null) {
+        setError(result);
+        return;
+      }
+    } catch (e) {
+      print(e);
     }
+    toggleLoading();
+  }
+
+  setError(String errorValue) {
+    _errorMessage = errorValue;
+    notifyListeners("error_signin");
+    toggleLoading();
+  }
+
+  toggleLoading() {
+    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
+    _isLoading = !_isLoading;
   }
 
   @override
@@ -57,5 +75,9 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
 
   get errorMessage {
     return _errorMessage;
+  }
+
+  get isLoading {
+    return _isLoading;
   }
 }

@@ -1,5 +1,7 @@
+import 'package:flutter_plogging/src/core/di/entities/route_coordinators.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/profile_page.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/login_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,5 +9,14 @@ import 'package:injectable/injectable.dart';
 class ProfileRouteCoordinator extends ParentRouteCoordinator {
   ProfileRouteCoordinator(
       ProfilePage mainWidget, NavigationService navigationService)
-      : super(mainWidget, navigationService);
+      : super(mainWidget, navigationService) {
+    mainWidget.viewModel.addListener(
+        navigateToLogin, ["profileRouteCoordinator_navigateToLogin"]);
+  }
+
+  navigateToLogin() {
+    print("to login!");
+    navigationService.navigateAndReplaceTo(
+        routeBuild(getIt<LoginRouteCoordinator>().mainWidget));
+  }
 }

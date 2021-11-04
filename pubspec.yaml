@@ -38,10 +38,11 @@ dependencies:
   get_it: ^7.2.0
   injectable: ^1.5.0
   property_change_notifier: ^0.3.0
-  firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
+  firebase_auth: ^3.1.1
   cloud_firestore: ^2.5.3
   google_maps_flutter: ^2.0.11
+  flutter_easyloading: ^3.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
-import 'package:flutter_plogging/src/ui/view_models/login_page/login_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';

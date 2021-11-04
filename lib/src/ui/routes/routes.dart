@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/di/injection.config.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_bar.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page.dart';
 import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
@@ -13,7 +14,7 @@ Map<String, WidgetBuilder> getRoutesBuilder() {
     Ruta.Start: (BuildContext context) => getIt<StartPage>(),
     Ruta.Login: (BuildContext context) => getIt<LoginPage>(),
     Ruta.Register: (BuildContext context) => getIt<RegisterPage>(),
-    Ruta.Home: (BuildContext context) => const HomePage(),
+    Ruta.Home: (BuildContext context) => getIt<HomeTabBar>()
   };
 }
 
@@ -26,7 +27,7 @@ Widget getRoute(String route) {
     case Ruta.Register:
       return getIt<RegisterPage>();
     case Ruta.Home:
-      return const HomePage();
+      return getIt<HomeTabBar>();
     default:
       return getIt<StartPage>();
   }

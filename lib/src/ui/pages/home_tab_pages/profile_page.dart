@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/di/entities/route_coordinators.dart';
-import 'package:flutter_plogging/src/core/services/authentication_service.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/profile_page_viewmodel.dart';
+import 'package:stacked/stacked.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final ProfilePageViewModel viewModel;
+  const ProfilePage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    getIt<AuthenticationService>().signOut();
-
-    return Container();
+    return ViewModelBuilder<ProfilePageViewModel>.reactive(
+        viewModelBuilder: () => viewModel,
+        onModelReady: (viewModel) => viewModel.delayedLogoutProfile(),
+        builder: (context, ProfilePageViewModel viewModel, child) =>
+            Container());
   }
 }

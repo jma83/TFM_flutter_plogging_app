@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/view_models/start_page/start_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 

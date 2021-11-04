@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/core/di/injection.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
-import 'package:flutter_plogging/src/ui/routes/routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
               color: Colors.black87,
             )),
         home: getIt<StartRouteCoordinator>().mainWidget,
-        navigatorKey: getIt<NavigationService>().navigatorKey);
+        navigatorKey: getIt<NavigationService>().navigatorKey,
+        builder: EasyLoading.init());
   }
 }

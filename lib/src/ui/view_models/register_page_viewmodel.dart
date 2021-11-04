@@ -1,4 +1,5 @@
 // ignore_for_file: constant_identifier_names
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/domain/user_entity.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
@@ -26,6 +27,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   String _age = "";
   String _gender = Gender.NotDefined;
   String _errorMessage = "";
+  bool _isLoading = false;
 
   final UserViewModel _userViewModel;
   final IStoreService _userStoreService;
@@ -38,25 +40,40 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   }
 
   void validateForm() {
+    toggleLoading();
     if (!_userViewModel.validateRegister(_email, _username, _password,
         _confirmPassword, _age, getGenderIndex().toString())) {
-      _errorMessage = _userViewModel.errorMessage;
-      notifyListeners("error_signup");
+      setError(_userViewModel.errorMessage);
       return;
     }
     validationOkResponse();
   }
 
   void validationOkResponse() async {
-    final String? result =
-        await authService.signUp(email: _email, password: _password);
-    if (result != null) {
-      _errorMessage = result;
-      notifyListeners("error_signup");
-      return;
+    try {
+      final String? result =
+          await authService.signUp(email: _email, password: _password);
+      if (result != null) {
+        setError(result);
+        return;
+      }
+    } catch (e) {
+      print(e);
     }
+    toggleLoading();
     /* await _userStoreService
         .addElement(User(_username, int.parse(_age), getGenderIndex())); */
+  }
+
+  toggleLoading() {
+    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
+    _isLoading = !_isLoading;
+  }
+
+  setError(String errorValue) {
+    _errorMessage = errorValue;
+    notifyListeners("error_signup");
+    toggleLoading();
   }
 
   getGenderIndex() {

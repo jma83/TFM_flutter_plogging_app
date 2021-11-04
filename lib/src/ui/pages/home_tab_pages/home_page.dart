@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePageViewModel homePageViewModel;
+  HomePage(this.homePageViewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

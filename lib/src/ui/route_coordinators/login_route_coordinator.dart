@@ -28,10 +28,12 @@ class LoginRouteCoordinator extends ParentRouteCoordinator {
   navigateToRegister() {
     final RegisterPage widget =
         navigationService.getRouteWidget(Ruta.Register) as RegisterPage;
-    widget.viewModel.addListener(
-        () => returnToPrevious(), ["loginRouteCoordinator_returnToPrevious"]);
-    widget.viewModel.addListener(
-        () => navigateToHome(), ["loginRouteCoordinator_navigateToHome"]);
+    widget.viewModel.addListener(() => returnToPrevious(),
+        ["registerRouteCoordinator_returnToPrevious"]);
+    widget.viewModel.addListener(() {
+      returnToPrevious();
+      navigateToHome();
+    }, ["registerRouteCoordinator_navigateToHome"]);
     navigationService.navigateTo(routeBuild(widget));
   }
 

@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 
 class CardContainer extends StatefulWidget {
   CardContainer(
-      {this.cardType = 0,
+      {this.title = "",
+      this.description = "",
+      this.cardType = 0,
       this.clickable = false,
       this.borderRadius = 20,
       this.callback,
+      this.button1 = "",
+      this.button2 = "",
       Key? key})
       : super(key: key);
 
+  String title;
+  String description;
+  String button1;
+  String button2;
   int cardType;
   bool clickable;
   double borderRadius;
@@ -31,28 +39,32 @@ class _CardContainerState extends State<CardContainer> {
     switch (cardContainer.cardType) {
       case 0:
       default:
-        return _card0(cardContainer.borderRadius);
+        return _card0(cardContainer);
     }
   }
 
-  _card0(double borderRadius) {
+  _card0(CardContainer cardContainer) {
     return Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius)),
+            borderRadius: BorderRadius.circular(cardContainer.borderRadius)),
         child: InkWell(
           child: Column(
             children: <Widget>[
-              const ListTile(
-                leading: Icon(Icons.photo_album, color: Colors.blue),
-                title: Text("Soy el titulo de esta tarjeta"),
-                subtitle: Text("Aqui estamos con la descripcion"),
+              ListTile(
+                leading: const Icon(Icons.photo_album, color: Colors.blue),
+                title: Text(cardContainer.title),
+                subtitle: Text(cardContainer.description),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  TextButton(onPressed: () {}, child: const Text("Elpepe")),
-                  TextButton(onPressed: () {}, child: const Text("Elpepe2"))
+                  TextButton(
+                      onPressed: () => cardContainer.callback!(),
+                      child: Text(cardContainer.button1)),
+                  TextButton(
+                      onPressed: () => cardContainer.callback!(),
+                      child: Text(cardContainer.button2))
                 ],
               )
             ],

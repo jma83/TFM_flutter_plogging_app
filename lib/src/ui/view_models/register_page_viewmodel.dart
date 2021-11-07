@@ -92,11 +92,11 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
 
   @override
   notifyLoggedIn() {
-    notifyListeners("loginRouteCoordinator_navigateToHome");
+    notifyListeners("registerRouteCoordinator_navigateToHome");
   }
 
   void dismissAlert() {
-    notifyListeners("loginRouteCoordinator_returnToPrevious");
+    notifyListeners("registerRouteCoordinator_returnToPrevious");
   }
 
   void setEmail(String email) {

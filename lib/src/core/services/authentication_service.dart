@@ -42,6 +42,10 @@ class AuthenticationService implements IAuthenticationService {
     return null;
   }
 
+  User? get currentUser {
+    return _firebaseAuth.currentUser;
+  }
+
   String getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
@@ -68,5 +72,10 @@ class AuthenticationService implements IAuthenticationService {
       default:
         return "Login failed. Please try again.";
     }
+  }
+
+  @override
+  set currentUser(User? _currentUser) {
+    // TODO: implement currentUser
   }
 }

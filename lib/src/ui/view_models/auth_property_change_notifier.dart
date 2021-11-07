@@ -21,9 +21,8 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
     });
   }
 
-  // TODO: Implements on child
+  // Implements on child
   void notifyLoggedIn() {}
-  // TODO: Implements on child
   void notifyNotLoggedIn() {}
 
   @override

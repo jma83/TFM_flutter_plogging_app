@@ -6,7 +6,7 @@ abstract class IStoreService<T> {
   Future<void> addElement(T data, String id);
   Future<void> updateElement(String collectionId, T data);
   Future<void> removeElement(String collectionId);
-  Future<DocumentSnapshot<Object?>> queryElementById(String id);
+  Future<T?> queryElementById(String id);
   Future<QuerySnapshot<Object?>> queryElementByCriteria(
       String key, String value);
   final CollectionReference? entity = null;

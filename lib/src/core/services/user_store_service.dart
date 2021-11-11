@@ -12,9 +12,8 @@ class UserStoreService implements IStoreService<UserData> {
 
   @override
   Future<void> addElement(UserData data, String id) async {
-    // await entity.add(userMap);
-    entity.doc(id).set(
-        {"age": data.age, "gender": data.gender, "username": data.username});
+    final Map<String, Object> userMap = castUserToMap(data);
+    entity.doc(id).set(userMap);
   }
 
   @override
@@ -29,8 +28,14 @@ class UserStoreService implements IStoreService<UserData> {
   }
 
   @override
-  Future<DocumentSnapshot<Object?>> queryElementById(String id) async {
-    return await entity.doc(id).get();
+  Future<UserData?> queryElementById(String id) async {
+    final docData = await entity.doc(id).get();
+    Map<String, dynamic> mapData = docData.data() as Map<String, dynamic>;
+    print("mapData $mapData");
+
+    final result = castMapToUser(mapData);
+    print("result $result");
+    return result;
   }
 
   @override
@@ -55,5 +60,10 @@ class UserStoreService implements IStoreService<UserData> {
 
   Map<String, Object> castUserToMap(UserData user) {
     return {"username": user.username, "age": user.age, "gender": user.gender};
+  }
+
+  UserData castMapToUser(Map<String, dynamic> map) {
+    return UserData(
+        map["username"] as String, map["age"] as int, map["gender"] as int);
   }
 }

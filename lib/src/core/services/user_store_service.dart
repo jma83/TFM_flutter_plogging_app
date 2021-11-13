@@ -30,18 +30,35 @@ class UserStoreService implements IStoreService<UserData> {
   @override
   Future<UserData?> queryElementById(String id) async {
     final docData = await entity.doc(id).get();
+    if (docData.data() == null) {
+      return null;
+    }
     Map<String, dynamic> mapData = docData.data() as Map<String, dynamic>;
-    print("mapData $mapData");
-
     final result = castMapToUser(mapData);
     print("result $result");
     return result;
   }
 
   @override
-  Future<QuerySnapshot<Object?>> queryElementByCriteria(
+  Future<List<UserData>> queryElementEqualByCriteria(
       String key, String value) async {
-    return await entity.where(key, isEqualTo: value).get();
+    final QuerySnapshot<Object?> docsData =
+        await entity.where(key, isEqualTo: value).get();
+    return docsData.docs
+        .map((e) => castMapToUser(e.data() as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Future<List<UserData>> queryElementLikeByCriteria(
+      String key, String value) async {
+    final QuerySnapshot<Object?> docsData = await entity
+        .where(UserFieldData.username, isGreaterThanOrEqualTo: value)
+        .where(UserFieldData.username, isLessThanOrEqualTo: value)
+        .get();
+    return docsData.docs
+        .map((e) => castMapToUser(e.data() as Map<String, dynamic>))
+        .toList();
   }
 
   @override
@@ -59,11 +76,25 @@ class UserStoreService implements IStoreService<UserData> {
   }
 
   Map<String, Object> castUserToMap(UserData user) {
-    return {"username": user.username, "age": user.age, "gender": user.gender};
+    return {
+      UserFieldData.username: user.username,
+      UserFieldData.age: user.age,
+      UserFieldData.gender: user.gender,
+      UserFieldData.followers: user.followers,
+      UserFieldData.following: user.following,
+      UserFieldData.xp: user.xp,
+      UserFieldData.level: user.level
+    };
   }
 
   UserData castMapToUser(Map<String, dynamic> map) {
     return UserData(
-        map["username"] as String, map["age"] as int, map["gender"] as int);
+        username: map[UserFieldData.username] as String,
+        age: map[UserFieldData.age] as int,
+        gender: map[UserFieldData.gender] as int,
+        followers: map[UserFieldData.followers] as int,
+        following: map[UserFieldData.following] as int,
+        xp: map[UserFieldData.xp] as int,
+        level: map[UserFieldData.level] as int);
   }
 }

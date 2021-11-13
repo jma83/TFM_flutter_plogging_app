@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/input_button.dart';
 
 class CardImageContainer extends StatefulWidget {
   CardImageContainer(
@@ -9,6 +10,7 @@ class CardImageContainer extends StatefulWidget {
       this.callback,
       this.image = "assets/img1.jpg",
       this.imagePlaceholder = "assets/jar-loading.gif",
+      this.text = "",
       Key? key})
       : super(key: key);
 
@@ -19,6 +21,7 @@ class CardImageContainer extends StatefulWidget {
   Function? callback;
   String image;
   String imagePlaceholder;
+  String text;
   @override
   _CardImageContainerState createState() => _CardImageContainerState();
 }
@@ -35,32 +38,100 @@ class _CardImageContainerState extends State<CardImageContainer> {
 
   Widget _createCard(CardImageContainer cardimage) {
     switch (cardimage.cardType) {
+      case 3:
+        return _createCardContainer(_card3());
+      case 2:
+        return _createCardContainer(_card2());
       case 0:
       default:
-        return _card1(cardimage.image, cardimage.imagePlaceholder,
-            cardimage.height, cardimage.borderRadius);
+        return _createCardContainer(_card1());
     }
   }
 
-  _card1(String image, String imagePlaceholder, double? height,
-      double borderRadius) {
+  _card1() {
     final card = Column(
       children: <Widget>[
-        FadeInImage(
-          image: AssetImage(image),
-          placeholder: AssetImage(imagePlaceholder),
-          height: height,
-          fadeInDuration: const Duration(milliseconds: 200),
-          fit: BoxFit.cover,
+        Container(
+          child: FadeInImage(
+            image: AssetImage(widget.image),
+            placeholder: AssetImage(widget.imagePlaceholder),
+            height: widget.height,
+            fadeInDuration: const Duration(milliseconds: 200),
+            fit: BoxFit.cover,
+          ),
+          width: MediaQuery.of(context).size.width,
         ),
         Container(
-            child: const Center(child: Text("Hola mundo!")),
+            child: Center(
+                child: Text(
+              widget.text,
+              textAlign: TextAlign.center,
+            )),
             padding: const EdgeInsets.all(10))
       ],
     );
+    return card;
+  }
+
+  _card2() {
+    final card = Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Container(
+          child: FadeInImage(
+            image: AssetImage(widget.image),
+            placeholder: AssetImage(widget.imagePlaceholder),
+            fadeInDuration: const Duration(milliseconds: 200),
+            fit: BoxFit.fitWidth,
+            height: widget.height,
+          ),
+          width: MediaQuery.of(context).size.width,
+        ),
+        Center(
+            child: InputButton(
+                label: Text(
+                  widget.text,
+                  textAlign: TextAlign.center,
+                ),
+                onPress: () {},
+                buttonType: InputButtonType.elevated)),
+      ],
+    );
+    return card;
+  }
+
+  _card3() {
+    final card = Column(
+      children: <Widget>[
+        Container(
+            decoration: const BoxDecoration(color: Colors.green),
+            child: Center(
+                child: Text(
+              widget.text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
+            )),
+            padding: const EdgeInsets.all(10)),
+        Container(
+          child: FadeInImage(
+            image: AssetImage(widget.image),
+            placeholder: AssetImage(widget.imagePlaceholder),
+            height: widget.height,
+            fadeInDuration: const Duration(milliseconds: 200),
+            fit: BoxFit.cover,
+          ),
+          width: MediaQuery.of(context).size.width,
+        ),
+      ],
+    );
+    return card;
+  }
+
+  Widget _createCardContainer(Widget card) {
     return Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
             color: Colors.white,
             boxShadow: const <BoxShadow>[
               BoxShadow(
@@ -71,7 +142,7 @@ class _CardImageContainerState extends State<CardImageContainer> {
             ]),
         child: ClipRRect(
           child: card,
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
         ));
   }
 

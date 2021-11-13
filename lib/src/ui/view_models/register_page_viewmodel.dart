@@ -1,12 +1,10 @@
 // ignore_for_file: constant_identifier_names
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
-import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
-import 'package:property_change_notifier/property_change_notifier.dart';
 
 abstract class Gender {
   static const NotDefined = "Gender - Not defined";
@@ -62,7 +60,10 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
     }
     toggleLoading();
     await _userStoreService.addElement(
-        UserData(_username, int.parse(_age), getGenderIndex()),
+        UserData(
+            username: _username,
+            age: int.parse(_age),
+            gender: getGenderIndex()),
         authService.currentUser!.uid);
   }
 

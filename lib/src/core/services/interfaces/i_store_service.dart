@@ -7,8 +7,9 @@ abstract class IStoreService<T> {
   Future<void> updateElement(String collectionId, T data);
   Future<void> removeElement(String collectionId);
   Future<T?> queryElementById(String id);
-  Future<QuerySnapshot<Object?>> queryElementByCriteria(
-      String key, String value);
+  Future<List<T>> queryElementEqualByCriteria(String key, String value);
+  Future<List<T>> queryElementLikeByCriteria(String key, String value);
+
   final CollectionReference? entity = null;
   final Stream? elements = null;
   late String entityName = "";

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/input_button.dart';
 
 class CardContainer extends StatefulWidget {
   CardContainer(
@@ -57,14 +58,18 @@ class _CardContainerState extends State<CardContainer> {
                 subtitle: Text(cardContainer.description),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  TextButton(
-                      onPressed: () => cardContainer.callback!(),
-                      child: Text(cardContainer.button1)),
-                  TextButton(
-                      onPressed: () => cardContainer.callback!(),
-                      child: Text(cardContainer.button2))
+                  InputButton(
+                    label: Text(cardContainer.button1),
+                    onPress: () => cardContainer.callback!(),
+                    buttonType: InputButtonType.outlined,
+                  ),
+                  InputButton(
+                    label: Text(cardContainer.button2),
+                    onPress: () => cardContainer.callback!(),
+                    buttonType: InputButtonType.elevated,
+                  ),
                 ],
               )
             ],

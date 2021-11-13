@@ -8,7 +8,7 @@ final btnStyle = OutlinedButton.styleFrom(
       borderRadius: BorderRadius.circular(20),
     ),
     padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-    fixedSize: const Size.fromWidth(200));
+    fixedSize: const Size.fromWidth(170));
 
 class InputButton extends StatefulWidget {
   InputButtonType buttonType;

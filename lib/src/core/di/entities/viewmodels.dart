@@ -31,5 +31,6 @@ void $initViewModels() {
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel())
     ..registerFactory<ProfilePageViewModel>(
         () => ProfilePageViewModel(getIt<AuthenticationService>()))
-    ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel());
+    ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
+        getIt<AuthenticationService>(), getIt<UserStoreService>()));
 }

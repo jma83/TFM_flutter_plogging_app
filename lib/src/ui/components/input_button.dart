@@ -2,25 +2,21 @@ import 'package:flutter/material.dart';
 
 enum InputButtonType { elevated, outlined }
 
-final btnStyle = OutlinedButton.styleFrom(
-    side: const BorderSide(width: 1, color: Colors.grey),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-    fixedSize: const Size.fromWidth(170));
-
 class InputButton extends StatefulWidget {
   InputButtonType buttonType;
   Function onPress;
   Widget label;
   Icon? icon;
+  double width;
+  double horizontalPadding;
 
   InputButton(
       {required this.label,
       required this.onPress,
       this.buttonType = InputButtonType.elevated,
       this.icon,
+      this.horizontalPadding = 40,
+      this.width = 170,
       Key? key})
       : super(key: key);
 
@@ -60,5 +56,16 @@ class _InputButtonState extends State<InputButton> {
         onPressed: () => widget.onPress(),
         child: widget.label,
         style: btnStyle);
+  }
+
+  ButtonStyle get btnStyle {
+    return OutlinedButton.styleFrom(
+        side: const BorderSide(width: 1, color: Colors.grey),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.symmetric(
+            horizontal: widget.horizontalPadding, vertical: 8),
+        fixedSize: Size.fromWidth(widget.width));
   }
 }

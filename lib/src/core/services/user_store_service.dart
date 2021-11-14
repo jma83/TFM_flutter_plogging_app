@@ -53,9 +53,8 @@ class UserStoreService implements IStoreService<UserData> {
   Future<List<UserData>> queryElementLikeByCriteria(
       String key, String value) async {
     final QuerySnapshot<Object?> docsData = await entity
-        .where(UserFieldData.username, isGreaterThanOrEqualTo: value)
-        .where(UserFieldData.username, isLessThanOrEqualTo: value)
-        .get();
+        .orderBy(UserFieldData.username)
+        .startAt([value]).endAt([value + '\uf8ff']).get();
     return docsData.docs
         .map((e) => castMapToUser(e.data() as Map<String, dynamic>))
         .toList();

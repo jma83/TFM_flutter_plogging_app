@@ -6,8 +6,8 @@ import 'package:stacked/stacked.dart';
 
 @injectable
 class StartPloggingPage extends StatelessWidget {
-  StartPloggingPageViewModel viewModel;
-  StartPloggingPage(this.viewModel, {Key? key}) : super(key: key);
+  final StartPloggingPageViewModel viewModel;
+  const StartPloggingPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

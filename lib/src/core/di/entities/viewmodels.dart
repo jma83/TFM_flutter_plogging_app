@@ -27,7 +27,7 @@ void $initViewModels() {
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
         getIt<AuthenticationService>(), getIt<UserStoreService>()))
     ..registerFactory<StartPloggingPageViewModel>(
-        () => StartPloggingPageViewModel())
+        () => StartPloggingPageViewModel(getIt<AuthenticationService>()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel())
     ..registerFactory<ProfilePageViewModel>(
         () => ProfilePageViewModel(getIt<AuthenticationService>()))

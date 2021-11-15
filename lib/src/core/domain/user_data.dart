@@ -6,6 +6,8 @@ class UserData {
   int following;
   int xp;
   int level;
+  DateTime? creationDate = DateTime.now();
+
   UserData(
       {this.username = "",
       this.age = 18,
@@ -13,7 +15,8 @@ class UserData {
       this.followers = 0,
       this.following = 0,
       this.xp = 0,
-      this.level = 1});
+      this.level = 1,
+      this.creationDate});
 }
 
 class UserFieldData {

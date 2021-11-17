@@ -1,23 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 
 class RouteData {
   String name;
   String description;
   String userId;
-  DateTime? startDate = DateTime.now();
-  DateTime? endDate;
-  Timestamp? duration = Timestamp(0, 0);
-  Image? image;
+  Timestamp? startDate = Timestamp.now();
+  Timestamp? endDate = Timestamp(0, 0);
+  int? duration = 0;
+  List<GeoPoint>? locationArray = [];
+  int? distance = 0;
+  String? image = "";
 
   RouteData(
-      {this.name = "",
-      this.description = "",
-      this.userId = "",
+      {required this.name,
+      required this.description,
+      required this.userId,
       this.startDate,
       this.endDate,
       this.duration,
-      this.image});
+      this.image,
+      this.distance,
+      this.locationArray});
 }
 
 class RouteFieldData {
@@ -28,4 +31,6 @@ class RouteFieldData {
   static const String endDate = "endDate";
   static const String duration = "duration";
   static const String image = "image";
+  static const String distance = "distance";
+  static const String locationArray = "locationArray";
 }

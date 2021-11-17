@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
@@ -7,9 +10,10 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: IStoreService)
 class RouteStoreService implements IStoreService<RouteData> {
   final FirebaseFirestore _firebaseFirestore;
+  final FirebaseStorage _firebaseStorage;
   @override
   String entityName = "routes";
-  RouteStoreService(this._firebaseFirestore);
+  RouteStoreService(this._firebaseFirestore, this._firebaseStorage);
 
   @override
   Future<void> addElement(RouteData data, String id) async {
@@ -67,6 +71,26 @@ class RouteStoreService implements IStoreService<RouteData> {
   }
 
   @override
+  Future<void> setImage(String id, File file) async {
+    await _firebaseStorage
+        .ref()
+        .child(entityName)
+        .child(id)
+        .child("route.png")
+        .putFile(file);
+  }
+
+  @override
+  Future<String> getImage(String id) async {
+    return await _firebaseStorage
+        .ref()
+        .child(entityName)
+        .child(id)
+        .child("route.png")
+        .getDownloadURL();
+  }
+
+  @override
   Stream get elements {
     return entity.snapshots();
   }
@@ -90,17 +114,29 @@ class RouteStoreService implements IStoreService<RouteData> {
     if (route.duration != null) {
       requiredFields.addAll({RouteFieldData.duration: route.duration!});
     }
+    if (route.distance != null) {
+      requiredFields.addAll({RouteFieldData.distance: route.distance!});
+    }
     if (route.image != null) {
-      requiredFields.addAll({RouteFieldData.duration: route.image!});
+      requiredFields.addAll({RouteFieldData.image: route.image!});
+    }
+    if (route.locationArray != null) {
+      requiredFields
+          .addAll({RouteFieldData.locationArray: route.locationArray!});
     }
     return requiredFields;
   }
 
   RouteData castMapToRoute(Map<String, dynamic> map) {
-    //TODO FULL MAP
     return RouteData(
-        name: map[UserFieldData.username] as String,
-        description: map[UserFieldData.age] as String,
-        userId: map[UserFieldData.gender] as String);
+        name: map[RouteFieldData.name] as String,
+        description: map[RouteFieldData.description] as String,
+        userId: map[RouteFieldData.userId] as String,
+        duration: map[RouteFieldData.duration] as int,
+        startDate: map[RouteFieldData.startDate] as Timestamp,
+        endDate: map[RouteFieldData.endDate] as Timestamp,
+        distance: map[RouteFieldData.distance] as int,
+        image: map[RouteFieldData.image] as String,
+        locationArray: map[RouteFieldData.locationArray] as List<GeoPoint>);
   }
 }

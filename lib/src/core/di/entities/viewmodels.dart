@@ -10,6 +10,7 @@ import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/user_store_service.dart';
+import 'package:flutter_plogging/src/core/services/route_store_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,8 +27,9 @@ void $initViewModels() {
         getIt<AuthenticationService>(), getIt<UserViewModel>()))
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
         getIt<AuthenticationService>(), getIt<UserStoreService>()))
-    ..registerFactory<StartPloggingPageViewModel>(
-        () => StartPloggingPageViewModel(getIt<AuthenticationService>()))
+    ..registerFactory<StartPloggingPageViewModel>(() =>
+        StartPloggingPageViewModel(
+            getIt<AuthenticationService>(), getIt<RouteStoreService>()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel())
     ..registerFactory<ProfilePageViewModel>(
         () => ProfilePageViewModel(getIt<AuthenticationService>()))

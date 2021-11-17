@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
 import 'package:injectable/injectable.dart';
@@ -6,9 +9,10 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: IStoreService)
 class UserStoreService implements IStoreService<UserData> {
   final FirebaseFirestore _firebaseFirestore;
+  final FirebaseStorage _firebaseStorage;
   @override
   String entityName = "users";
-  UserStoreService(this._firebaseFirestore);
+  UserStoreService(this._firebaseFirestore, this._firebaseStorage);
 
   @override
   Future<void> addElement(UserData data, String id) async {
@@ -34,8 +38,8 @@ class UserStoreService implements IStoreService<UserData> {
       return null;
     }
     Map<String, dynamic> mapData = docData.data() as Map<String, dynamic>;
-    final result = castMapToUser(mapData);
-    print("result $result");
+    UserData result = castMapToUser(mapData);
+    result.image = await getImage(id);
     return result;
   }
 
@@ -82,8 +86,29 @@ class UserStoreService implements IStoreService<UserData> {
       UserFieldData.followers: user.followers,
       UserFieldData.following: user.following,
       UserFieldData.xp: user.xp,
-      UserFieldData.level: user.level
+      UserFieldData.level: user.level,
+      UserFieldData.image: user.image != null ? user.image! : ""
     };
+  }
+
+  @override
+  Future<void> setImage(String id, File file) async {
+    await _firebaseStorage
+        .ref()
+        .child(entityName)
+        .child(id)
+        .child("profile.png")
+        .putFile(file);
+  }
+
+  @override
+  Future<String> getImage(String id) async {
+    return await _firebaseStorage
+        .ref()
+        .child(entityName)
+        .child(id)
+        .child("profile.png")
+        .getDownloadURL();
   }
 
   UserData castMapToUser(Map<String, dynamic> map) {
@@ -94,6 +119,7 @@ class UserStoreService implements IStoreService<UserData> {
         followers: map[UserFieldData.followers] as int,
         following: map[UserFieldData.following] as int,
         xp: map[UserFieldData.xp] as int,
-        level: map[UserFieldData.level] as int);
+        level: map[UserFieldData.level] as int,
+        image: map[UserFieldData.image] as String);
   }
 }

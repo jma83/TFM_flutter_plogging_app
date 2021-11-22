@@ -1,18 +1,18 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
+import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: IStoreService)
 class UserStoreService implements IStoreService<UserData> {
   final FirebaseFirestore _firebaseFirestore;
-  final FirebaseStorage _firebaseStorage;
+  final StorageService _storageService;
   @override
   String entityName = "users";
-  UserStoreService(this._firebaseFirestore, this._firebaseStorage);
+  UserStoreService(this._firebaseFirestore, this._storageService);
 
   @override
   Future<void> addElement(UserData data, String id) async {
@@ -93,25 +93,18 @@ class UserStoreService implements IStoreService<UserData> {
 
   @override
   Future<void> setImage(String id, File file) async {
-    await _firebaseStorage
-        .ref()
-        .child(entityName)
-        .child(id)
-        .child("profile.png")
-        .putFile(file);
+    await _storageService.setImage(entityName, id, "profile.png", file);
   }
 
   @override
   Future<String> getImage(String id) async {
-    return await _firebaseStorage
-        .ref()
-        .child(entityName)
-        .child(id)
-        .child("profile.png")
-        .getDownloadURL();
+    return await _storageService.getImage(entityName, id, "profile.png");
   }
 
   UserData castMapToUser(Map<String, dynamic> map) {
+    final image = map[UserFieldData.image] != null
+        ? map[UserFieldData.image] as String
+        : "";
     return UserData(
         username: map[UserFieldData.username] as String,
         age: map[UserFieldData.age] as int,
@@ -120,6 +113,6 @@ class UserStoreService implements IStoreService<UserData> {
         following: map[UserFieldData.following] as int,
         xp: map[UserFieldData.xp] as int,
         level: map[UserFieldData.level] as int,
-        image: map[UserFieldData.image] as String);
+        image: image);
   }
 }

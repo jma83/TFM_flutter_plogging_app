@@ -1,24 +1,24 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
+import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: IStoreService)
 class RouteStoreService implements IStoreService<RouteData> {
   final FirebaseFirestore _firebaseFirestore;
-  final FirebaseStorage _firebaseStorage;
+  final StorageService _storageService;
   @override
   String entityName = "routes";
-  RouteStoreService(this._firebaseFirestore, this._firebaseStorage);
+  RouteStoreService(this._firebaseFirestore, this._storageService);
 
   @override
   Future<void> addElement(RouteData data, String id) async {
     final Map<String, Object> userMap = castRouteToMap(data);
-    entity.doc(id).set(userMap);
+    entity.doc().set(userMap);
   }
 
   @override
@@ -48,7 +48,7 @@ class RouteStoreService implements IStoreService<RouteData> {
   Future<List<RouteData>> queryElementEqualByCriteria(
       String key, String value) async {
     final QuerySnapshot<Object?> docsData =
-        await entity.where(key, isEqualTo: value).get();
+        await queryEqualByCriteria(key, value).get();
     return docsData.docs
         .map((e) => castMapToRoute(e.data() as Map<String, dynamic>))
         .toList();
@@ -57,9 +57,26 @@ class RouteStoreService implements IStoreService<RouteData> {
   @override
   Future<List<RouteData>> queryElementLikeByCriteria(
       String key, String value) async {
-    final QuerySnapshot<Object?> docsData = await entity
-        .orderBy(UserFieldData.username)
-        .startAt([value]).endAt([value + '\uf8ff']).get();
+    final QuerySnapshot<Object?> docsData =
+        await getQueryLikeByCriteria(key, value).get();
+    return docsData.docs
+        .map((e) => castMapToRoute(e.data() as Map<String, dynamic>))
+        .toList();
+  }
+
+  Query<Object?> queryEqualByCriteria(String key, String value) {
+    return entity.where(key, isEqualTo: value);
+  }
+
+  Query<Object?> getQueryLikeByCriteria(String key, String value) {
+    return entity.orderBy(key).startAt([value]).endAt([value + '\uf8ff']);
+  }
+
+  Future<List<RouteData>> searchRoutesByNameAndAuthor(name, authorId) async {
+    final QuerySnapshot<Object?> docsData =
+        await getQueryLikeByCriteria(RouteFieldData.name, name)
+            .where(RouteFieldData.userId, isEqualTo: authorId)
+            .get();
     return docsData.docs
         .map((e) => castMapToRoute(e.data() as Map<String, dynamic>))
         .toList();
@@ -72,22 +89,12 @@ class RouteStoreService implements IStoreService<RouteData> {
 
   @override
   Future<void> setImage(String id, File file) async {
-    await _firebaseStorage
-        .ref()
-        .child(entityName)
-        .child(id)
-        .child("route.png")
-        .putFile(file);
+    await _storageService.setImage(entityName, id, "route.png", file);
   }
 
   @override
   Future<String> getImage(String id) async {
-    return await _firebaseStorage
-        .ref()
-        .child(entityName)
-        .child(id)
-        .child("route.png")
-        .getDownloadURL();
+    return await _storageService.getImage(entityName, id, "route.png");
   }
 
   @override
@@ -105,29 +112,36 @@ class RouteStoreService implements IStoreService<RouteData> {
       RouteFieldData.description: route.description,
       RouteFieldData.userId: route.userId
     };
-    if (route.startDate != null) {
-      requiredFields.addAll({RouteFieldData.startDate: route.startDate!});
-    }
-    if (route.endDate != null) {
-      requiredFields.addAll({RouteFieldData.endDate: route.endDate!});
-    }
-    if (route.duration != null) {
-      requiredFields.addAll({RouteFieldData.duration: route.duration!});
-    }
-    if (route.distance != null) {
-      requiredFields.addAll({RouteFieldData.distance: route.distance!});
-    }
+    final Timestamp startDate =
+        route.startDate != null ? route.startDate! : Timestamp.now();
+    final int distance = route.distance != null ? route.distance! : 0;
+    final int duration = route.duration != null ? route.duration! : 0;
+    List<GeoPoint> locationArray =
+        route.locationArray != null ? route.locationArray! : [];
+    Timestamp endDate =
+        route.endDate != null ? route.endDate! : Timestamp.now();
+    requiredFields.addAll({RouteFieldData.startDate: startDate});
+    requiredFields.addAll({RouteFieldData.distance: distance});
+    requiredFields.addAll({RouteFieldData.duration: duration});
+    requiredFields.addAll({RouteFieldData.locationArray: locationArray});
+    requiredFields.addAll({RouteFieldData.endDate: endDate});
+
     if (route.image != null) {
       requiredFields.addAll({RouteFieldData.image: route.image!});
-    }
-    if (route.locationArray != null) {
-      requiredFields
-          .addAll({RouteFieldData.locationArray: route.locationArray!});
     }
     return requiredFields;
   }
 
   RouteData castMapToRoute(Map<String, dynamic> map) {
+    final image = map[RouteFieldData.image] != null
+        ? map[RouteFieldData.image] as String
+        : "";
+    final originalList = map[RouteFieldData.locationArray] != null
+        ? map[RouteFieldData.locationArray] as List<dynamic>
+        : [];
+    final List<GeoPoint> geoList = List<GeoPoint>.from(originalList.map(
+        (elem) =>
+            GeoPoint(elem["latitude"] as double, elem["longitude"] as double)));
     return RouteData(
         name: map[RouteFieldData.name] as String,
         description: map[RouteFieldData.description] as String,
@@ -136,7 +150,7 @@ class RouteStoreService implements IStoreService<RouteData> {
         startDate: map[RouteFieldData.startDate] as Timestamp,
         endDate: map[RouteFieldData.endDate] as Timestamp,
         distance: map[RouteFieldData.distance] as int,
-        image: map[RouteFieldData.image] as String,
-        locationArray: map[RouteFieldData.locationArray] as List<GeoPoint>);
+        image: image,
+        locationArray: geoList);
   }
 }

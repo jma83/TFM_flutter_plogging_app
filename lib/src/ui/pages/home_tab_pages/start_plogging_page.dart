@@ -21,8 +21,21 @@ class StartPloggingPage extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [InputButton(label: const Text("Pepe"), onPress: () {})],
+            children: [getButton()],
           ));
         });
+  }
+
+  Widget getButton() {
+    return !viewModel.hasStartedRoute
+        ? InputButton(
+            label: const Text("Start"),
+            onPress: () => viewModel.beginRoute(),
+            buttonType: InputButtonType.elevated,
+          )
+        : InputButton(
+            label: const Text("End"),
+            onPress: () => viewModel.endRoute(),
+            buttonType: InputButtonType.outlined);
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class MyRoutesPage extends StatelessWidget {
-  final List<int> colorCodes = <int>[600, 500, 100];
+  final List<int> colorCodes = <int>[600, 500, 100, 200];
   MyRoutesPageViewModel viewModel;
   MyRoutesPage(this.viewModel, {Key? key}) : super(key: key);
 
@@ -13,24 +14,21 @@ class MyRoutesPage extends StatelessWidget {
     return ViewModelBuilder<MyRoutesPageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
-          viewModel.submitSearch("");
-          viewModel.addListener(() {}, ["update_my_routes"]);
+          viewModel.submitSearch(viewModel.searchValue);
+          if (!viewModel.hasListeners) {
+            viewModel.addListener(() {}, ["update_my_routes"]);
+            return;
+          }
         },
         builder: (context, MyRoutesPageViewModel viewModel, child) {
           return Column(
             children: [
-              Container(
-                child: CupertinoSearchTextField(
-                  onChanged: (String value) {
-                    viewModel.setSearchValue(value);
-                  },
-                  onSubmitted: (String value) {
-                    viewModel.submitSearch(value);
-                  },
-                ),
-                decoration: BoxDecoration(color: Colors.white),
-                padding: EdgeInsets.all(15),
-              ),
+              InputSearch(
+                  value: viewModel.searchValue,
+                  placeholder: "Search Routes",
+                  maxLength: 30,
+                  onChange: (value) => viewModel.setSearchValue(value),
+                  onSubmit: (value) => viewModel.submitSearch(value)),
               Expanded(
                   child: SizedBox(
                       height: 100.0,
@@ -66,7 +64,7 @@ class MyRoutesPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             height: 50,
-            color: Colors.amber[colorCodes[index]],
+            color: Colors.amber[colorCodes[index % 3]],
             child: Center(child: Text('Entry ${viewModel.routes[index].name}')),
           );
         });

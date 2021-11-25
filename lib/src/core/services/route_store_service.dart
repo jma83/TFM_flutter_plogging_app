@@ -48,7 +48,7 @@ class RouteStoreService implements IStoreService<RouteData> {
   Future<List<RouteData>> queryElementEqualByCriteria(
       String key, String value) async {
     final QuerySnapshot<Object?> docsData =
-        await queryEqualByCriteria(key, value).get();
+        await getQueryEqualByCriteria(key, value, entity).get();
     return docsData.docs
         .map((e) => castMapToRoute(e.data() as Map<String, dynamic>))
         .toList();
@@ -58,24 +58,27 @@ class RouteStoreService implements IStoreService<RouteData> {
   Future<List<RouteData>> queryElementLikeByCriteria(
       String key, String value) async {
     final QuerySnapshot<Object?> docsData =
-        await getQueryLikeByCriteria(key, value).get();
+        await getQueryLikeByCriteria(key, value, entity).get();
     return docsData.docs
         .map((e) => castMapToRoute(e.data() as Map<String, dynamic>))
         .toList();
   }
 
-  Query<Object?> queryEqualByCriteria(String key, String value) {
-    return entity.where(key, isEqualTo: value);
+  Query<Object?> getQueryEqualByCriteria(
+      String key, String value, Query<Object?> query) {
+    return query.where(key, isEqualTo: value);
   }
 
-  Query<Object?> getQueryLikeByCriteria(String key, String value) {
-    return entity.orderBy(key).startAt([value]).endAt([value + '\uf8ff']);
+  Query<Object?> getQueryLikeByCriteria(
+      String key, String value, Query<Object?> query) {
+    return query.orderBy(key).startAt([value]).endAt([value + '\uf8ff']);
   }
 
   Future<List<RouteData>> searchRoutesByNameAndAuthor(name, authorId) async {
+    final Query<Object?> query1 =
+        getQueryLikeByCriteria(RouteFieldData.name, name, entity);
     final QuerySnapshot<Object?> docsData =
-        await getQueryLikeByCriteria(RouteFieldData.name, name)
-            .where(RouteFieldData.userId, isEqualTo: authorId)
+        await getQueryEqualByCriteria(RouteFieldData.userId, authorId, query1)
             .get();
     return docsData.docs
         .map((e) => castMapToRoute(e.data() as Map<String, dynamic>))

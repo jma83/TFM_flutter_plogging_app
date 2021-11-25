@@ -50,7 +50,7 @@ class _InputButtonState extends State<InputButton> {
       return OutlinedButton(
           onPressed: () => widget.onPress(),
           child: widget.label,
-          style: btnStyle);
+          style: btnStyleOutlined);
     }
     return ElevatedButton(
         onPressed: () => widget.onPress(),
@@ -60,6 +60,18 @@ class _InputButtonState extends State<InputButton> {
 
   ButtonStyle get btnStyle {
     return OutlinedButton.styleFrom(
+        side: const BorderSide(width: 1, color: Colors.grey),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.symmetric(
+            horizontal: widget.horizontalPadding, vertical: 8),
+        fixedSize: Size.fromWidth(widget.width));
+  }
+
+  ButtonStyle get btnStyleOutlined {
+    return OutlinedButton.styleFrom(
+        backgroundColor: Colors.white,
         side: const BorderSide(width: 1, color: Colors.grey),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

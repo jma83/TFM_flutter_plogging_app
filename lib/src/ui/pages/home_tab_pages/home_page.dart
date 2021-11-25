@@ -26,7 +26,8 @@ class HomePage extends StatelessWidget {
                   button1: "How it works",
                   button2: "Start plogging",
                   cardType: 0,
-                  clickable: false),
+                  callback: () {},
+                  clickable: true),
               const SizedBox(height: 30),
               CardImageContainer(
                 cardType: 3,

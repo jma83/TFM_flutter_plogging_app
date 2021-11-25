@@ -21,12 +21,15 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
     if (value.isEmpty) {
       _routes = await _routeStoreService.queryElementEqualByCriteria(
           RouteFieldData.userId, userId);
-      toggleLoading();
+      toggleAndUpdate();
       return;
     }
     _routes =
         await _routeStoreService.searchRoutesByNameAndAuthor(value, userId);
+    toggleAndUpdate();
+  }
 
+  toggleAndUpdate() {
     toggleLoading();
     notifyListeners("update_my_routes");
   }

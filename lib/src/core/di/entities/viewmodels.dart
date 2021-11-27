@@ -12,6 +12,7 @@ import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/user_store_service.dart';
 import 'package:flutter_plogging/src/core/services/route_store_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
+import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -29,8 +30,11 @@ void $initViewModels() {
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
         getIt<AuthenticationService>(), getIt<UserStoreService>()))
     ..registerFactory<StartPloggingPageViewModel>(() =>
-        StartPloggingPageViewModel(getIt<AuthenticationService>(),
-            getIt<RouteStoreService>(), getIt<UiidGeneratorService>()))
+        StartPloggingPageViewModel(
+            getIt<AuthenticationService>(),
+            getIt<RouteStoreService>(),
+            getIt<GeolocatorService>(),
+            getIt<UiidGeneratorService>()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
         getIt<AuthenticationService>(), getIt<RouteStoreService>()))
     ..registerFactory<ProfilePageViewModel>(

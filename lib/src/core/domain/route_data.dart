@@ -8,7 +8,7 @@ class RouteData {
   Timestamp? endDate = Timestamp(0, 0);
   int? duration = 0;
   List<GeoPoint>? locationArray = [];
-  int? distance = 0;
+  double? distance = 0;
   String? image = "";
 
   RouteData(

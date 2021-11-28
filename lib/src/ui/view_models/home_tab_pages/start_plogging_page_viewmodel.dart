@@ -1,15 +1,29 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/route_store_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+/* 
+      currentPosition = Position(
+          accuracy: currentPosition.accuracy,
+          altitude: currentPosition.altitude,
+          heading: currentPosition.heading,
+          latitude: currentPosition.latitude + 0.0002,
+          longitude: currentPosition.longitude + 0.0002,
+          speed: 1,
+          speedAccuracy: 5.0,
+          timestamp: DateTime.now());
+*/
+
+const int minDistance = 10;
 
 final Position defautLocation = Position(
     accuracy: 1.0,
@@ -31,8 +45,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   Position currentPosition = defautLocation;
   Position? lastPosition;
   double currentZoom = 3;
-  late PolylinePoints polylinePoints;
-  List<LatLng> polylineCoordinates = [];
+  Timestamp? startDate;
+  List<LatLng> polylinePointList = [];
   Map<PolylineId, Polyline> polylines = {};
 
   StartPloggingPageViewModel(
@@ -63,33 +77,80 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   beginRoute() {
-    _hasStartedRoute = true;
-    lastPosition = currentPosition;
-    Timer.periodic(const Duration(seconds: 5), (_) {
-      _geolocatorService.createPolylines(
-          polylineCoordinates,
-          lastPosition!.latitude,
-          lastPosition!.longitude,
-          currentPosition.latitude,
-          currentPosition.longitude,
-          _uiidGeneratorService.generate());
-      // _geolocatorService.createPolylines(polylineCoordinates, )
-    });
+    setStartDate();
+    createDrawRouteInterval();
+    toggleRouteStatus();
+    setLastPosition();
     notifyListeners("update_start_plogging_page");
   }
 
   endRoute() {
-    if (!_hasStartedRoute) {
-      return;
-    }
-    _hasStartedRoute = false;
+    if (!_hasStartedRoute) return;
+    toggleRouteStatus();
     _routeStoreService.addElement(
         RouteData(
             name: "Example",
             description: "Description example",
+            distance:
+                _geolocatorService.calculateFullDistance(polylinePointList),
+            locationArray: convertLatLngToGeopoints(),
+            endDate: Timestamp.now(),
+            duration: calcDateDifference(startDate!, Timestamp.now()),
+            startDate: startDate,
             userId: authenticationService.currentUser!.uid),
         _uiidGeneratorService.generate());
     notifyListeners("update_start_plogging_page");
+  }
+
+  List<GeoPoint>? convertLatLngToGeopoints() {
+    return polylinePointList
+        .map((element) => GeoPoint(element.latitude, element.longitude))
+        .toList();
+  }
+
+  toggleRouteStatus() {
+    _hasStartedRoute = !_hasStartedRoute;
+  }
+
+  setLastPosition() {
+    lastPosition = currentPosition;
+  }
+
+  setStartDate() {
+    startDate = Timestamp.now();
+  }
+
+  calcDateDifference(Timestamp t1, Timestamp t2) {
+    DateTime dateTime1 = DateTime.parse(t1.toDate().toString());
+    DateTime dateTime2 = DateTime.parse(t2.toDate().toString());
+    return dateTime2.difference(dateTime1).inSeconds;
+  }
+
+  createDrawRouteInterval() {
+    Timer.periodic(const Duration(seconds: 5), (_) async {
+      if (!hasMinDistanceToDraw()) return;
+      addPolyline();
+      setLastPosition();
+      notifyListeners("update_start_plogging_page");
+    });
+  }
+
+  hasMinDistanceToDraw() {
+    final double distance =
+        _geolocatorService.calculateDistance(lastPosition!, currentPosition);
+    if (distance < minDistance) return false;
+    return true;
+  }
+
+  Future<void> addPolyline() async {
+    final PolylineId polylineId = PolylineId(_uiidGeneratorService.generate());
+    final int lastLength = polylinePointList.length;
+
+    polylinePointList = await _geolocatorService.createPolylines(
+        polylinePointList, lastPosition!, currentPosition);
+    if (lastLength != polylinePointList.length) return;
+    polylines[polylineId] =
+        _geolocatorService.generatePolyline(polylineId, polylinePointList);
   }
 
   setMapController(GoogleMapController gmapController) {
@@ -99,7 +160,6 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   Future<void> getCurrentLocation() async {
     try {
       currentPosition = await _geolocatorService.getCurrentLocation();
-      print("location!!! $currentPosition");
     } catch (e) {
       print("error getting location $e");
     }
@@ -135,17 +195,19 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       target: LatLng(position.latitude, position.longitude),
       zoom: currentZoom,
     );
-    final CameraUpdate cameraUpdate =
-        CameraUpdate.newCameraPosition(cameraPosition);
-    mapController.animateCamera(cameraUpdate);
+    animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
   zoomOut() {
-    mapController.animateCamera(CameraUpdate.zoomOut());
+    animateCamera(CameraUpdate.zoomOut());
   }
 
   zoomIn() {
-    mapController.animateCamera(CameraUpdate.zoomIn());
+    animateCamera(CameraUpdate.zoomIn());
+  }
+
+  animateCamera(CameraUpdate cameraUpdate) {
+    mapController.animateCamera(cameraUpdate);
   }
 
   get hasStartedRoute {

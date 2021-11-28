@@ -38,6 +38,7 @@ class StartPloggingPage extends StatelessWidget {
 
   Widget getMap() {
     return GoogleMap(
+      polylines: Set<Polyline>.of(viewModel.polylines.values),
       initialCameraPosition: CameraPosition(
           target: LatLng(viewModel.currentPosition.latitude,
               viewModel.currentPosition.longitude),

@@ -117,7 +117,7 @@ class RouteStoreService implements IStoreService<RouteData> {
     };
     final Timestamp startDate =
         route.startDate != null ? route.startDate! : Timestamp.now();
-    final int distance = route.distance != null ? route.distance! : 0;
+    final double distance = route.distance != null ? route.distance! : 0;
     final int duration = route.duration != null ? route.duration! : 0;
     List<GeoPoint> locationArray =
         route.locationArray != null ? route.locationArray! : [];
@@ -152,7 +152,7 @@ class RouteStoreService implements IStoreService<RouteData> {
         duration: map[RouteFieldData.duration] as int,
         startDate: map[RouteFieldData.startDate] as Timestamp,
         endDate: map[RouteFieldData.endDate] as Timestamp,
-        distance: map[RouteFieldData.distance] as int,
+        distance: map[RouteFieldData.distance] as double,
         image: image,
         locationArray: geoList);
   }

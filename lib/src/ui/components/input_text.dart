@@ -5,6 +5,7 @@ class InputText extends StatefulWidget {
   final String hint;
   final Icon icon;
   final int maxLength;
+  final int? maxLines;
   final Function onChange;
   final double bottomHeight;
   final TextInputType inputType;
@@ -19,6 +20,7 @@ class InputText extends StatefulWidget {
       this.inputType = TextInputType.name,
       this.isPasswordField = false,
       this.bottomHeight = 5,
+      this.maxLines = 1,
       Key? key})
       : super(key: key);
 
@@ -31,6 +33,7 @@ class _InputTextState extends State<InputText> {
   Widget build(BuildContext context) {
     return Column(children: [
       TextField(
+        maxLines: widget.maxLines,
         maxLength: widget.maxLength == 0 ? null : widget.maxLength,
         obscureText: widget.isPasswordField,
         keyboardType: widget.inputType,

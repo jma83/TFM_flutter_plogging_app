@@ -4,6 +4,7 @@ import 'package:property_change_notifier/property_change_notifier.dart';
 class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {
   AuthenticationService authenticationService;
   HomeTabsChangeNotifier(this.authenticationService);
+
   @override
   dispose() {
     if (authenticationService.currentUser == null) {

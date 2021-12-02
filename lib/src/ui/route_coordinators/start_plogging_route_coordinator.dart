@@ -7,5 +7,12 @@ import 'package:injectable/injectable.dart';
 class StartPloggingRouteCoordinator extends ParentRouteCoordinator {
   StartPloggingRouteCoordinator(
       StartPloggingPage mainWidget, NavigationService navigationService)
-      : super(mainWidget, navigationService);
+      : super(mainWidget, navigationService) {
+    mainWidget.viewModel.addListener(() => returnToPrevious(),
+        ["startPloggingRouteCoordinator_returnToPrevious"]);
+  }
+
+  returnToPrevious() {
+    navigationService.goBack();
+  }
 }

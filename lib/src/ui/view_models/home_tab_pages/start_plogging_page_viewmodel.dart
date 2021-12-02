@@ -1,23 +1,26 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
+import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/services/route_store_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 /* 
-      currentPosition = Position(
-          accuracy: currentPosition.accuracy,
-          altitude: currentPosition.altitude,
-          heading: currentPosition.heading,
-          latitude: currentPosition.latitude + 0.0002,
-          longitude: currentPosition.longitude + 0.0002,
+      _currentPosition = Position(
+          accuracy: _currentPosition.accuracy,
+          altitude: _currentPosition.altitude,
+          heading: _currentPosition.heading,
+          latitude: _currentPosition.latitude + 0.0002,
+          longitude: _currentPosition.longitude + 0.0002,
           speed: 1,
           speedAccuracy: 5.0,
           timestamp: DateTime.now());
@@ -40,12 +43,19 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   final RouteStoreService _routeStoreService;
   final UiidGeneratorService _uiidGeneratorService;
   final GeolocatorService _geolocatorService;
+  final ImagePickerService _imagePickerService;
+  Function? funRef;
+
   late GoogleMapController mapController;
   ServiceStatus serviceStatus = ServiceStatus.disabled;
-  Position currentPosition = defautLocation;
+  Position _currentPosition = defautLocation;
   Position? lastPosition;
   double currentZoom = 3;
   Timestamp? startDate;
+  String? routeName;
+  String? routeDescription;
+  Image? routeImage;
+
   List<LatLng> polylinePointList = [];
   Map<PolylineId, Polyline> polylines = {};
 
@@ -53,19 +63,23 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       AuthenticationService authenticationService,
       this._routeStoreService,
       this._geolocatorService,
-      this._uiidGeneratorService)
+      this._uiidGeneratorService,
+      this._imagePickerService)
       : super(authenticationService);
 
   bool _hasStartedRoute = false;
 
   createListeners() {
-    createPositionListener();
+    // createPositionListener();
     createDisconnectionListener();
   }
 
-  createPositionListener() async {
+  createPositionListener() {
     _geolocatorService.getStreamLocationPosition().listen((Position position) {
-      currentPosition = position;
+      _currentPosition = position;
+      print(
+          "update position ${_currentPosition.latitude} ${_currentPosition.longitude}");
+      notifyListeners("update_start_plogging_page");
     });
   }
 
@@ -87,6 +101,10 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   endRoute() {
     if (!_hasStartedRoute) return;
     toggleRouteStatus();
+    notifyListeners("update_start_plogging_confirm_route");
+  }
+
+  confirmRoute() {
     _routeStoreService.addElement(
         RouteData(
             name: "Example",
@@ -113,11 +131,23 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   setLastPosition() {
-    lastPosition = currentPosition;
+    lastPosition = _currentPosition;
   }
 
   setStartDate() {
     startDate = Timestamp.now();
+  }
+
+  setRouteName(String name) {
+    routeName = name;
+  }
+
+  setRouteDescription(String description) {
+    routeDescription = description;
+  }
+
+  setRouteImage(Image image) {
+    routeImage = image;
   }
 
   calcDateDifference(Timestamp t1, Timestamp t2) {
@@ -137,7 +167,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   hasMinDistanceToDraw() {
     final double distance =
-        _geolocatorService.calculateDistance(lastPosition!, currentPosition);
+        _geolocatorService.calculateDistance(lastPosition!, _currentPosition);
     if (distance < minDistance) return false;
     return true;
   }
@@ -147,7 +177,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     final int lastLength = polylinePointList.length;
 
     polylinePointList = await _geolocatorService.createPolylines(
-        polylinePointList, lastPosition!, currentPosition);
+        polylinePointList, lastPosition!, _currentPosition);
     if (lastLength != polylinePointList.length) return;
     polylines[polylineId] =
         _geolocatorService.generatePolyline(polylineId, polylinePointList);
@@ -159,7 +189,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> getCurrentLocation() async {
     try {
-      currentPosition = await _geolocatorService.getCurrentLocation();
+      _currentPosition = await _geolocatorService.getCurrentLocation();
     } catch (e) {
       print("error getting location $e");
     }
@@ -167,7 +197,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   getAndSetCurrentLocation() async {
     getCurrentLocation()
-        .then((value) async => await setCameraToPosition(currentPosition));
+        .then((value) async => await setCameraToPosition(_currentPosition));
   }
 
   Future<void> isLocationActive() async {
@@ -186,7 +216,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       getCurrentLocation();
       return;
     }
-    setCameraToPosition(currentPosition);
+    setCameraToPosition(_currentPosition);
   }
 
   setCameraToPosition(Position position, {double zoom = 18.0}) {
@@ -196,6 +226,14 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       zoom: currentZoom,
     );
     animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  pickImageFromCamera() {
+    _imagePickerService.pickImage(ImageSource.camera);
+  }
+
+  pickImageFromGallery() {
+    _imagePickerService.pickImage(ImageSource.gallery);
   }
 
   zoomOut() {
@@ -210,7 +248,15 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     mapController.animateCamera(cameraUpdate);
   }
 
-  get hasStartedRoute {
+  void dismissAlert() {
+    notifyListeners("startPloggingRouteCoordinator_returnToPrevious");
+  }
+
+  bool get hasStartedRoute {
     return _hasStartedRoute;
+  }
+
+  Position get currentPosition {
+    return _currentPosition;
   }
 }

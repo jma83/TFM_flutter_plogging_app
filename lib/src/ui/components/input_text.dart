@@ -33,6 +33,7 @@ class _InputTextState extends State<InputText> {
   Widget build(BuildContext context) {
     return Column(children: [
       TextField(
+        textAlignVertical: TextAlignVertical.center,
         maxLines: widget.maxLines,
         maxLength: widget.maxLength == 0 ? null : widget.maxLength,
         obscureText: widget.isPasswordField,
@@ -40,7 +41,7 @@ class _InputTextState extends State<InputText> {
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
             contentPadding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             labelText: widget.label,
             hintText: widget.hint,

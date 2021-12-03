@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 enum InputButtonType { elevated, outlined }
 
 class InputButton extends StatefulWidget {
-  InputButtonType buttonType;
-  Function onPress;
-  Widget label;
-  Icon? icon;
-  double width;
-  double horizontalPadding;
+  final InputButtonType buttonType;
+  final Function onPress;
+  final Widget label;
+  final Icon? icon;
+  final double width;
+  final double horizontalPadding;
+  final Color? bgColor;
 
-  InputButton(
+  const InputButton(
       {required this.label,
       required this.onPress,
+      this.bgColor,
       this.buttonType = InputButtonType.elevated,
       this.icon,
       this.horizontalPadding = 40,
@@ -36,7 +38,7 @@ class _InputButtonState extends State<InputButton> {
           onPressed: () => widget.onPress(),
           icon: widget.icon!,
           label: widget.label,
-          style: btnStyle);
+          style: btnStyleOutlined);
     }
     return ElevatedButton.icon(
         onPressed: () => widget.onPress(),
@@ -59,7 +61,8 @@ class _InputButtonState extends State<InputButton> {
   }
 
   ButtonStyle get btnStyle {
-    return OutlinedButton.styleFrom(
+    return ElevatedButton.styleFrom(
+        primary: widget.bgColor ?? Colors.green,
         side: const BorderSide(width: 1, color: Colors.grey),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -71,7 +74,7 @@ class _InputButtonState extends State<InputButton> {
 
   ButtonStyle get btnStyleOutlined {
     return OutlinedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: widget.bgColor ?? Colors.white70,
         side: const BorderSide(width: 1, color: Colors.grey),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

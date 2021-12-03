@@ -28,18 +28,20 @@ class _CreateRouteConfirmation extends State<CreateRouteConfirmation> {
   }
 
   Widget _getForm() {
-    return Column(
+    return Center(
+        child: ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       children: [
         InputText(
             label: "Name",
-            hint: "Your email account",
+            hint: "Route name",
             icon: const Icon(Icons.alternate_email),
             maxLength: 0,
             onChange: widget.setName),
         const SizedBox(height: 15),
         InputText(
             label: "Description",
-            hint: "Description of the route (optional)",
+            hint: "Route description",
             icon: const Icon(Icons.lock_outline),
             maxLength: 0,
             inputType: TextInputType.multiline,
@@ -61,6 +63,6 @@ class _CreateRouteConfirmation extends State<CreateRouteConfirmation> {
             onPress: widget.setImage,
             icon: const Icon(Icons.camera_alt_outlined)),
       ],
-    );
+    ));
   }
 }

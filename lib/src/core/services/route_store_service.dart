@@ -145,8 +145,7 @@ class RouteStoreService implements IStoreService<RouteData> {
         ? map[RouteFieldData.locationArray] as List<dynamic>
         : [];
     final List<GeoPoint> geoList = List<GeoPoint>.from(originalList.map(
-        (elem) =>
-            GeoPoint(elem["latitude"] as double, elem["longitude"] as double)));
+        (elem) => GeoPoint(elem.latitude as double, elem.longitude as double)));
     return RouteData(
         name: map[RouteFieldData.name] as String,
         description: map[RouteFieldData.description] as String,

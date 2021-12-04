@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
+import 'package:flutter_plogging/src/ui/components/card_user.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/search_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
@@ -60,9 +61,10 @@ class SearchPage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         itemCount: viewModel.users.length,
         itemBuilder: (BuildContext context, int index) {
-          return CardContainer(
-            title: viewModel.users[index].username,
-            cardType: 1,
+          return CardUser(
+            name: viewModel.users[index].username,
+            followers: viewModel.users[index].followers,
+            following: viewModel.users[index].following,
             clickable: true,
             button1: "Follow",
             callback: () {},

@@ -5,7 +5,7 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_pag
 import 'package:stacked/stacked.dart';
 
 class MyRoutesPage extends StatelessWidget {
-  final List<int> colorCodes = <int>[600, 500, 100, 200];
+  final List<int> colorCodes = <int>[100, 400, 200, 300, 500];
   MyRoutesPageViewModel viewModel;
   MyRoutesPage(this.viewModel, {Key? key}) : super(key: key);
 
@@ -15,10 +15,8 @@ class MyRoutesPage extends StatelessWidget {
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
           viewModel.submitSearch(viewModel.searchValue);
-          if (!viewModel.hasListeners) {
-            viewModel.addListener(() {}, ["update_my_routes"]);
-            return;
-          }
+          viewModel.addListener(() {}, ["update_my_routes"]);
+          return;
         },
         builder: (context, MyRoutesPageViewModel viewModel, child) {
           return Column(
@@ -64,8 +62,8 @@ class MyRoutesPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             height: 50,
-            color: Colors.amber[colorCodes[index % 3]],
-            child: Center(child: Text('Entry ${viewModel.routes[index].name}')),
+            color: Colors.green[colorCodes[index % 5]],
+            child: Center(child: Text('${viewModel.routes[index].name}')),
           );
         });
   }

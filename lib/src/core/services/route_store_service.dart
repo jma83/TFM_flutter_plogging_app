@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +18,9 @@ class RouteStoreService implements IStoreService<RouteData> {
   Future<void> addElement(RouteData data, String id) async {
     final Map<String, Object> userMap = castRouteToMap(data);
     entity.doc().set(userMap);
+    if (data.image != null) {
+      setImage(id, File(data.image!));
+    }
   }
 
   @override
@@ -111,9 +113,9 @@ class RouteStoreService implements IStoreService<RouteData> {
 
   Map<String, Object> castRouteToMap(RouteData route) {
     Map<String, Object> requiredFields = {
-      RouteFieldData.name: route.name,
-      RouteFieldData.description: route.description,
-      RouteFieldData.userId: route.userId
+      RouteFieldData.name: route.name!,
+      RouteFieldData.description: route.description!,
+      RouteFieldData.userId: route.userId!
     };
     final Timestamp startDate =
         route.startDate != null ? route.startDate! : Timestamp.now();

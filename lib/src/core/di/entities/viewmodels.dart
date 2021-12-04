@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_page_viewmodel.dart';
@@ -36,7 +37,8 @@ void $initViewModels() {
             getIt<RouteStoreService>(),
             getIt<GeolocatorService>(),
             getIt<UiidGeneratorService>(),
-            getIt<ImagePickerService>()))
+            getIt<ImagePickerService>(),
+            RouteProgressData()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
         getIt<AuthenticationService>(), getIt<RouteStoreService>()))
     ..registerFactory<ProfilePageViewModel>(

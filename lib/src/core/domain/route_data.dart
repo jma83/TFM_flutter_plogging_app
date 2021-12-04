@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RouteData {
-  String name;
-  String description;
-  String userId;
+  String? name = "";
+  String? description = "";
+  String? userId = "";
   Timestamp? startDate = Timestamp.now();
   Timestamp? endDate = Timestamp(0, 0);
   int? duration = 0;
@@ -12,9 +12,9 @@ class RouteData {
   String? image = "";
 
   RouteData(
-      {required this.name,
-      required this.description,
-      required this.userId,
+      {this.name,
+      this.description,
+      this.userId,
       this.startDate,
       this.endDate,
       this.duration,

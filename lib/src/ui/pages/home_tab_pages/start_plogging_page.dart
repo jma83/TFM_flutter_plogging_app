@@ -19,16 +19,16 @@ class StartPloggingPage extends StatelessWidget {
     return ViewModelBuilder<StartPloggingPageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
-          viewModel.createListeners();
           viewModel.addListener(() {}, ["update_start_plogging_page"]);
-          viewModel.funRef = () => showRouteConfirmationAlert(context);
-          viewModel.addListener(
-              viewModel.funRef!, ["update_start_plogging_confirm_route"]);
+          viewModel.confirmRouteCallback =
+              () => showRouteConfirmationAlert(context);
+          viewModel.addListener(viewModel.confirmRouteCallback!,
+              ["update_start_plogging_confirm_route"]);
         },
         onDispose: (viewModel) {
           viewModel.removeListener(() {}, ["update_start_plogging_page"]);
-          viewModel.removeListener(
-              viewModel.funRef!, ["update_start_plogging_confirm_route"]);
+          viewModel.removeListener(viewModel.confirmRouteCallback!,
+              ["update_start_plogging_confirm_route"]);
         },
         builder: (context, StartPloggingPageViewModel viewModel, child) {
           return SizedBox(
@@ -158,9 +158,10 @@ class StartPloggingPage extends StatelessWidget {
         builder: (_) => Alert.createCustomOptionsAlert(
             "Create route confirmation",
             CreateRouteConfirmation(
-              setDescription: () {},
-              setImage: () {},
-              setName: () {},
+              setName: viewModel.setRouteName,
+              setDescription: viewModel.setRouteDescription,
+              setImage: viewModel.setRouteImage,
+              uploadImage: viewModel.uploadRouteImage,
             ),
             viewModel.confirmRoute,
             viewModel.dismissAlert));

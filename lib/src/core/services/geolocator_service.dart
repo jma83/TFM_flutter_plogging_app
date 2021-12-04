@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -60,6 +61,16 @@ class GeolocatorService {
     return polylineCoordinates;
   }
 
+  Polyline generatePolyline(
+      PolylineId polylineId, List<LatLng> polylineCoordinates, Color color) {
+    return Polyline(
+      polylineId: polylineId,
+      color: color,
+      points: polylineCoordinates,
+      width: 3,
+    );
+  }
+
   double calculateDistance(Position startPoint, Position endPoint) {
     return Geolocator.distanceBetween(startPoint.latitude, startPoint.longitude,
         endPoint.latitude, endPoint.longitude);
@@ -82,14 +93,10 @@ class GeolocatorService {
     return distance;
   }
 
-  Polyline generatePolyline(
-      PolylineId polylineId, List<LatLng> polylineCoordinates) {
-    return Polyline(
-      polylineId: polylineId,
-      color: Colors.red,
-      points: polylineCoordinates,
-      width: 3,
-    );
+  List<GeoPoint>? convertLatLngToGeopoints(List<LatLng> polylinePointList) {
+    return polylinePointList
+        .map((element) => GeoPoint(element.latitude, element.longitude))
+        .toList();
   }
 
   Future<bool> _requestLocationPermission() async {

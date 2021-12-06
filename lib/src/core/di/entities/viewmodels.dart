@@ -1,4 +1,5 @@
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
+import 'package:flutter_plogging/src/core/services/follower_store_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_page_viewmodel.dart';
@@ -44,5 +45,7 @@ void $initViewModels() {
     ..registerFactory<ProfilePageViewModel>(
         () => ProfilePageViewModel(getIt<AuthenticationService>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
-        getIt<AuthenticationService>(), getIt<UserStoreService>()));
+        getIt<AuthenticationService>(),
+        getIt<UserStoreService>(),
+        getIt<FollowerStoreService>()));
 }

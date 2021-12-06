@@ -15,9 +15,9 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
       print("holaa! $user");
       if (user == null) {
         notifyNotLoggedIn();
-      } else {
-        notifyLoggedIn();
+        return;
       }
+      notifyLoggedIn();
     });
   }
 

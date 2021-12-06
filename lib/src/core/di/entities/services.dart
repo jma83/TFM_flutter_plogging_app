@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
+import 'package:flutter_plogging/src/core/services/follower_store_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
@@ -16,6 +17,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 final getIt = GetIt.instance;
+final firestoneInstance = FirebaseFirestore.instance;
+final storageInstance = firebase_storage.FirebaseStorage.instance;
 
 void $initServices() {
   getIt
@@ -24,11 +27,13 @@ void $initServices() {
     ..registerLazySingleton<AuthenticationService>(
         () => AuthenticationService(FirebaseAuth.instance))
     ..registerLazySingleton<StorageService>(
-        () => StorageService(firebase_storage.FirebaseStorage.instance))
-    ..registerLazySingleton<UserStoreService>(() =>
-        UserStoreService(FirebaseFirestore.instance, getIt<StorageService>()))
-    ..registerLazySingleton<RouteStoreService>(() =>
-        RouteStoreService(FirebaseFirestore.instance, getIt<StorageService>()))
+        () => StorageService(storageInstance))
+    ..registerLazySingleton<UserStoreService>(
+        () => UserStoreService(firestoneInstance, getIt<StorageService>()))
+    ..registerLazySingleton<RouteStoreService>(
+        () => RouteStoreService(firestoneInstance, getIt<StorageService>()))
+    ..registerLazySingleton<FollowerStoreService>(
+        () => FollowerStoreService(firestoneInstance))
     ..registerLazySingleton<GeolocatorService>(
         () => GeolocatorService(PolylinePoints()))
     ..registerLazySingleton<ImagePickerService>(

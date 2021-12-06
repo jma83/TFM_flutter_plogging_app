@@ -93,7 +93,7 @@ class GeolocatorService {
     return distance;
   }
 
-  List<GeoPoint>? convertLatLngToGeopoints(List<LatLng> polylinePointList) {
+  List<GeoPoint> convertLatLngToGeopoints(List<LatLng> polylinePointList) {
     return polylinePointList
         .map((element) => GeoPoint(element.latitude, element.longitude))
         .toList();

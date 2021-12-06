@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_user.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/search_page_viewmodel.dart';
@@ -9,6 +8,8 @@ import 'package:stacked/stacked.dart';
 
 @injectable
 class SearchPage extends StatelessWidget {
+  final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
+
   final SearchPageViewModel viewModel;
   SearchPage(this.viewModel, {Key? key}) : super(key: key);
 
@@ -65,9 +66,11 @@ class SearchPage extends StatelessWidget {
             name: viewModel.users[index].username,
             followers: viewModel.users[index].followers,
             following: viewModel.users[index].following,
+            color: Colors.green[colorCodes[index % 5]]!,
             clickable: true,
             button1: "Follow",
             callback: () {},
+            callbackButton: () {},
           );
         });
   }

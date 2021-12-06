@@ -5,7 +5,7 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_pag
 import 'package:stacked/stacked.dart';
 
 class MyRoutesPage extends StatelessWidget {
-  final List<int> colorCodes = <int>[100, 400, 200, 300, 500];
+  final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
   MyRoutesPageViewModel viewModel;
   MyRoutesPage(this.viewModel, {Key? key}) : super(key: key);
 

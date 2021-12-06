@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/ui/components/input_button_follow.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
 class CardUser extends StatefulWidget {
-  String name;
-  int level;
+  final String name;
+  final int level;
   int followers;
   int following;
-  String button1;
-  bool clickable;
-  double borderRadius;
-  Function? callback;
+  final String button1;
+  final bool clickable;
+  final bool followingUserFlag;
+  final double borderRadius;
+  final Function callback;
+  final Function callbackButton;
+  final Color color;
+
   CardUser(
-      {this.name = "",
+      {required this.callback,
+      required this.callbackButton,
+      this.name = "",
       this.level = 1,
       this.followers = 0,
       this.following = 0,
       this.clickable = false,
       this.borderRadius = 20,
-      this.callback,
       this.button1 = "",
+      this.color = Colors.green,
+      this.followingUserFlag = false,
       Key? key})
       : super(key: key);
 
@@ -32,7 +40,8 @@ class _CardUserState extends State<CardUser> {
   Widget build(BuildContext context) {
     return Card(
         elevation: 5,
-        color: Colors.green,
+        color: widget.color,
+        shadowColor: Colors.grey,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(widget.borderRadius)),
         child: InkWell(
@@ -40,22 +49,19 @@ class _CardUserState extends State<CardUser> {
             children: <Widget>[
               CardWidgetUtils.createClickableCard(
                   Container(
-                      height: 100,
+                      height: 110,
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                       )),
-                  () {}),
+                  widget.callback),
               IgnorePointer(child: _createListProfile()),
               Container(
-                height: 105,
-                alignment: Alignment.bottomCenter,
-                child: InputButton(
-                  width: 130,
-                  label: Text(widget.button1),
-                  onPress: () => widget.callback!(),
-                  buttonType: InputButtonType.outlined,
-                ),
-              ),
+                  height: 105,
+                  alignment: Alignment.bottomCenter,
+                  child: InputButtonFollow(
+                    followCallback: widget.callbackButton,
+                    following: widget.followingUserFlag,
+                  )),
             ],
           ),
         ));
@@ -63,45 +69,56 @@ class _CardUserState extends State<CardUser> {
 
   Widget _createListProfile() {
     return ListTile(
-      leading: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Image(
-            image: AssetImage("assets/logo.png"),
-            width: 60,
-          ),
-          Text("Level: ")
-        ],
-      ),
-      title: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 5),
-          Text(
-            widget.name,
-            style: TextStyle(fontSize: 20),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+      leading: SizedBox(
+          width: 58,
+          height: 10,
+          child: Wrap(
             children: [
-              Text(
-                "Followers: ${widget.followers}",
-                style: TextStyle(fontSize: 14),
+              const Image(
+                image: AssetImage("assets/logo.png"),
               ),
-              const SizedBox(width: 10),
-              Text(
-                "Following: ${widget.following}",
-                style: TextStyle(fontSize: 14),
+              Container(
+                margin: const EdgeInsets.only(top: 5),
+                alignment: Alignment.center,
+                child: Text(
+                  "Level ${widget.level}",
+                  textAlign: TextAlign.center,
+                ),
               )
+            ],
+          )),
+      title: Row(
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 5),
+              Text(
+                widget.name,
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Followers: ${widget.followers}",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    "Following: ${widget.following}",
+                    style: TextStyle(fontSize: 14),
+                  )
+                ],
+              ),
             ],
           ),
         ],
-      ),
-      subtitle: SizedBox(
-        height: 50,
       ),
     );
   }

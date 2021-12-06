@@ -133,9 +133,10 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   confirmProgressRouteData() {
     final DateTime now = DateTime.now();
-    _routeProgressData.name = _routeProgressData.name ??
-        "Route ${now.day}-${now.month}-${now.year}, ${now.hour}:${now.minute}:${now.second}";
-    _routeProgressData.description = _routeProgressData.description ?? "";
+    _routeProgressData.name = _routeProgressData.name == ""
+        ? "Route ${now.day}-${now.month}-${now.year}, ${now.hour}:${now.minute}:${now.second}"
+        : _routeProgressData.name;
+    _routeProgressData.description = _routeProgressData.description;
     _routeProgressData.image = _routeProgressData.routeImage?.path;
   }
 

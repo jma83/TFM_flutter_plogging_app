@@ -7,6 +7,7 @@ import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/services/route_store_service.dart';
+import 'package:flutter_plogging/src/core/services/user_store_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
@@ -50,12 +51,16 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       this._geolocatorService,
       this._uiidGeneratorService,
       this._imagePickerService,
-      this._routeProgressData)
-      : super(authenticationService);
+      this._routeProgressData,
+      userStoreService)
+      : super(authenticationService, userStoreService);
+
+  loadPage() {
+    createConnectionStatusListener();
+  }
 
   createListeners() {
     createPositionListener();
-    createConnectionStatusListener();
     createDrawRouteInterval();
   }
 
@@ -136,7 +141,6 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         ? "Route ${now.day}-${now.month}-${now.year}, ${now.hour}:${now.minute}:${now.second}"
         : _routeProgressData.name;
     _routeProgressData.description = _routeProgressData.description;
-    _routeProgressData.image = _routeProgressData.routeImage?.path;
   }
 
   toggleRouteStatus() {
@@ -256,6 +260,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   void dismissAlert() {
+    _routeProgressData =
+        RouteProgressData(id: _uiidGeneratorService.generate());
     notifyListeners("startPloggingRouteCoordinator_returnToPrevious");
   }
 

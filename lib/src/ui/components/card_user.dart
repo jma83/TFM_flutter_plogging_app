@@ -49,15 +49,14 @@ class _CardUserState extends State<CardUser> {
           child: Stack(
             children: <Widget>[
               CardWidgetUtils.createClickableCard(
-                  Container(
-                      height: 110,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                      )),
+                  SizedBox(
+                    height: 110,
+                    width: MediaQuery.of(context).size.width,
+                  ),
                   widget.callback),
               IgnorePointer(child: _createListProfile()),
               Container(
-                  height: 105,
+                  height: 107,
                   alignment: Alignment.bottomCenter,
                   child: InputButtonFollow(
                     isSelf: widget.isSelf,
@@ -101,7 +100,7 @@ class _CardUserState extends State<CardUser> {
               const SizedBox(height: 5),
               Text(
                 widget.name,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 8),
               Row(

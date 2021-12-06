@@ -15,19 +15,10 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   List<UserSearchData> _users = [];
   List<FollowerData> _followingList = [];
   final UiidGeneratorService _uiidGeneratorService;
-  final UserStoreService _userStoreService;
   final FollowerStoreService _followerStoreService;
-  late UserData _currentUser;
-  SearchPageViewModel(authenticationService, this._userStoreService,
+  SearchPageViewModel(authenticationService, userStoreService,
       this._followerStoreService, this._uiidGeneratorService)
-      : super(authenticationService) {
-    loadCurrentUserData();
-  }
-
-  loadCurrentUserData() async {
-    _currentUser = (await _userStoreService
-        .queryElementById(authenticationService.currentUser!.uid))!;
-  }
+      : super(authenticationService, userStoreService);
 
   loadPage() async {
     print(
@@ -42,7 +33,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> submitSearch(String value) async {
     toggleLoading();
-    final List<UserData> usersFound = await _userStoreService
+    final List<UserData> usersFound = await userStoreService
         .queryElementLikeByCriteria(UserFieldData.username, value);
     final followingIds = _followingList.map((e) => e.userFollowedId);
     _users = usersFound.map((user) {
@@ -97,7 +88,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     updateFollowing(add);
     notifyListeners("update_search_page");
     await updateUser(userData);
-    await updateUser(_currentUser);
+    await updateUser(currentUser);
   }
 
   updateFollowers(UserSearchData userData, bool add) {
@@ -106,10 +97,9 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   }
 
   updateFollowing(bool add) {
-    _currentUser.following += add ? 1 : -1;
     _users.forEach((element) {
-      if (element.id == _currentUser.id) {
-        element.following = _currentUser.following;
+      if (element.id == currentUser.id) {
+        element.following = currentUser.following;
         element.followingFlag = add;
         return;
       }
@@ -117,7 +107,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> updateUser(UserData userData) async {
-    await _userStoreService.updateElement(userData.id, userData);
+    await userStoreService.updateElement(userData.id, userData);
   }
 
   get searchValue {
@@ -126,9 +116,5 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   List<UserSearchData> get users {
     return _users;
-  }
-
-  String get currenUserId {
-    return _currentUser.id;
   }
 }

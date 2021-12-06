@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/card_route.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -60,11 +61,18 @@ class MyRoutesPage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         itemCount: viewModel.routes.length,
         itemBuilder: (BuildContext context, int index) {
+          //             color: Colors.green[colorCodes[index % 5]],
           return Container(
-            height: 50,
-            color: Colors.green[colorCodes[index % 5]],
-            child: Center(child: Text('${viewModel.routes[index].name}')),
-          );
+              margin: index != 0 ? EdgeInsets.only(top: 20) : EdgeInsets.zero,
+              child: CardRoute(
+                color: Colors.green[colorCodes[index % 5]],
+                height: 130,
+                image: viewModel.routes[index].image,
+                name: viewModel.routes[index].name!,
+                description: viewModel.routes[index].description ?? "",
+                authorName: viewModel.currentUser.username,
+                date: viewModel.getDateFormat(viewModel.routes[index]),
+              ));
         });
   }
 }

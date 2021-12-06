@@ -39,9 +39,12 @@ void $initViewModels() {
             getIt<GeolocatorService>(),
             getIt<UiidGeneratorService>(),
             getIt<ImagePickerService>(),
-            RouteProgressData(id: getIt<UiidGeneratorService>().generate())))
+            RouteProgressData(id: getIt<UiidGeneratorService>().generate()),
+            getIt<UserStoreService>()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
-        getIt<AuthenticationService>(), getIt<RouteStoreService>()))
+        getIt<AuthenticationService>(),
+        getIt<RouteStoreService>(),
+        getIt<UserStoreService>()))
     ..registerFactory<ProfilePageViewModel>(
         () => ProfilePageViewModel(getIt<AuthenticationService>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(

@@ -19,7 +19,6 @@ class RouteProgressData extends RouteData {
   Position currentPosition;
   Position? lastPosition;
   double currentZoom = 3;
-  XFile? routeImage;
   List<LatLng> polylinePointList = [];
   Map<PolylineId, Polyline> polylines = {};
 
@@ -28,7 +27,6 @@ class RouteProgressData extends RouteData {
       this.currentPosition = defautLocation,
       this.lastPosition,
       this.currentZoom = 3,
-      this.routeImage,
       this.polylinePointList = const [],
       this.polylines = const {},
       id,

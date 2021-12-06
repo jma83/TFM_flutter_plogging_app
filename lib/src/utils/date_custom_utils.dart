@@ -6,4 +6,15 @@ class DateCustomUtils {
     DateTime dateTime2 = DateTime.parse(t2.toDate().toString());
     return dateTime2.difference(dateTime1);
   }
+
+  static String dateTimeToStringFormat(DateTime dateTime) {
+    final int day = dateTime.day;
+    final int month = dateTime.month;
+    final int year = dateTime.year;
+    final int hour = dateTime.hour;
+    final int min = dateTime.minute;
+    final int sec = dateTime.second;
+
+    return "$day-$month-$year $hour:$min:$sec";
+  }
 }

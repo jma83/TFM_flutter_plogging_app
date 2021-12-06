@@ -22,6 +22,10 @@ class UserStoreService implements IStoreMediaService<UserData> {
 
   @override
   Future<void> updateElement(String collectionId, UserData data) async {
+    if (data.image != null && data.image != "") {
+      await setImage(data.id, File(data.image!));
+      data.image = await getImage(data.id);
+    }
     final Map<String, Object> userMap = UserData.castUserToMap(data);
     await entity.doc(collectionId).update(userMap);
   }

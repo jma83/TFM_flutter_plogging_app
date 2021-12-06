@@ -40,10 +40,14 @@ class StorageService {
     } on FirebaseException catch (e) {
       if (e.code == "permission-denied" || e.code == "unauthorized") {
         print('User does not have permission to get from this reference.');
+        return;
       }
       if (e.code == "object-not-found") {
         print('Resource not found');
+        return;
       }
+
+      print("Error generico! $e");
     }
   }
 }

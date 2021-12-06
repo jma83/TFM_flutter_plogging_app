@@ -8,8 +8,10 @@ class InputButton extends StatefulWidget {
   final Widget label;
   final Icon? icon;
   final double width;
+  final double verticalPadding;
   final double horizontalPadding;
   final Color? bgColor;
+  final double borderRadius;
 
   const InputButton(
       {required this.label,
@@ -19,6 +21,8 @@ class InputButton extends StatefulWidget {
       this.icon,
       this.horizontalPadding = 40,
       this.width = 170,
+      this.verticalPadding = 8,
+      this.borderRadius = 20,
       Key? key})
       : super(key: key);
 
@@ -65,10 +69,11 @@ class _InputButtonState extends State<InputButton> {
         primary: widget.bgColor ?? Colors.green,
         side: const BorderSide(width: 1, color: Colors.grey),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
         padding: EdgeInsets.symmetric(
-            horizontal: widget.horizontalPadding, vertical: 8),
+            horizontal: widget.horizontalPadding,
+            vertical: widget.verticalPadding),
         fixedSize: Size.fromWidth(widget.width));
   }
 
@@ -77,10 +82,11 @@ class _InputButtonState extends State<InputButton> {
         backgroundColor: widget.bgColor ?? Colors.white70,
         side: const BorderSide(width: 1, color: Colors.grey),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
         padding: EdgeInsets.symmetric(
-            horizontal: widget.horizontalPadding, vertical: 8),
+            horizontal: widget.horizontalPadding,
+            vertical: widget.verticalPadding),
         fixedSize: Size.fromWidth(widget.width));
   }
 }

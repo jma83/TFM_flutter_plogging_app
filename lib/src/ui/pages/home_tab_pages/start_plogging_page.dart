@@ -19,6 +19,7 @@ class StartPloggingPage extends StatelessWidget {
     return ViewModelBuilder<StartPloggingPageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
+          viewModel.loadPage();
           viewModel.addListener(() {}, ["update_start_plogging_page"]);
           viewModel.confirmRouteCallback =
               () => showRouteConfirmationAlert(context);
@@ -95,13 +96,16 @@ class StartPloggingPage extends StatelessWidget {
     IconData iconData = buttonTypeData[1];
     return ClipOval(
       child: Material(
-        color: Colors.blue.shade100, // button color
+        color: Colors.black54, // button color
         child: InkWell(
           splashColor: Colors.blue, // inkwell color
           child: SizedBox(
             width: 50,
             height: 50,
-            child: Icon(iconData),
+            child: Icon(
+              iconData,
+              color: Colors.white,
+            ),
           ),
           onTap: () {
             callback();

@@ -2,14 +2,15 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
 import 'package:flutter_plogging/src/core/services/route_store_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
+import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 
 class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   List<RouteData> _routes = [];
   String _searchValue = "";
   bool _isLoading = false;
   final RouteStoreService _routeStoreService;
-  MyRoutesPageViewModel(authService, this._routeStoreService)
-      : super(authService);
+  MyRoutesPageViewModel(authService, this._routeStoreService, userStoreService)
+      : super(authService, userStoreService);
 
   setSearchValue(String value) {
     _searchValue = value;
@@ -45,5 +46,9 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
 
   List<RouteData> get routes {
     return _routes;
+  }
+
+  String getDateFormat(RouteData route) {
+    return DateCustomUtils.dateTimeToStringFormat(route.endDate!.toDate());
   }
 }

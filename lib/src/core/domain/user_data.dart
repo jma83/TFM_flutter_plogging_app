@@ -25,7 +25,6 @@ class UserData {
 
   static Map<String, Object> castUserToMap(UserData user) {
     return {
-      UserFieldData.id: user.id,
       UserFieldData.username: user.username,
       UserFieldData.age: user.age,
       UserFieldData.gender: user.gender,

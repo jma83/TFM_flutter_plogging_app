@@ -23,7 +23,7 @@ class MyRoutesPage extends StatelessWidget {
             children: [
               InputSearch(
                   value: viewModel.searchValue,
-                  placeholder: "Search Routes",
+                  placeholder: "Search routes",
                   maxLength: 30,
                   onChange: (value) => viewModel.setSearchValue(value),
                   onSubmit: (value) => viewModel.submitSearch(value)),

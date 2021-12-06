@@ -33,7 +33,6 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   RegisterPageViewModel(
       authService, this._userViewModel, this._userStoreService)
       : super(authService) {
-    print("RegisterPageViewModel");
     createAuthListener();
   }
 
@@ -60,11 +59,12 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
     }
     toggleLoading();
     await _userStoreService.addElement(
-        UserData(
-            username: _username,
-            age: int.parse(_age),
-            gender: getGenderIndex()),
-        authService.currentUser!.uid);
+      UserData(
+          id: authService.currentUser!.uid,
+          username: _username,
+          age: int.parse(_age),
+          gender: getGenderIndex()),
+    );
   }
 
   toggleLoading() {
@@ -74,8 +74,8 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
 
   setError(String errorValue) {
     _errorMessage = errorValue;
-    notifyListeners("error_signup");
     toggleLoading();
+    notifyListeners("error_signup");
   }
 
   getGenderIndex() {

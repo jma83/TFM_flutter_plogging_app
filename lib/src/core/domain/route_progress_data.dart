@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -30,6 +31,7 @@ class RouteProgressData extends RouteData {
       this.routeImage,
       this.polylinePointList = const [],
       this.polylines = const {},
+      id,
       name,
       description,
       userId,
@@ -38,8 +40,9 @@ class RouteProgressData extends RouteData {
       duration,
       image,
       distance,
-      locationArray})
+      List<GeoPoint> locationArray = const []})
       : super(
+            id: id,
             name: name,
             description: description,
             userId: userId,

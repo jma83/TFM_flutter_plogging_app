@@ -27,7 +27,7 @@ class _InputTextState extends State<InputSearch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.grey[700]),
+      decoration: const BoxDecoration(color: Colors.black87),
       padding: EdgeInsets.all(widget.padding),
       child: CupertinoSearchTextField(
         controller: TextEditingController(text: widget.value),

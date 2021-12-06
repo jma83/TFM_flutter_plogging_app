@@ -36,7 +36,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   final ImagePickerService _imagePickerService;
 
   late GoogleMapController mapController;
-  final RouteProgressData _routeProgressData;
+  late RouteProgressData _routeProgressData;
   late Timer routeInterval;
   Function? confirmRouteCallback;
   bool _hasStartedRoute = false;
@@ -113,8 +113,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   confirmRoute() {
     confirmProgressRouteData();
-    _routeStoreService.addElement(
-        _routeProgressData, _uiidGeneratorService.generate());
+    _routeStoreService.addElement(_routeProgressData);
     dismissAlert();
     notifyListeners("update_start_plogging_page");
   }

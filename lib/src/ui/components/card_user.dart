@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_follow.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
@@ -15,6 +14,7 @@ class CardUser extends StatefulWidget {
   final Function callback;
   final Function callbackButton;
   final Color color;
+  final bool isSelf;
 
   CardUser(
       {required this.callback,
@@ -28,6 +28,7 @@ class CardUser extends StatefulWidget {
       this.button1 = "",
       this.color = Colors.green,
       this.followingUserFlag = false,
+      this.isSelf = false,
       Key? key})
       : super(key: key);
 
@@ -59,6 +60,7 @@ class _CardUserState extends State<CardUser> {
                   height: 105,
                   alignment: Alignment.bottomCenter,
                   child: InputButtonFollow(
+                    isSelf: widget.isSelf,
                     followCallback: widget.callbackButton,
                     following: widget.followingUserFlag,
                   )),

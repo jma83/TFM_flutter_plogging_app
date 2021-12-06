@@ -18,6 +18,7 @@ class SearchPage extends StatelessWidget {
     return ViewModelBuilder<SearchPageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
+          viewModel.loadPage();
           viewModel.addListener(() {}, ["update_search_page"]);
         },
         builder: (context, SearchPageViewModel viewModel, child) {
@@ -25,7 +26,7 @@ class SearchPage extends StatelessWidget {
             children: [
               InputSearch(
                   value: viewModel.searchValue,
-                  placeholder: "Search",
+                  placeholder: "Search users",
                   maxLength: 30,
                   onChange: (value) => viewModel.setSearchValue(value),
                   onSubmit: (value) => viewModel.submitSearch(value)),
@@ -66,11 +67,14 @@ class SearchPage extends StatelessWidget {
             name: viewModel.users[index].username,
             followers: viewModel.users[index].followers,
             following: viewModel.users[index].following,
+            followingUserFlag: viewModel.users[index].followingFlag,
             color: Colors.green[colorCodes[index % 5]]!,
             clickable: true,
             button1: "Follow",
+            isSelf: viewModel.currenUserId == viewModel.users[index].id,
             callback: () {},
-            callbackButton: () {},
+            callbackButton: () =>
+                viewModel.handleFollowUser(viewModel.users[index]),
           );
         });
   }

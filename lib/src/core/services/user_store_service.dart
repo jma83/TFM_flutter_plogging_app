@@ -15,9 +15,9 @@ class UserStoreService implements IStoreMediaService<UserData> {
   UserStoreService(this._firebaseFirestore, this._storageService);
 
   @override
-  Future<void> addElement(UserData data, String id) async {
+  Future<void> addElement(UserData data) async {
     final Map<String, Object> userMap = UserData.castUserToMap(data);
-    entity.doc(id).set(userMap);
+    entity.doc(data.id).set(userMap);
   }
 
   @override

@@ -7,7 +7,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   List<RouteData> _routes = [];
   String _searchValue = "";
   bool _isLoading = false;
-  RouteStoreService _routeStoreService;
+  final RouteStoreService _routeStoreService;
   MyRoutesPageViewModel(authService, this._routeStoreService)
       : super(authService);
 

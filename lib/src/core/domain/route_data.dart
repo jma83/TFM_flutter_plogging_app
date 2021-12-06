@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RouteData {
-  String id;
-  String name;
-  String description;
-  String userId;
+  String? id;
+  String? name;
+  String? description;
+  String? userId;
   Timestamp? startDate = Timestamp.now();
   Timestamp? endDate = Timestamp(0, 0);
-  int duration;
+  int? duration;
   List<GeoPoint> locationArray;
-  double distance;
+  double? distance;
   String? image;
 
   RouteData(
@@ -20,21 +20,20 @@ class RouteData {
       this.startDate,
       this.endDate,
       this.duration = 0,
-      this.image,
+      this.image = "",
       this.distance = 0,
       this.locationArray = const []});
 
   static Map<String, Object> castRouteToMap(RouteData route) {
     Map<String, Object> requiredFields = {
-      RouteFieldData.id: route.id,
-      RouteFieldData.name: route.name,
-      RouteFieldData.description: route.description,
-      RouteFieldData.userId: route.userId
+      RouteFieldData.name: route.name!,
+      RouteFieldData.description: route.description!,
+      RouteFieldData.userId: route.userId!
     };
     final Timestamp startDate =
         route.startDate != null ? route.startDate! : Timestamp.now();
-    final double distance = route.distance;
-    final int duration = route.duration;
+    final double distance = route.distance!;
+    final int duration = route.duration!;
     List<GeoPoint> locationArray = route.locationArray;
     Timestamp endDate =
         route.endDate != null ? route.endDate! : Timestamp.now();
@@ -60,6 +59,7 @@ class RouteData {
     final List<GeoPoint> geoList = List<GeoPoint>.from(originalList.map(
         (elem) => GeoPoint(elem.latitude as double, elem.longitude as double)));
     return RouteData(
+        id: id,
         name: map[RouteFieldData.name] as String,
         description: map[RouteFieldData.description] as String,
         userId: map[RouteFieldData.userId] as String,

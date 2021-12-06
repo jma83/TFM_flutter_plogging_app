@@ -15,11 +15,11 @@ class RouteStoreService implements IStoreMediaService<RouteData> {
   RouteStoreService(this._firebaseFirestore, this._storageService);
 
   @override
-  Future<void> addElement(RouteData data, String id) async {
+  Future<void> addElement(RouteData data) async {
     final Map<String, Object> userMap = RouteData.castRouteToMap(data);
     entity.doc().set(userMap);
     if (data.image != null) {
-      setImage(id, File(data.image!));
+      setImage(data.id!, File(data.image!));
     }
   }
 

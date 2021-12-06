@@ -3,12 +3,14 @@ import 'package:flutter_plogging/src/ui/components/input_button.dart';
 
 class InputButtonFollow extends StatefulWidget {
   bool following;
+  bool isSelf;
   final double width;
   final Function followCallback;
   InputButtonFollow(
       {required this.following,
       required this.followCallback,
       this.width = 130,
+      this.isSelf = false,
       Key? key})
       : super(key: key);
 
@@ -19,6 +21,9 @@ class InputButtonFollow extends StatefulWidget {
 class _InputButtonFollowState extends State<InputButtonFollow> {
   @override
   Widget build(BuildContext context) {
+    if (widget.isSelf) {
+      return Container();
+    }
     if (!widget.following) {
       return InputButton(
           width: widget.width,

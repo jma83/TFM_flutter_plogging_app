@@ -11,10 +11,10 @@ class FollowerStoreService implements IStoreService<FollowerData> {
   FollowerStoreService(this._firebaseFirestore);
 
   @override
-  Future<void> addElement(FollowerData data, String id) async {
+  Future<void> addElement(FollowerData data) async {
     final Map<String, Object> followerMap =
         FollowerData.castFollowerToMap(data);
-    entity.doc(id).set(followerMap);
+    entity.doc(data.id).set(followerMap);
   }
 
   @override
@@ -36,7 +36,7 @@ class FollowerStoreService implements IStoreService<FollowerData> {
       return null;
     }
     Map<String, dynamic> mapData = docData.data() as Map<String, dynamic>;
-    FollowerData result = FollowerData.castMapToFollower(mapData);
+    FollowerData result = FollowerData.castMapToFollower(mapData, id);
     return result;
   }
 
@@ -46,8 +46,8 @@ class FollowerStoreService implements IStoreService<FollowerData> {
     final QuerySnapshot<Object?> docsData =
         await entity.where(key, isEqualTo: value).get();
     return docsData.docs
-        .map((e) =>
-            FollowerData.castMapToFollower(e.data() as Map<String, dynamic>))
+        .map((e) => FollowerData.castMapToFollower(
+            e.data() as Map<String, dynamic>, e.id))
         .toList();
   }
 
@@ -57,8 +57,8 @@ class FollowerStoreService implements IStoreService<FollowerData> {
     final QuerySnapshot<Object?> docsData =
         await entity.where(key, whereIn: values).get();
     return docsData.docs
-        .map((e) =>
-            FollowerData.castMapToFollower(e.data() as Map<String, dynamic>))
+        .map((e) => FollowerData.castMapToFollower(
+            e.data() as Map<String, dynamic>, e.id))
         .toList();
   }
 
@@ -69,8 +69,8 @@ class FollowerStoreService implements IStoreService<FollowerData> {
         .orderBy(FollowerFieldData.userId)
         .startAt([value]).endAt([value + '\uf8ff']).get();
     return docsData.docs
-        .map((e) =>
-            FollowerData.castMapToFollower(e.data() as Map<String, dynamic>))
+        .map((e) => FollowerData.castMapToFollower(
+            e.data() as Map<String, dynamic>, e.id))
         .toList();
   }
 

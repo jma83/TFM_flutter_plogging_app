@@ -16,9 +16,9 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   final RouteStoreService _routeStoreService;
   final LikeStoreService _likeStoreService;
   final UuidGeneratorService _uuidGeneratorService;
-  MyRoutesPageViewModel(authService, userStoreService, this._routeStoreService,
+  MyRoutesPageViewModel(authService, this._routeStoreService,
       this._likeStoreService, this._uuidGeneratorService)
-      : super(authService, userStoreService);
+      : super(authService);
 
   setSearchValue(String value) {
     _searchValue = value;

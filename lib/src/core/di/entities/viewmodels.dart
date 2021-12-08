@@ -23,16 +23,21 @@ final getIt = GetIt.instance;
 void $initViewModels() {
   getIt
     ..registerFactory<UserViewModel>(() => UserViewModel())
-    ..registerFactory<StartPageViewModel>(
-        () => StartPageViewModel(getIt<AuthenticationService>()))
+    ..registerFactory<StartPageViewModel>(() => StartPageViewModel(
+        getIt<AuthenticationService>(), getIt<UserStoreService>()))
     ..registerFactory<RegisterPageViewModel>(() => RegisterPageViewModel(
         getIt<AuthenticationService>(),
         getIt<UserViewModel>(),
         getIt<UserStoreService>()))
     ..registerFactory<LoginPageViewModel>(() => LoginPageViewModel(
-        getIt<AuthenticationService>(), getIt<UserViewModel>()))
+        getIt<AuthenticationService>(),
+        getIt<UserViewModel>(),
+        getIt<UserStoreService>()))
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
-        getIt<AuthenticationService>(), getIt<UserStoreService>()))
+        getIt<AuthenticationService>(),
+        getIt<RouteStoreService>(),
+        getIt<FollowerStoreService>(),
+        getIt<LikeStoreService>()))
     ..registerFactory<StartPloggingPageViewModel>(() =>
         StartPloggingPageViewModel(
             getIt<AuthenticationService>(),
@@ -40,16 +45,14 @@ void $initViewModels() {
             getIt<GeolocatorService>(),
             getIt<UuidGeneratorService>(),
             getIt<ImagePickerService>(),
-            RouteProgressData(id: getIt<UuidGeneratorService>().generate()),
-            getIt<UserStoreService>()))
+            RouteProgressData(id: getIt<UuidGeneratorService>().generate())))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
         getIt<AuthenticationService>(),
-        getIt<UserStoreService>(),
         getIt<RouteStoreService>(),
         getIt<LikeStoreService>(),
         getIt<UuidGeneratorService>()))
-    ..registerFactory<ProfilePageViewModel>(
-        () => ProfilePageViewModel(getIt<AuthenticationService>()))
+    ..registerFactory<ProfilePageViewModel>(() => ProfilePageViewModel(
+        getIt<AuthenticationService>(), getIt<UserStoreService>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<UserStoreService>(),

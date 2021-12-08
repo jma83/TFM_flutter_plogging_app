@@ -28,11 +28,9 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   bool _isLoading = false;
 
   final UserViewModel _userViewModel;
-  final IStoreService _userStoreService;
 
-  RegisterPageViewModel(
-      authService, this._userViewModel, this._userStoreService)
-      : super(authService) {
+  RegisterPageViewModel(authService, this._userViewModel, _userStoreService)
+      : super(authService, _userStoreService) {
     createAuthListener();
   }
 
@@ -58,7 +56,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
       print(e);
     }
     toggleLoading();
-    await _userStoreService.addElement(
+    await userStoreService.addElement(
       UserData(
           id: authService.currentUser!.uid,
           username: _username,

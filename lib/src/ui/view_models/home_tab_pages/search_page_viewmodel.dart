@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/follower_store_service.dart';
+import 'package:flutter_plogging/src/core/services/user_store_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
@@ -15,9 +16,11 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   List<FollowerData> _followingList = [];
   final UuidGeneratorService _uuidGeneratorService;
   final FollowerStoreService _followerStoreService;
-  SearchPageViewModel(authenticationService, userStoreService,
+  final UserStoreService _userStoreService;
+
+  SearchPageViewModel(authenticationService, this._userStoreService,
       this._followerStoreService, this._uuidGeneratorService)
-      : super(authenticationService, userStoreService);
+      : super(authenticationService);
 
   loadPage() async {
     _followingList = await _followerStoreService.queryElementEqualByCriteria(
@@ -30,7 +33,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> submitSearch(String value) async {
     toggleLoading();
-    final List<UserData> usersFound = await userStoreService
+    final List<UserData> usersFound = await _userStoreService
         .queryElementLikeByCriteria(UserFieldData.username, value);
     final followingIds = _followingList.map((e) => e.userFollowedId);
     _users = usersFound
@@ -105,7 +108,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> updateUser(UserData userData) async {
-    await userStoreService.updateElement(userData.id, userData);
+    await _userStoreService.updateElement(userData.id, userData);
   }
 
   get searchValue {

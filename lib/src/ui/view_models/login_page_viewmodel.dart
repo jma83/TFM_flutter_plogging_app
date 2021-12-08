@@ -12,9 +12,9 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
 
   final UserViewModel _userViewModel;
 
-  LoginPageViewModel(_authenticationService, this._userViewModel)
-      : super(_authenticationService) {
-    print("mountLoginPage!!!!!!!!!");
+  LoginPageViewModel(
+      _authenticationService, this._userViewModel, _userStoreService)
+      : super(_authenticationService, _userStoreService) {
     createAuthListener();
   }
 

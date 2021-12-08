@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_authentication_service.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: IAuthenticationService)
 class AuthenticationService implements IAuthenticationService {
   final FirebaseAuth _firebaseAuth;
+  UserData? _userData;
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   AuthenticationService(this._firebaseAuth);
 
@@ -42,8 +44,21 @@ class AuthenticationService implements IAuthenticationService {
     return null;
   }
 
+  @override
   User? get currentUser {
     return _firebaseAuth.currentUser;
+  }
+
+  UserData? get currentUserData {
+    return _userData;
+  }
+
+  void setCurrentUserData(UserData? userData) {
+    if (currentUser == null) {
+      _userData = null;
+      return;
+    }
+    _userData = userData;
   }
 
   String getMessageFromErrorCode(String errorCode) {

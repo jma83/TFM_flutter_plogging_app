@@ -51,9 +51,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       this._geolocatorService,
       this._uuidGeneratorService,
       this._imagePickerService,
-      this._routeProgressData,
-      userStoreService)
-      : super(authenticationService, userStoreService);
+      this._routeProgressData)
+      : super(authenticationService);
 
   loadPage() {
     createConnectionStatusListener();

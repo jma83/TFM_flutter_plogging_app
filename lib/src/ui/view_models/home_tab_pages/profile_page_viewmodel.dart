@@ -1,7 +1,8 @@
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 
 class ProfilePageViewModel extends AuthPropertyChangeNotifier {
-  ProfilePageViewModel(authenticationService) : super(authenticationService) {
+  ProfilePageViewModel(authenticationService, _userStoreService)
+      : super(authenticationService, _userStoreService) {
     createAuthListener();
   }
 

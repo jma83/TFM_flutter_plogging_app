@@ -3,13 +3,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class StartPageViewModel extends AuthPropertyChangeNotifier {
-  StartPageViewModel(_authService) : super(_authService);
+  StartPageViewModel(_authService, _userStoreService)
+      : super(_authService, _userStoreService);
   bool alreadyDisposed = false;
 
   void checkUserRedirection() {
-    Future.delayed(const Duration(seconds: 1), () {
-      createAuthListener();
-    });
+    createAuthListener();
   }
 
   @override
@@ -30,7 +29,6 @@ class StartPageViewModel extends AuthPropertyChangeNotifier {
 
   @override
   void dispose() {
-    print("Dispose!!!!!!");
     super.dispose();
     alreadyDisposed = true;
   }

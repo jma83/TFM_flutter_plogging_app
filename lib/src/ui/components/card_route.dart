@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
@@ -14,9 +13,14 @@ class CardRoute extends StatefulWidget {
   final double borderRadius;
   final Color? color;
   final String date;
+  final Function callback;
+  final Function callbackLike;
+  final bool isLiked;
 
   CardRoute(
-      {this.name = "",
+      {required this.callback,
+      required this.callbackLike,
+      this.name = "",
       this.description = "",
       this.authorName = "",
       this.distance = 0,
@@ -26,6 +30,7 @@ class CardRoute extends StatefulWidget {
       this.borderRadius = 20,
       this.color,
       this.date = "",
+      this.isLiked = false,
       Key? key})
       : super(key: key);
 
@@ -39,12 +44,15 @@ class _CardRouteState extends State<CardRoute> {
     return Stack(children: [
       CardWidgetUtils.createClickableCard(
           CardWidgetUtils.createCardContainer(card(), widget.borderRadius),
-          () {}),
+          widget.callback),
       Container(
           width: MediaQuery.of(context).size.width - 20,
           height: widget.description != "" ? 240 : 225,
           alignment: Alignment.bottomRight,
-          child: InputButtonLike(liked: false, likeCallback: () {}))
+          child: InputButtonLike(
+              width: 0,
+              liked: widget.isLiked,
+              likeCallback: widget.callbackLike))
     ]);
   }
 
@@ -56,39 +64,7 @@ class _CardRouteState extends State<CardRoute> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                    padding: EdgeInsets.all(5),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                            width: 1,
-                            color: Colors.black54,
-                            style: BorderStyle.solid)),
-                    child: Text(
-                      widget.name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Colors.black87, fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(height: 10),
-                widget.description != ""
-                    ? Text("Description: ${widget.description}")
-                    : Container(),
-                SizedBox(height: 5),
-                Text("Distance: ${widget.distance} meters"),
-                SizedBox(height: 5),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Date: ${widget.date}"),
-                    Text("Author: ${widget.authorName}"),
-                  ],
-                )
-              ],
+              children: getCardInfoInColumn(),
             ),
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(
@@ -104,6 +80,40 @@ class _CardRouteState extends State<CardRoute> {
     return card;
   }
 
+  List<Widget> getCardInfoInColumn() {
+    return [
+      Container(
+          padding: const EdgeInsets.all(5),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                  width: 1, color: Colors.black54, style: BorderStyle.solid)),
+          child: Text(
+            widget.name,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+                color: Colors.black87, fontWeight: FontWeight.bold),
+          )),
+      const SizedBox(height: 10),
+      widget.description != ""
+          ? Text("Description: ${widget.description}")
+          : Container(),
+      const SizedBox(height: 5),
+      Text("Distance: ${widget.distance} meters"),
+      const SizedBox(height: 5),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Date: ${widget.date}"),
+          Text("Author: ${widget.authorName}"),
+        ],
+      )
+    ];
+  }
+
   getImageFromNetwork() {
     return FadeInImage.assetNetwork(
       image: widget.image!,
@@ -115,9 +125,9 @@ class _CardRouteState extends State<CardRoute> {
   }
 
   getImageFromAsset() {
-    final String image = "assets/img1.jpg";
+    const String image = "assets/img1.jpg";
     return FadeInImage(
-        image: AssetImage(image),
+        image: const AssetImage(image),
         placeholder: AssetImage(widget.imagePlaceholder),
         height: widget.height,
         fadeInDuration: const Duration(milliseconds: 200),

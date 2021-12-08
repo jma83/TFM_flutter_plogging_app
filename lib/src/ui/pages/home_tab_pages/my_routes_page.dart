@@ -63,7 +63,8 @@ class MyRoutesPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           //             color: Colors.green[colorCodes[index % 5]],
           return Container(
-              margin: index != 0 ? EdgeInsets.only(top: 20) : EdgeInsets.zero,
+              margin:
+                  index != 0 ? const EdgeInsets.only(top: 20) : EdgeInsets.zero,
               child: CardRoute(
                 color: Colors.green[colorCodes[index % 5]],
                 height: 130,
@@ -72,6 +73,10 @@ class MyRoutesPage extends StatelessWidget {
                 description: viewModel.routes[index].description ?? "",
                 authorName: viewModel.currentUser.username,
                 date: viewModel.getDateFormat(viewModel.routes[index]),
+                callback: () {},
+                callbackLike: () =>
+                    viewModel.likeRoute(viewModel.routes[index]),
+                isLiked: viewModel.routes[index].isLiked,
               ));
         });
   }

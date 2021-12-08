@@ -1,8 +1,8 @@
 import 'package:uuid/uuid.dart';
 
-class UiidGeneratorService {
+class UuidGeneratorService {
   final Uuid _uuid;
-  UiidGeneratorService(this._uuid);
+  UuidGeneratorService(this._uuid);
 
   String generate() {
     return _uuid.v4();

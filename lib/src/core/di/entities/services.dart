@@ -5,6 +5,7 @@ import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/follower_store_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
+import 'package:flutter_plogging/src/core/services/like_store_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/core/services/route_store_service.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
@@ -34,10 +35,12 @@ void $initServices() {
         () => RouteStoreService(firestoneInstance, getIt<StorageService>()))
     ..registerLazySingleton<FollowerStoreService>(
         () => FollowerStoreService(firestoneInstance))
+    ..registerLazySingleton<LikeStoreService>(
+        () => LikeStoreService(firestoneInstance))
     ..registerLazySingleton<GeolocatorService>(
         () => GeolocatorService(PolylinePoints()))
     ..registerLazySingleton<ImagePickerService>(
         () => ImagePickerService(ImagePicker()))
-    ..registerLazySingleton<UiidGeneratorService>(
-        () => UiidGeneratorService(const Uuid()));
+    ..registerLazySingleton<UuidGeneratorService>(
+        () => UuidGeneratorService(const Uuid()));
 }

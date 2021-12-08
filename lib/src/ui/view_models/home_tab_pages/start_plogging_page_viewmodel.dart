@@ -32,7 +32,7 @@ const double minDistance = 5.0;
 @injectable
 class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   final RouteStoreService _routeStoreService;
-  final UiidGeneratorService _uiidGeneratorService;
+  final UuidGeneratorService _uuidGeneratorService;
   final GeolocatorService _geolocatorService;
   final ImagePickerService _imagePickerService;
 
@@ -49,7 +49,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       AuthenticationService authenticationService,
       this._routeStoreService,
       this._geolocatorService,
-      this._uiidGeneratorService,
+      this._uuidGeneratorService,
       this._imagePickerService,
       this._routeProgressData,
       userStoreService)
@@ -189,7 +189,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> addPolyline() async {
-    final PolylineId polylineId = PolylineId(_uiidGeneratorService.generate());
+    final PolylineId polylineId = PolylineId(_uuidGeneratorService.generate());
     final int lastLength = _routeProgressData.polylinePointList.length;
 
     _routeProgressData.polylinePointList =
@@ -261,7 +261,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   void dismissAlert() {
     _routeProgressData =
-        RouteProgressData(id: _uiidGeneratorService.generate());
+        RouteProgressData(id: _uuidGeneratorService.generate());
     notifyListeners("startPloggingRouteCoordinator_returnToPrevious");
   }
 

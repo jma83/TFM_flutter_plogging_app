@@ -3,7 +3,6 @@ import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/follower_store_service.dart';
-import 'package:flutter_plogging/src/core/services/user_store_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
@@ -14,15 +13,13 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   bool _isLoading = false;
   List<UserSearchData> _users = [];
   List<FollowerData> _followingList = [];
-  final UiidGeneratorService _uiidGeneratorService;
+  final UuidGeneratorService _uuidGeneratorService;
   final FollowerStoreService _followerStoreService;
   SearchPageViewModel(authenticationService, userStoreService,
-      this._followerStoreService, this._uiidGeneratorService)
+      this._followerStoreService, this._uuidGeneratorService)
       : super(authenticationService, userStoreService);
 
   loadPage() async {
-    print(
-        "authenticationService.currentUser!.uid ${authenticationService.currentUser!.uid}");
     _followingList = await _followerStoreService.queryElementEqualByCriteria(
         FollowerFieldData.userId, authenticationService.currentUser!.uid);
   }
@@ -36,10 +33,10 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     final List<UserData> usersFound = await userStoreService
         .queryElementLikeByCriteria(UserFieldData.username, value);
     final followingIds = _followingList.map((e) => e.userFollowedId);
-    _users = usersFound.map((user) {
-      return UserSearchData(
-          user: user, followingFlag: followingIds.contains(user.id));
-    }).toList();
+    _users = usersFound
+        .map((user) => UserSearchData(
+            user: user, followingFlag: followingIds.contains(user.id)))
+        .toList();
 
     toggleLoading();
     notifyListeners("update_search_page");
@@ -58,12 +55,13 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
         break;
       }
     }
+    userData.followingFlag = !userData.followingFlag;
     if (follower != null) {
       await removeElement(userData, follower);
       return;
     }
     final FollowerData newFollowerData = FollowerData(
-        id: _uiidGeneratorService.generate(),
+        id: _uuidGeneratorService.generate(),
         userId: authenticationService.currentUser!.uid,
         userFollowedId: userData.id);
     await addElement(userData, newFollowerData);

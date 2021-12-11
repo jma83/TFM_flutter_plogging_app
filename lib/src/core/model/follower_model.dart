@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
-import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
+import 'package:flutter_plogging/src/core/model/interfaces/i_model.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: IStoreService)
-class FollowerStoreService implements IStoreService<FollowerData> {
+@LazySingleton(as: IModel)
+class FollowerModel implements IModel<FollowerData> {
   final FirebaseFirestore _firebaseFirestore;
   @override
   String entityName = "followers";
-  FollowerStoreService(this._firebaseFirestore);
+  FollowerModel(this._firebaseFirestore);
 
   @override
   Future<void> addElement(FollowerData data) async {

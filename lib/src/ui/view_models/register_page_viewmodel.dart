@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
-import 'package:flutter_plogging/src/core/services/interfaces/i_store_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
@@ -29,8 +28,8 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
 
   final UserViewModel _userViewModel;
 
-  RegisterPageViewModel(authService, this._userViewModel, _userStoreService)
-      : super(authService, _userStoreService) {
+  RegisterPageViewModel(authService, this._userViewModel, _userModel)
+      : super(authService, _userModel) {
     createAuthListener();
   }
 
@@ -56,7 +55,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
       print(e);
     }
     toggleLoading();
-    await userStoreService.addElement(
+    await userModel.addElement(
       UserData(
           id: authService.currentUser!.uid,
           username: _username,

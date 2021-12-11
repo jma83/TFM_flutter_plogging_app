@@ -2,17 +2,17 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
-import 'package:flutter_plogging/src/core/services/interfaces/i_store_media_service.dart';
+import 'package:flutter_plogging/src/core/model/interfaces/i_media_model.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: IStoreMediaService)
-class UserStoreService implements IStoreMediaService<UserData> {
+@LazySingleton(as: IMediaModel)
+class UserModel implements IMediaModel<UserData> {
   final FirebaseFirestore _firebaseFirestore;
   final StorageService _storageService;
   @override
   String entityName = "users";
-  UserStoreService(this._firebaseFirestore, this._storageService);
+  UserModel(this._firebaseFirestore, this._storageService);
 
   @override
   Future<void> addElement(UserData data) async {
@@ -92,8 +92,12 @@ class UserStoreService implements IStoreMediaService<UserData> {
 
   @override
   Future<List<UserData>> queryElementInCriteria(
-      String key, List<String> value) {
-    // TODO: implement queryElementInCriteria
-    throw UnimplementedError();
+      String key, List<String> values) async {
+    final QuerySnapshot<Object?> docsData =
+        await entity.where(key, whereIn: values).get();
+    return docsData.docs
+        .map((e) =>
+            UserData.castMapToUser(e.data() as Map<String, dynamic>, e.id))
+        .toList();
   }
 }

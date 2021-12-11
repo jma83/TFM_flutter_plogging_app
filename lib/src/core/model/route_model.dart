@@ -2,17 +2,17 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
-import 'package:flutter_plogging/src/core/services/interfaces/i_store_media_service.dart';
+import 'package:flutter_plogging/src/core/model/interfaces/i_media_model.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: IStoreMediaService)
-class RouteStoreService implements IStoreMediaService<RouteData> {
+@LazySingleton(as: IMediaModel)
+class RouteModel implements IMediaModel<RouteData> {
   final FirebaseFirestore _firebaseFirestore;
   final StorageService _storageService;
   @override
   String entityName = "routes";
-  RouteStoreService(this._firebaseFirestore, this._storageService);
+  RouteModel(this._firebaseFirestore, this._storageService);
 
   @override
   Future<void> addElement(RouteData data) async {
@@ -113,8 +113,12 @@ class RouteStoreService implements IStoreMediaService<RouteData> {
 
   @override
   Future<List<RouteData>> queryElementInCriteria(
-      String key, List<String> value) {
-    // TODO: implement queryElementInCriteria
-    throw UnimplementedError();
+      String key, List<String> values) async {
+    final QuerySnapshot<Object?> docsData =
+        await entity.where(key, whereIn: values).get();
+    return docsData.docs
+        .map((e) =>
+            RouteData.castMapToRoute(e.data() as Map<String, dynamic>, e.id))
+        .toList();
   }
 }

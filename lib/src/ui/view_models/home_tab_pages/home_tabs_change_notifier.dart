@@ -11,7 +11,7 @@ class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {
     return authenticationService.currentUserData!;
   }
 
-  String get currenUserId {
+  String get currentUserId {
     return currentUser.id;
   }
 

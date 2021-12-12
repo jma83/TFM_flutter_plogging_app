@@ -71,7 +71,7 @@ class SearchPage extends StatelessWidget {
             color: Colors.green[colorCodes[index % 5]]!,
             clickable: true,
             button1: "Follow",
-            isSelf: viewModel.currenUserId == viewModel.users[index].id,
+            isSelf: viewModel.currentUserId == viewModel.users[index].id,
             callback: () {},
             callbackButton: () =>
                 viewModel.handleFollowUser(viewModel.users[index]),

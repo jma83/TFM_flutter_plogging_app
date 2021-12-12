@@ -2,6 +2,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:injectable/injectable.dart';
@@ -10,6 +11,7 @@ import 'package:injectable/injectable.dart';
 class HomePageViewModel extends HomeTabsChangeNotifier {
   bool _isLoading = false;
   List<RouteListData> _routes = [];
+  late RouteListData _selectedRoute;
   final GetFollowersRouteList _getFollowersRouteList;
   final ManageLikeRoute _manageLikeRoute;
   HomePageViewModel(
@@ -18,7 +20,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> loadPage() async {
     toggleLoading();
-    _routes = await _getFollowersRouteList.execute(currenUserId);
+    _routes = await _getFollowersRouteList.execute(currentUserId);
     toggleLoading();
     updatePage();
   }
@@ -27,13 +29,26 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
     _manageLikeRoute.execute(routeData, updatePage);
   }
 
+  navigateToRoute(RouteListData route) {
+    setSelectedRoute(route);
+    notifyListeners(HomeNotifiers.navigateToRoute);
+  }
+
   updatePage() {
-    notifyListeners("update_home_page");
+    notifyListeners(HomeNotifiers.updateHomePage);
   }
 
   toggleLoading() {
     _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
     _isLoading = !_isLoading;
+  }
+
+  setSelectedRoute(RouteListData route) {
+    _selectedRoute = route;
+  }
+
+  get selectedRoute {
+    return _selectedRoute;
   }
 
   List<RouteListData> get routes {
@@ -42,14 +57,6 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
 
   String get username {
     return currentUser.username;
-  }
-
-  int get age {
-    return currentUser.age;
-  }
-
-  int get gender {
-    return currentUser.gender;
   }
 
   String getDateFormat(RouteListData route) {

@@ -26,9 +26,9 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   Future<void> submitSearch(String value) async {
     toggleLoading();
     if (value.isEmpty) {
-      _routes = await _getRouteListByUser.execute(currenUserId);
+      _routes = await _getRouteListByUser.execute(currentUserId);
     } else {
-      _routes = await _searchRouteList.execute(value, currenUserId);
+      _routes = await _searchRouteList.execute(value, currentUserId);
     }
     toggleAndUpdate();
   }

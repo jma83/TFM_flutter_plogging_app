@@ -19,10 +19,10 @@ class UserSearchData extends UserData {
             image: user.image);
 
   static List<UserSearchData> createListFromUsersAndFollows(
-      List<UserSearchData> users, List<FollowerData> follows) {
-    return users.map((UserSearchData user) {
-      FollowerData? followerData =
-          follows.firstWhereOrNull((element) => element.userId == user.id);
+      List<UserData> users, List<FollowerData> follows) {
+    return users.map((UserData user) {
+      FollowerData? followerData = follows
+          .firstWhereOrNull((element) => element.userFollowedId == user.id);
       return UserSearchData(
           user: user,
           followerId: followerData?.id,

@@ -1,8 +1,10 @@
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
+import 'package:flutter_plogging/src/core/application/get_user_following.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
+import 'package:flutter_plogging/src/core/application/search_user_list.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/core/model/follower_model.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
@@ -58,8 +60,7 @@ void $initViewModels() {
         getIt<AuthenticationService>(), getIt<UserModel>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
-        getIt<UserModel>(),
-        getIt<FollowerModel>(),
-        getIt<UuidGeneratorService>(),
-        getIt<ManageFollowUser>()));
+        getIt<ManageFollowUser>(),
+        getIt<GetUserFollowing>(),
+        getIt<SearchUserList>()));
 }

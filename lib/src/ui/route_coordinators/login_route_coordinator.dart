@@ -10,7 +10,6 @@ import 'package:injectable/injectable.dart';
 class LoginRouteCoordinator extends ParentRouteCoordinator {
   LoginRouteCoordinator(LoginPage mainWidget, navigationService)
       : super(mainWidget, navigationService) {
-    print("LoginRouteCoordinator");
     mainWidget.viewModel.addListener(() => navigateToRegister(),
         ["loginRouteCoordinator_navigateToRegister"]);
     mainWidget.viewModel.addListener(

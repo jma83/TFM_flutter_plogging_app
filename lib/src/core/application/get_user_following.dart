@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 class GetUserFollowing {
   final FollowerModel _followerModel;
   GetUserFollowing(this._followerModel);
-  execute(String currentUserId) async {
+  Future<List<FollowerData>> execute(String currentUserId) async {
     return await _followerModel.queryElementEqualByCriteria(
         FollowerFieldData.userId, currentUserId);
   }

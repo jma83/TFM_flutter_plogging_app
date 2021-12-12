@@ -30,7 +30,7 @@ const double minDistance = 5.0;
 
 @injectable
 class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
-  final RouteModel _RouteModel;
+  final RouteModel _routeModel;
   final UuidGeneratorService _uuidGeneratorService;
   final GeolocatorService _geolocatorService;
   final ImagePickerService _imagePickerService;
@@ -46,7 +46,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   StartPloggingPageViewModel(
       AuthenticationService authenticationService,
-      this._RouteModel,
+      this._routeModel,
       this._geolocatorService,
       this._uuidGeneratorService,
       this._imagePickerService,
@@ -116,7 +116,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   confirmRoute() {
     confirmProgressRouteData();
-    _RouteModel.addElement(_routeProgressData);
+    _routeModel.addElement(_routeProgressData);
     dismissAlert();
     notifyListeners("update_start_plogging_page");
   }

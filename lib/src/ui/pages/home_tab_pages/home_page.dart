@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_route.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
           viewModel.loadPage();
-          viewModel.addListener(() {}, ["update_home_page"]);
+          viewModel.addListener(() {}, [HomeNotifiers.updateHomePage]);
         },
         builder: (context, HomePageViewModel viewModel, child) {
           return getRouteList(viewModel);
@@ -26,6 +27,7 @@ class HomePage extends StatelessWidget {
 
   getWrapHeader(HomePageViewModel viewModel) {
     return Wrap(
+      spacing: 10,
       children: getHeaderWidgets(),
     );
   }
@@ -86,7 +88,7 @@ class HomePage extends StatelessWidget {
           description: viewModel.routes[index].description ?? "",
           authorName: viewModel.currentUser.username,
           date: viewModel.getDateFormat(viewModel.routes[index]),
-          callback: () {},
+          callback: () => viewModel.navigateToRoute(viewModel.routes[index]),
           callbackLike: () => viewModel.likeRoute(viewModel.routes[index]),
           isLiked: viewModel.routes[index].isLiked,
         ));

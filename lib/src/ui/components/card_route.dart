@@ -9,7 +9,7 @@ class CardRoute extends StatefulWidget {
   final double distance;
   final String? image;
   final String imagePlaceholder;
-  final double? height;
+  final double height;
   final double borderRadius;
   final Color? color;
   final String date;
@@ -26,7 +26,7 @@ class CardRoute extends StatefulWidget {
       this.distance = 0,
       this.image = "assets/img1.jpg",
       this.imagePlaceholder = "assets/jar-loading.gif",
-      this.height,
+      this.height = 130,
       this.borderRadius = 20,
       this.color,
       this.date = "",

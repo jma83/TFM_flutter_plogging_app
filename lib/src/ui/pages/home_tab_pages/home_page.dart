@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget {
           authorName: viewModel.currentUser.username,
           date: viewModel.getDateFormat(viewModel.routes[index]),
           callback: () {},
-          callbackLike: () => {},
+          callbackLike: () => viewModel.likeRoute(viewModel.routes[index]),
           isLiked: viewModel.routes[index].isLiked,
         ));
   }

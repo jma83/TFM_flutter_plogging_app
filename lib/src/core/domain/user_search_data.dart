@@ -1,8 +1,12 @@
+import 'package:collection/src/iterable_extensions.dart';
+import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 
 class UserSearchData extends UserData {
   bool followingFlag;
-  UserSearchData({required UserData user, this.followingFlag = false})
+  String? followerId;
+  UserSearchData(
+      {required UserData user, this.followerId, this.followingFlag = false})
       : super(
             id: user.id,
             username: user.username,
@@ -13,4 +17,16 @@ class UserSearchData extends UserData {
             xp: user.xp,
             level: user.level,
             image: user.image);
+
+  static List<UserSearchData> createListFromUsersAndFollows(
+      List<UserSearchData> users, List<FollowerData> follows) {
+    return users.map((UserSearchData user) {
+      FollowerData? followerData =
+          follows.firstWhereOrNull((element) => element.userId == user.id);
+      return UserSearchData(
+          user: user,
+          followerId: followerData?.id,
+          followingFlag: followerData != null);
+    }).toList();
+  }
 }

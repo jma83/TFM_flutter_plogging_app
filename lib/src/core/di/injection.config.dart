@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/di/entities/application.dart';
 import 'package:flutter_plogging/src/core/di/entities/models.dart';
 import 'package:flutter_plogging/src/core/di/entities/route_coordinators.dart';
 import 'package:flutter_plogging/src/core/di/entities/services.dart';
@@ -14,6 +15,7 @@ void $initGetIt({String environment = Env.Default}) {
   }
   $initServices();
   $initModels();
+  $initApplication();
   $initViewModels();
   $initViews();
   $initRouteCoordinators();

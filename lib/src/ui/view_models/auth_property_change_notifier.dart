@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
-import 'package:flutter_plogging/src/core/model/user_store_service.dart';
+import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
 class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {

@@ -1,23 +1,22 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_plogging/src/core/domain/like_data.dart';
-import 'package:flutter_plogging/src/core/domain/route_data.dart';
+import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
+import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
+import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
-import 'package:flutter_plogging/src/core/model/like_model.dart';
-import 'package:flutter_plogging/src/core/model/route_model.dart';
-import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   List<RouteListData> _routes = [];
-  List<LikeData> _likes = [];
   String _searchValue = "";
   bool _isLoading = false;
-  final RouteModel _routeModel;
-  final LikeModel _likeModel;
-  final UuidGeneratorService _uuidGeneratorService;
-  MyRoutesPageViewModel(authService, this._routeModel, this._likeModel,
-      this._uuidGeneratorService)
+  final GetRouteListByUser _getRouteListByUser;
+  final SearchRouteList _searchRouteList;
+  final ManageLikeRoute _manageLikeRoute;
+  MyRoutesPageViewModel(authService, this._manageLikeRoute,
+      this._getRouteListByUser, this._searchRouteList)
       : super(authService);
 
   setSearchValue(String value) {
@@ -26,46 +25,12 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> submitSearch(String value) async {
     toggleLoading();
-    List<RouteData> routes = [];
     if (value.isEmpty) {
-      routes = await emptyTextSearch();
+      _routes = await _getRouteListByUser.execute(currenUserId);
     } else {
-      routes = await textSearch(value);
+      _routes = await _searchRouteList.execute(value, currenUserId);
     }
-    matchRoutesWithLikes(routes);
     toggleAndUpdate();
-  }
-
-  Future<List<RouteData>> emptyTextSearch() async {
-    final userId = authenticationService.currentUser!.uid;
-
-    List<RouteData> routes = await _routeModel.queryElementEqualByCriteria(
-        RouteFieldData.userId, userId);
-    _likes = await _likeModel.queryElementEqualByCriteria(
-        LikeFieldData.userId, authenticationService.currentUser!.uid);
-    return routes;
-  }
-
-  Future<List<RouteData>> textSearch(String value) async {
-    final userId = authenticationService.currentUser!.uid;
-
-    List<RouteData> routes =
-        await _routeModel.searchRoutesByNameAndAuthor(value, userId);
-    if (routes.isEmpty) {
-      toggleAndUpdate();
-      return [];
-    }
-    _likes = await _likeModel.matchRoutesWithUserLikes(
-        userId, routes.map((e) => e.id!).toList());
-    return routes;
-  }
-
-  matchRoutesWithLikes(List<RouteData> routes) {
-    final likedRouteIds = _likes.map((e) => e.routeId).toList();
-    _routes = routes
-        .map((RouteData route) => RouteListData(
-            routeData: route, isLiked: likedRouteIds.contains(route.id)))
-        .toList();
   }
 
   toggleAndUpdate() {
@@ -83,33 +48,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   }
 
   likeRoute(RouteListData routeData) async {
-    LikeData? like;
-
-    routeData.isLiked = !routeData.isLiked;
-    updatePage();
-
-    _likes.forEach((element) {
-      if (element.routeId == routeData.id) {
-        like = element;
-        return;
-      }
-    });
-
-    like != null ? removeLikeFromRoute(like!) : addLikeToRoute(routeData);
-  }
-
-  removeLikeFromRoute(LikeData like) async {
-    _likes.remove(like);
-    await _likeModel.removeElement(like.id);
-  }
-
-  addLikeToRoute(RouteListData routeData) async {
-    final newLike = LikeData(
-        userId: currenUserId,
-        routeId: routeData.id!,
-        id: _uuidGeneratorService.generate());
-    _likes.add(newLike);
-    await _likeModel.addElement(newLike);
+    _manageLikeRoute.execute(routeData, updatePage);
   }
 
   String get searchValue {

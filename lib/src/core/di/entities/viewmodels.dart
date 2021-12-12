@@ -1,6 +1,10 @@
+import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
+import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
+import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
+import 'package:flutter_plogging/src/core/application/search_route_list.dart';
+import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/core/model/follower_model.dart';
-import 'package:flutter_plogging/src/core/model/like_model.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_page_viewmodel.dart';
@@ -12,7 +16,7 @@ import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
-import 'package:flutter_plogging/src/core/model/user_store_service.dart';
+import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
@@ -35,9 +39,8 @@ void $initViewModels() {
         getIt<UserModel>()))
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
         getIt<AuthenticationService>(),
-        getIt<RouteModel>(),
-        getIt<FollowerModel>(),
-        getIt<LikeModel>()))
+        getIt<GetFollowersRouteList>(),
+        getIt<ManageLikeRoute>()))
     ..registerFactory<StartPloggingPageViewModel>(() =>
         StartPloggingPageViewModel(
             getIt<AuthenticationService>(),
@@ -48,14 +51,15 @@ void $initViewModels() {
             RouteProgressData(id: getIt<UuidGeneratorService>().generate())))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
         getIt<AuthenticationService>(),
-        getIt<RouteModel>(),
-        getIt<LikeModel>(),
-        getIt<UuidGeneratorService>()))
+        getIt<ManageLikeRoute>(),
+        getIt<GetRouteListByUser>(),
+        getIt<SearchRouteList>()))
     ..registerFactory<ProfilePageViewModel>(() => ProfilePageViewModel(
         getIt<AuthenticationService>(), getIt<UserModel>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<UserModel>(),
         getIt<FollowerModel>(),
-        getIt<UuidGeneratorService>()));
+        getIt<UuidGeneratorService>(),
+        getIt<ManageFollowUser>()));
 }

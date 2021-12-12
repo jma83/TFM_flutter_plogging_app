@@ -1,9 +1,10 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/model/follower_model.dart';
-import 'package:flutter_plogging/src/core/model/user_store_service.dart';
+import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
@@ -17,9 +18,10 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   final UuidGeneratorService _uuidGeneratorService;
   final FollowerModel _followerModel;
   final UserModel _userModel;
+  final ManageFollowUser _manageFollowUser;
 
   SearchPageViewModel(authenticationService, this._userModel,
-      this._followerModel, this._uuidGeneratorService)
+      this._followerModel, this._uuidGeneratorService, this._manageFollowUser)
       : super(authenticationService);
 
   loadPage() async {
@@ -42,6 +44,10 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
         .toList();
 
     toggleLoading();
+    updatePage();
+  }
+
+  updatePage() {
     notifyListeners("update_search_page");
   }
 
@@ -51,7 +57,8 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   }
 
   handleFollowUser(UserSearchData userData) async {
-    FollowerData? follower;
+    await _manageFollowUser.execute(userData, updatePage);
+    /* FollowerData? follower;
     for (int i = 0; i < _followingList.length; i++) {
       if (_followingList[i].userFollowedId == userData.id) {
         follower = _followingList[i];
@@ -67,7 +74,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
         id: _uuidGeneratorService.generate(),
         userId: authenticationService.currentUser!.uid,
         userFollowedId: userData.id);
-    await addElement(userData, newFollowerData);
+    await addElement(userData, newFollowerData); */
   }
 
   removeElement(

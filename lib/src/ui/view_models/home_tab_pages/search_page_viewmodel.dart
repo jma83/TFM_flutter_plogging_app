@@ -31,12 +31,12 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     _searchValue = value;
   }
 
-  Future<void> submitSearch(String value) async {
-    toggleLoading();
+  Future<void> submitSearch(String value, bool isFirst) async {
+    toggleLoading(!isFirst);
     final List<UserData> usersFound = await _searchUserList.execute(value);
     _users = UserSearchData.createListFromUsersAndFollows(
         usersFound, _followingList);
-    toggleLoading();
+    toggleLoading(!isFirst);
     updatePage();
     _updateFollowingUsers();
   }
@@ -49,8 +49,12 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners("update_search_page");
   }
 
-  toggleLoading() {
-    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
+  toggleLoading(bool isVisible) {
+    if (isVisible) {
+      _isLoading
+          ? EasyLoading.dismiss()
+          : EasyLoading.show(status: 'loading...');
+    }
     _isLoading = !_isLoading;
   }
 

@@ -15,27 +15,30 @@ class MyRoutesPage extends StatelessWidget {
     return ViewModelBuilder<MyRoutesPageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
-          viewModel.submitSearch(viewModel.searchValue);
+          viewModel.submitSearch(viewModel.searchValue, true);
           viewModel.addListener(() {}, ["update_my_routes"]);
           return;
         },
         builder: (context, MyRoutesPageViewModel viewModel, child) {
-          return Column(
-            children: [
-              InputSearch(
-                  value: viewModel.searchValue,
-                  placeholder: "Search routes",
-                  maxLength: 30,
-                  onChange: (value) => viewModel.setSearchValue(value),
-                  onSubmit: (value) => viewModel.submitSearch(value)),
-              Expanded(
-                  child: SizedBox(
-                      height: 100.0,
-                      child: viewModel.routes.isNotEmpty
-                          ? getSearchList()
-                          : getEmptySearch()))
-            ],
-          );
+          return Scaffold(
+              appBar: AppBar(title: const Text("My Routes")),
+              body: Column(
+                children: [
+                  InputSearch(
+                      value: viewModel.searchValue,
+                      placeholder: "Search routes",
+                      maxLength: 30,
+                      onChange: (value) => viewModel.setSearchValue(value),
+                      onSubmit: (value) =>
+                          viewModel.submitSearch(value, false)),
+                  Expanded(
+                      child: SizedBox(
+                          height: 100.0,
+                          child: viewModel.routes.isNotEmpty
+                              ? getSearchList()
+                              : getEmptySearch()))
+                ],
+              ));
         });
   }
 
@@ -73,7 +76,8 @@ class MyRoutesPage extends StatelessWidget {
                 description: viewModel.routes[index].description ?? "",
                 authorName: viewModel.currentUser.username,
                 date: viewModel.getDateFormat(viewModel.routes[index]),
-                callback: () {},
+                callback: () =>
+                    viewModel.navigateToRoute(viewModel.routes[index]),
                 callbackLike: () =>
                     viewModel.likeRoute(viewModel.routes[index]),
                 isLiked: viewModel.routes[index].isLiked,

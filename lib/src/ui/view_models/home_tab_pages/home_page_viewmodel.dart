@@ -19,9 +19,9 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
       : super(authenticationService);
 
   Future<void> loadPage() async {
-    toggleLoading();
+    toggleLoading(false);
     _routes = await _getFollowersRouteList.execute(currentUserId);
-    toggleLoading();
+    toggleLoading(false);
     updatePage();
   }
 
@@ -38,8 +38,12 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(HomeNotifiers.updateHomePage);
   }
 
-  toggleLoading() {
-    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
+  toggleLoading(bool isVisible) {
+    if (isVisible) {
+      _isLoading
+          ? EasyLoading.dismiss()
+          : EasyLoading.show(status: 'loading...');
+    }
     _isLoading = !_isLoading;
   }
 
@@ -47,7 +51,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
     _selectedRoute = route;
   }
 
-  get selectedRoute {
+  RouteListData get selectedRoute {
     return _selectedRoute;
   }
 

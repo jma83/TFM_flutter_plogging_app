@@ -32,15 +32,17 @@ class StartPloggingPage extends StatelessWidget {
               ["update_start_plogging_confirm_route"]);
         },
         builder: (context, StartPloggingPageViewModel viewModel, child) {
-          return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Stack(children: <Widget>[
-                getMap(),
-                getZoomButtons(),
-                getMyLocationButton(),
-                getRouteButton()
-              ]));
+          return Scaffold(
+              appBar: AppBar(title: const Text("Plogging")),
+              body: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Stack(children: <Widget>[
+                    getMap(),
+                    getZoomButtons(),
+                    getMyLocationButton(),
+                    getRouteButton()
+                  ])));
         });
   }
 

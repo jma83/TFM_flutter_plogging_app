@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dar
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
+import 'package:flutter_plogging/src/ui/notifiers/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:injectable/injectable.dart';
@@ -12,6 +13,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   List<RouteListData> _routes = [];
   String _searchValue = "";
   bool _isLoading = false;
+  late RouteListData _selectedRoute;
   final GetRouteListByUser _getRouteListByUser;
   final SearchRouteList _searchRouteList;
   final ManageLikeRoute _manageLikeRoute;
@@ -23,27 +25,40 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
     _searchValue = value;
   }
 
-  Future<void> submitSearch(String value) async {
-    toggleLoading();
+  Future<void> submitSearch(String value, bool isFirst) async {
+    toggleLoading(!isFirst);
     if (value.isEmpty) {
       _routes = await _getRouteListByUser.execute(currentUserId);
     } else {
       _routes = await _searchRouteList.execute(value, currentUserId);
     }
-    toggleAndUpdate();
+    toggleLoading(!isFirst);
+    updatePage();
   }
 
-  toggleAndUpdate() {
-    toggleLoading();
-    updatePage();
+  navigateToRoute(RouteListData route) {
+    setSelectedRoute(route);
+    notifyListeners(MyRouteNotifiers.navigateToRoute);
+  }
+
+  setSelectedRoute(RouteListData route) {
+    _selectedRoute = route;
+  }
+
+  RouteListData get selectedRoute {
+    return _selectedRoute;
   }
 
   updatePage() {
     notifyListeners("update_my_routes");
   }
 
-  toggleLoading() {
-    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
+  toggleLoading(bool isVisible) {
+    if (isVisible) {
+      _isLoading
+          ? EasyLoading.dismiss()
+          : EasyLoading.show(status: 'loading...');
+    }
     _isLoading = !_isLoading;
   }
 

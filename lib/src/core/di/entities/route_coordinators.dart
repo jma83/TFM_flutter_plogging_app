@@ -14,6 +14,7 @@ import 'package:flutter_plogging/src/ui/route_coordinators/search_route_coordina
 import 'package:flutter_plogging/src/ui/route_coordinators/start_plogging_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_nav_items.dart';
+import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
@@ -28,22 +29,17 @@ void $initRouteCoordinators() {
         LoginRouteCoordinator(getIt<LoginPage>(), getIt<NavigationService>()))
     ..registerFactory(() =>
         MainRouteCoordinator(getIt<HomeTabBar>(), getIt<NavigationService>()))
-    ..registerFactory(() =>
+    ..registerLazySingleton(() =>
         HomeRouteCoordinator(getIt<HomePage>(), getIt<NavigationService>()))
-    ..registerFactory(() =>
+    ..registerLazySingleton(() =>
         SearchRouteCoordinator(getIt<SearchPage>(), getIt<NavigationService>()))
-    ..registerFactory(() => StartPloggingRouteCoordinator(
+    ..registerLazySingleton(() => StartPloggingRouteCoordinator(
         getIt<StartPloggingPage>(), getIt<NavigationService>()))
-    ..registerFactory(() => MyRoutesRouteCoordinator(
+    ..registerLazySingleton(() => MyRoutesRouteCoordinator(
         getIt<MyRoutesPage>(), getIt<NavigationService>()))
-    ..registerFactory(() => ProfileRouteCoordinator(
+    ..registerLazySingleton(() => ProfileRouteCoordinator(
         getIt<ProfilePage>(), getIt<NavigationService>()))
-    ..registerFactory(() => HomeTabBar([
-          getIt<HomeRouteCoordinator>().mainWidget,
-          getIt<SearchRouteCoordinator>().mainWidget,
-          getIt<StartPloggingRouteCoordinator>().mainWidget,
-          getIt<MyRoutesRouteCoordinator>().mainWidget,
-          getIt<ProfileRouteCoordinator>().mainWidget
-        ], navbarItems));
+    ..registerLazySingleton(
+        () => HomeTabBar(navbarItems, getIt<NavigationService>()));
   //HomeRouteCoordinator
 }

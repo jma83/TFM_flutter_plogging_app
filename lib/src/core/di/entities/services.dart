@@ -6,6 +6,8 @@ import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
+import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
+import 'package:flutter_plogging/src/ui/tabs/home_tabs_routes_map.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -17,8 +19,8 @@ final storageInstance = firebase_storage.FirebaseStorage.instance;
 
 void $initServices() {
   getIt
-    ..registerLazySingleton<NavigationService>(
-        () => NavigationService(GlobalKey<NavigatorState>()))
+    ..registerLazySingleton<NavigationService>(() => NavigationService(
+        GlobalKey<NavigatorState>(), navigatorKeys, homeTabsRoutesMap))
     ..registerLazySingleton<AuthenticationService>(
         () => AuthenticationService(FirebaseAuth.instance))
     ..registerLazySingleton<StorageService>(

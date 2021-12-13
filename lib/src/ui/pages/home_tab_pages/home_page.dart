@@ -21,7 +21,10 @@ class HomePage extends StatelessWidget {
           viewModel.addListener(() {}, [HomeNotifiers.updateHomePage]);
         },
         builder: (context, HomePageViewModel viewModel, child) {
-          return getRouteList(viewModel);
+          return Scaffold(
+            appBar: AppBar(title: const Text("Home")),
+            body: getRouteList(viewModel),
+          );
         });
   }
 

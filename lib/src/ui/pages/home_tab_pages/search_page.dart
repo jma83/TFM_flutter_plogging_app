@@ -22,22 +22,25 @@ class SearchPage extends StatelessWidget {
           viewModel.addListener(() {}, ["update_search_page"]);
         },
         builder: (context, SearchPageViewModel viewModel, child) {
-          return Column(
-            children: [
-              InputSearch(
-                  value: viewModel.searchValue,
-                  placeholder: "Search users",
-                  maxLength: 30,
-                  onChange: (value) => viewModel.setSearchValue(value),
-                  onSubmit: (value) => viewModel.submitSearch(value)),
-              Expanded(
-                  child: SizedBox(
-                      height: 100.0,
-                      child: viewModel.users.isNotEmpty
-                          ? getSearchList()
-                          : getEmptySearch()))
-            ],
-          );
+          return Scaffold(
+              appBar: AppBar(title: const Text("Search")),
+              body: Column(
+                children: [
+                  InputSearch(
+                      value: viewModel.searchValue,
+                      placeholder: "Search users",
+                      maxLength: 30,
+                      onChange: (value) => viewModel.setSearchValue(value),
+                      onSubmit: (value) =>
+                          viewModel.submitSearch(value, false)),
+                  Expanded(
+                      child: SizedBox(
+                          height: 100.0,
+                          child: viewModel.users.isNotEmpty
+                              ? getSearchList()
+                              : getEmptySearch()))
+                ],
+              ));
         });
   }
 

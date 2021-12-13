@@ -10,8 +10,9 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProfilePageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
-        onModelReady: (viewModel) => viewModel.delayedLogoutProfile(),
-        builder: (context, ProfilePageViewModel viewModel, child) =>
-            Container());
+        onModelReady: (viewModel) =>
+            print("JOSUE! ${context.findRenderObject()}"),
+        builder: (context, ProfilePageViewModel viewModel, child) => Scaffold(
+            appBar: AppBar(title: const Text("Profile")), body: Container()));
   }
 }

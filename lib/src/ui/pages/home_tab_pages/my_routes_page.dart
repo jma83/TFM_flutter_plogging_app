@@ -15,7 +15,7 @@ class MyRoutesPage extends StatelessWidget {
     return ViewModelBuilder<MyRoutesPageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
-          viewModel.submitSearch(viewModel.searchValue, true);
+          viewModel.submitSearch(viewModel.searchValue);
           viewModel.addListener(() {}, ["update_my_routes"]);
           return;
         },
@@ -29,8 +29,7 @@ class MyRoutesPage extends StatelessWidget {
                       placeholder: "Search routes",
                       maxLength: 30,
                       onChange: (value) => viewModel.setSearchValue(value),
-                      onSubmit: (value) =>
-                          viewModel.submitSearch(value, false)),
+                      onSubmit: (value) => viewModel.submitSearch(value)),
                   Expanded(
                       child: SizedBox(
                           height: 100.0,

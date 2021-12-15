@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dar
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
@@ -17,22 +18,24 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   final GetRouteListByUser _getRouteListByUser;
   final SearchRouteList _searchRouteList;
   final ManageLikeRoute _manageLikeRoute;
+  final LoadingService _loadingService;
+
   MyRoutesPageViewModel(authService, this._manageLikeRoute,
-      this._getRouteListByUser, this._searchRouteList)
+      this._getRouteListByUser, this._searchRouteList, this._loadingService)
       : super(authService);
 
   setSearchValue(String value) {
     _searchValue = value;
   }
 
-  Future<void> submitSearch(String value, bool isFirst) async {
-    toggleLoading(!isFirst);
+  Future<void> submitSearch(String value) async {
+    toggleLoading();
     if (value.isEmpty) {
       _routes = await _getRouteListByUser.execute(currentUserId);
     } else {
       _routes = await _searchRouteList.execute(value, currentUserId);
     }
-    toggleLoading(!isFirst);
+    toggleLoading();
     updatePage();
   }
 
@@ -53,13 +56,8 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners("update_my_routes");
   }
 
-  toggleLoading(bool isVisible) {
-    if (isVisible) {
-      _isLoading
-          ? EasyLoading.dismiss()
-          : EasyLoading.show(status: 'loading...');
-    }
-    _isLoading = !_isLoading;
+  toggleLoading() {
+    _loadingService.toggleLoading();
   }
 
   likeRoute(RouteListData routeData) async {

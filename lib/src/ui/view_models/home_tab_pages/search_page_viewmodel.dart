@@ -6,21 +6,22 @@ import 'package:flutter_plogging/src/core/application/search_user_list.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class SearchPageViewModel extends HomeTabsChangeNotifier {
   String _searchValue = "";
-  bool _isLoading = false;
   List<UserSearchData> _users = [];
   List<FollowerData> _followingList = [];
   final ManageFollowUser _manageFollowUser;
   final GetUserFollowing _getUserFollowing;
   final SearchUserList _searchUserList;
+  final LoadingService _loadingService;
 
   SearchPageViewModel(authenticationService, this._manageFollowUser,
-      this._getUserFollowing, this._searchUserList)
+      this._getUserFollowing, this._searchUserList, this._loadingService)
       : super(authenticationService);
 
   loadPage() async {
@@ -32,11 +33,11 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> submitSearch(String value, bool isFirst) async {
-    toggleLoading(!isFirst);
+    toggleLoading();
     final List<UserData> usersFound = await _searchUserList.execute(value);
     _users = UserSearchData.createListFromUsersAndFollows(
         usersFound, _followingList);
-    toggleLoading(!isFirst);
+    toggleLoading();
     updatePage();
     _updateFollowingUsers();
   }
@@ -49,13 +50,8 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners("update_search_page");
   }
 
-  toggleLoading(bool isVisible) {
-    if (isVisible) {
-      _isLoading
-          ? EasyLoading.dismiss()
-          : EasyLoading.show(status: 'loading...');
-    }
-    _isLoading = !_isLoading;
+  toggleLoading() {
+    _loadingService.toggleLoading();
   }
 
   handleFollowUser(UserSearchData userData) async {

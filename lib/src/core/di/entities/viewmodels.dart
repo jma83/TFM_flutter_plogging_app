@@ -23,6 +23,7 @@ import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -34,15 +35,18 @@ void $initViewModels() {
     ..registerFactory<RegisterPageViewModel>(() => RegisterPageViewModel(
         getIt<AuthenticationService>(),
         getIt<UserViewModel>(),
+        getIt<LoadingService>(),
         getIt<UserModel>()))
     ..registerFactory<LoginPageViewModel>(() => LoginPageViewModel(
         getIt<AuthenticationService>(),
         getIt<UserViewModel>(),
+        getIt<LoadingService>(),
         getIt<UserModel>()))
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
         getIt<AuthenticationService>(),
         getIt<GetFollowersRouteList>(),
-        getIt<ManageLikeRoute>()))
+        getIt<ManageLikeRoute>(),
+        getIt<LoadingService>()))
     ..registerFactory<StartPloggingPageViewModel>(() =>
         StartPloggingPageViewModel(
             getIt<AuthenticationService>(),
@@ -55,14 +59,16 @@ void $initViewModels() {
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),
         getIt<GetRouteListByUser>(),
-        getIt<SearchRouteList>()))
+        getIt<SearchRouteList>(),
+        getIt<LoadingService>()))
     ..registerFactory<ProfilePageViewModel>(() => ProfilePageViewModel(
         getIt<AuthenticationService>(), getIt<UserModel>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageFollowUser>(),
         getIt<GetUserFollowing>(),
-        getIt<SearchUserList>()))
+        getIt<SearchUserList>(),
+        getIt<LoadingService>()))
     ..registerFactory<RouteDetailPageViewModel>(
         () => RouteDetailPageViewModel(getIt<AuthenticationService>()));
 }

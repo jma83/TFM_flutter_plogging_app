@@ -15,6 +15,7 @@ class HomeTabBar extends StatefulWidget {
 
 class _HomeTabBarState extends State<HomeTabBar> {
   int _selectedIndex = 0;
+  List<TabItem> _tabItemsList = [];
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
@@ -50,15 +51,28 @@ class _HomeTabBarState extends State<HomeTabBar> {
   }
 
   Widget _buildOffstageNavigator(TabItem tabItem, String route) {
+    updateItemsList();
+    final bool isInstanciated =
+        _tabItemsList.contains(tabItem) || selectedTabItem == tabItem;
     return Offstage(
       offstage: selectedTabItem != tabItem,
-      child: TabNavigator(
-        visible: true,
-        navigatorKey: widget._navigationService.homeNavigatorKeys[tabItem]!,
-        tabItem: tabItem,
-        initialRoute: route,
-      ),
+      child: !isInstanciated
+          ? Container()
+          : TabNavigator(
+              navigatorKey:
+                  widget._navigationService.homeNavigatorKeys[tabItem]!,
+              tabItem: tabItem,
+              initialRoute: route,
+            ),
     );
+  }
+
+  updateItemsList() {
+    if (!_tabItemsList.contains(selectedTabItem)) {
+      setState(() {
+        _tabItemsList = [..._tabItemsList, selectedTabItem];
+      });
+    }
   }
 
   TabItem get selectedTabItem {

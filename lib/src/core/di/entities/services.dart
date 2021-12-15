@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
@@ -30,5 +31,6 @@ void $initServices() {
     ..registerLazySingleton<ImagePickerService>(
         () => ImagePickerService(ImagePicker()))
     ..registerLazySingleton<UuidGeneratorService>(
-        () => UuidGeneratorService(const Uuid()));
+        () => UuidGeneratorService(const Uuid()))
+    ..registerLazySingleton<LoadingService>(() => LoadingService());
 }

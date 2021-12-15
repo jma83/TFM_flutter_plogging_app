@@ -7,13 +7,11 @@ class TabNavigator extends StatelessWidget {
       {Key? key,
       required this.navigatorKey,
       required this.tabItem,
-      required this.initialRoute,
-      required this.visible})
+      required this.initialRoute})
       : super(key: key);
   final GlobalKey<NavigatorState> navigatorKey;
   final TabItem tabItem;
   final String initialRoute;
-  bool visible;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
@@ -8,12 +8,12 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   String _email = "";
   String _password = "";
   String _errorMessage = "";
-  bool _isLoading = false;
 
   final UserViewModel _userViewModel;
+  final LoadingService _loadingService;
 
-  LoginPageViewModel(
-      _authenticationService, this._userViewModel, _userStoreService)
+  LoginPageViewModel(_authenticationService, this._userViewModel,
+      this._loadingService, _userStoreService)
       : super(_authenticationService, _userStoreService) {
     createAuthListener();
   }
@@ -48,8 +48,7 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   }
 
   toggleLoading() {
-    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
-    _isLoading = !_isLoading;
+    _loadingService.toggleLoading();
   }
 
   @override
@@ -78,6 +77,6 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   }
 
   get isLoading {
-    return _isLoading;
+    return _loadingService.isLoading;
   }
 }

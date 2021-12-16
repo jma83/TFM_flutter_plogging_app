@@ -5,6 +5,10 @@ class LoadingService {
 
   LoadingService();
 
+  dynamic init() {
+    return EasyLoading.init();
+  }
+
   toggleLoading({bool showLoadIcon = true}) {
     if (showLoadIcon) {
       _isLoading

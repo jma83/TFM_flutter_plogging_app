@@ -1,5 +1,4 @@
 // ignore_for_file: constant_identifier_names
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
@@ -25,7 +24,6 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   String _age = "";
   String _gender = Gender.NotDefined;
   String _errorMessage = "";
-  bool _isLoading = false;
 
   final LoadingService _loadingService;
   final UserViewModel _userViewModel;
@@ -55,6 +53,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
         return;
       }
     } catch (e) {
+      setError("Sorry, couldn't validate data. Please, try it again later");
       print(e);
     }
     toggleLoading();

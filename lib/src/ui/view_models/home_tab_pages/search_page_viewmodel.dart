@@ -1,5 +1,4 @@
 import 'package:collection/src/iterable_extensions.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_plogging/src/core/application/get_user_following.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/search_user_list.dart';

@@ -37,11 +37,13 @@ class RouteData {
     List<GeoPoint> locationArray = route.locationArray;
     Timestamp endDate =
         route.endDate != null ? route.endDate! : Timestamp.now();
-    requiredFields.addAll({RouteFieldData.startDate: startDate});
-    requiredFields.addAll({RouteFieldData.distance: distance});
-    requiredFields.addAll({RouteFieldData.duration: duration});
-    requiredFields.addAll({RouteFieldData.locationArray: locationArray});
-    requiredFields.addAll({RouteFieldData.endDate: endDate});
+    requiredFields.addAll({
+      RouteFieldData.startDate: startDate,
+      RouteFieldData.distance: distance,
+      RouteFieldData.duration: duration,
+      RouteFieldData.locationArray: locationArray,
+      RouteFieldData.endDate: endDate
+    });
 
     if (route.image != null) {
       requiredFields.addAll({RouteFieldData.image: route.image!});

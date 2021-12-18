@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
 
 class InputButtonLike extends StatefulWidget {
   bool liked;
@@ -24,15 +23,8 @@ class _InputButtonLikeState extends State<InputButtonLike> {
 
   likeButton() {
     final icon = widget.liked ? Icons.thumb_up : Icons.thumb_up_alt_outlined;
-    return InputButton(
-      label: const Text(""),
-      icon: Icon(icon),
-      horizontalPadding: 0,
-      borderRadius: 100,
-      width: widget.width,
-      verticalPadding: 12,
-      onPress: widget.likeCallback,
-    );
+    return FloatingActionButton(
+        onPressed: () => widget.likeCallback(), child: Icon(icon));
   }
 
   buttonClick() {

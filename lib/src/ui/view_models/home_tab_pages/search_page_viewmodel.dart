@@ -45,6 +45,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     _followingList = await _getUserFollowing.execute(currentUserId);
   }
 
+  @override
   updatePage() {
     notifyListeners("update_search_page");
   }

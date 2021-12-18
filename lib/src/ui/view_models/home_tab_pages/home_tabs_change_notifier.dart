@@ -15,6 +15,10 @@ class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {
     return currentUser.id;
   }
 
+  updatePage() {
+    // implements on child
+  }
+
   @override
   dispose() {
     if (authenticationService.currentUser == null) {

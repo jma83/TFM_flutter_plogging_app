@@ -1,10 +1,12 @@
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/get_user_following.dart';
+import 'package:flutter_plogging/src/core/application/get_users_by_ids.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/search_user_list.dart';
+import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
@@ -46,7 +48,8 @@ void $initViewModels() {
         getIt<AuthenticationService>(),
         getIt<GetFollowersRouteList>(),
         getIt<ManageLikeRoute>(),
-        getIt<LoadingService>()))
+        getIt<LoadingService>(),
+        getIt<GetUsersByIds>()))
     ..registerFactory<StartPloggingPageViewModel>(() =>
         StartPloggingPageViewModel(
             getIt<AuthenticationService>(),
@@ -69,6 +72,6 @@ void $initViewModels() {
         getIt<GetUserFollowing>(),
         getIt<SearchUserList>(),
         getIt<LoadingService>()))
-    ..registerFactory<RouteDetailPageViewModel>(
-        () => RouteDetailPageViewModel(getIt<AuthenticationService>()));
+    ..registerFactory<RouteDetailPageViewModel>(() => RouteDetailPageViewModel(
+        getIt<AuthenticationService>(), getIt<ManageLikeRoute>()));
 }

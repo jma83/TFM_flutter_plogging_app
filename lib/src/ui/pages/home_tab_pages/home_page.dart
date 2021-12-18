@@ -18,7 +18,9 @@ class HomePage extends StatelessWidget {
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
           viewModel.loadPage();
-          viewModel.addListener(() {}, [HomeNotifiers.updateHomePage]);
+          viewModel.addListener(() {
+            print("heeeyye");
+          }, [HomeNotifiers.updateHomePage]);
         },
         builder: (context, HomePageViewModel viewModel, child) {
           return Scaffold(

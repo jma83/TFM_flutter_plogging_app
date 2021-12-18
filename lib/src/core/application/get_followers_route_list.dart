@@ -15,7 +15,7 @@ class GetFollowersRouteList {
 
   GetFollowersRouteList(this._followerModel, this._routeModel, this._likeModel);
 
-  execute(String currentUserId) async {
+  Future<List<RouteListData>> execute(String currentUserId) async {
     final List<String> userFollowingIds = await _getFollowingIds(currentUserId);
     final List<RouteData> userFollowingRoutes =
         await _getFollowingRoutes(userFollowingIds);

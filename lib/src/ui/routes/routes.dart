@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_bar.dart';
 import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/route_names.dart';
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page.dart';
@@ -34,24 +35,37 @@ Map<String, WidgetBuilder> getRoutesBuilder() {
   };
 }
 
+Map<String, ParentRouteCoordinator> getRoutesByCoordinator() {
+  return <String, ParentRouteCoordinator>{
+    Ruta.Start: getIt<StartRouteCoordinator>(),
+    Ruta.Login: getIt<LoginRouteCoordinator>(),
+    Ruta.HomeTab: getIt<MainRouteCoordinator>(),
+    Ruta.Home: getIt<HomeRouteCoordinator>(),
+    Ruta.Search: getIt<SearchRouteCoordinator>(),
+    Ruta.Plogging: getIt<StartPloggingRouteCoordinator>(),
+    Ruta.MyRoutes: getIt<MyRoutesRouteCoordinator>(),
+    Ruta.Profile: getIt<ProfileRouteCoordinator>()
+  };
+}
+
 Map<String, WidgetBuilder> getRoutesBuilderByCoordinator() {
   return <String, WidgetBuilder>{
     Ruta.Start: (BuildContext context) =>
-        getIt<StartRouteCoordinator>().mainWidget,
+        getIt<StartRouteCoordinator>().getAndUpdateWidget(),
     Ruta.Login: (BuildContext context) =>
-        getIt<LoginRouteCoordinator>().mainWidget,
+        getIt<LoginRouteCoordinator>().getAndUpdateWidget(),
     Ruta.HomeTab: (BuildContext context) =>
-        getIt<MainRouteCoordinator>().mainWidget,
+        getIt<MainRouteCoordinator>().getAndUpdateWidget(),
     Ruta.Home: (BuildContext context) =>
-        getIt<HomeRouteCoordinator>().mainWidget,
+        getIt<HomeRouteCoordinator>().getAndUpdateWidget(),
     Ruta.Search: (BuildContext context) =>
-        getIt<SearchRouteCoordinator>().mainWidget,
+        getIt<SearchRouteCoordinator>().getAndUpdateWidget(),
     Ruta.Plogging: (BuildContext context) =>
-        getIt<StartPloggingRouteCoordinator>().mainWidget,
+        getIt<StartPloggingRouteCoordinator>().getAndUpdateWidget(),
     Ruta.MyRoutes: (BuildContext context) =>
-        getIt<MyRoutesRouteCoordinator>().mainWidget,
+        getIt<MyRoutesRouteCoordinator>().getAndUpdateWidget(),
     Ruta.Profile: (BuildContext context) =>
-        getIt<ProfileRouteCoordinator>().mainWidget
+        getIt<ProfileRouteCoordinator>().getAndUpdateWidget()
   };
 }
 

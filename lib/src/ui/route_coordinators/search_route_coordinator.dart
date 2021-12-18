@@ -9,6 +9,6 @@ class SearchRouteCoordinator extends ParentRouteCoordinator {
   SearchRouteCoordinator(
       SearchPage mainWidget, NavigationService navigationService)
       : super(mainWidget, navigationService) {
-    navigationService.setCurrentHomeTabItem(TabItem.search);
+    // navigationService.setCurrentHomeTabItem(TabItem.search);
   }
 }

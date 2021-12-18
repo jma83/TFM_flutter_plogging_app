@@ -1,7 +1,9 @@
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
+import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_user_followers.dart';
 import 'package:flutter_plogging/src/core/application/get_user_following.dart';
+import 'package:flutter_plogging/src/core/application/get_users_by_ids.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
@@ -37,5 +39,8 @@ void $initApplication() {
         getIt<FollowerModel>(),
         getIt<UserModel>()))
     ..registerLazySingleton<SearchUserList>(
-        () => SearchUserList(getIt<UserModel>()));
+        () => SearchUserList(getIt<UserModel>()))
+    ..registerLazySingleton<GetUserById>(() => GetUserById(getIt<UserModel>()))
+    ..registerLazySingleton<GetUsersByIds>(
+        () => GetUsersByIds(getIt<UserModel>()));
 }

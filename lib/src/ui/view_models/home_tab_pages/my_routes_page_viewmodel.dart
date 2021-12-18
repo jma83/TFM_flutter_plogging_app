@@ -2,6 +2,7 @@ import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dar
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
+import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
@@ -51,6 +52,11 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
     return _selectedRoute;
   }
 
+  UserData get selectedAuthor {
+    return currentUser;
+  }
+
+  @override
   updatePage() {
     notifyListeners("update_my_routes");
   }

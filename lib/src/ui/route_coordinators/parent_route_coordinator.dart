@@ -7,6 +7,17 @@ class ParentRouteCoordinator {
 
   ParentRouteCoordinator(this.mainWidget, this.navigationService);
 
+  Widget getAndUpdateWidget() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      updateRoute();
+    });
+    return mainWidget;
+  }
+
+  updateRoute() {
+    // implements in child
+  }
+
   routeBuild(Widget widgetRoute) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => widgetRoute,

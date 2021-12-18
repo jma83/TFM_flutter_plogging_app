@@ -93,8 +93,10 @@ class UserModel implements IMediaModel<UserData> {
   @override
   Future<List<UserData>> queryElementInCriteria(
       String key, List<String> values) async {
+    final dynamic finalKey =
+        key == UserFieldData.id ? FieldPath.documentId : key;
     final QuerySnapshot<Object?> docsData =
-        await entity.where(key, whereIn: values).get();
+        await entity.where(finalKey, whereIn: values).get();
     return docsData.docs
         .map((e) =>
             UserData.castMapToUser(e.data() as Map<String, dynamic>, e.id))

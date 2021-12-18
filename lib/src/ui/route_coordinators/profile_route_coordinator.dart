@@ -11,8 +11,6 @@ class ProfileRouteCoordinator extends ParentRouteCoordinator {
   ProfileRouteCoordinator(
       ProfilePage mainWidget, NavigationService navigationService)
       : super(mainWidget, navigationService) {
-    navigationService.setCurrentHomeTabItem(TabItem.profile);
-
     mainWidget.viewModel.addListener(
         navigateToLogin, ["profileRouteCoordinator_navigateToLogin"]);
   }

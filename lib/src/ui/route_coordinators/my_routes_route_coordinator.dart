@@ -1,4 +1,5 @@
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
+import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/my_routes_page.dart';
@@ -14,14 +15,15 @@ class MyRoutesRouteCoordinator extends ParentRouteCoordinator {
       MyRoutesPage mainWidget, NavigationService navigationService)
       : super(mainWidget, navigationService) {
     mainWidget.viewModel.addListener(
-        () => navigateToRoute(mainWidget.viewModel.selectedRoute),
+        () => navigateToRoute(mainWidget.viewModel.selectedRoute,
+            mainWidget.viewModel.selectedAuthor),
         [MyRouteNotifiers.navigateToRoute]);
   }
 
-  navigateToRoute(RouteListData routeListData) {
+  navigateToRoute(RouteListData routeListData, UserData userData) async {
     final RouteDetailPage widget =
         navigationService.getRouteWidget(Ruta.RouteDetail) as RouteDetailPage;
-    widget.viewModel.setRoute(routeListData);
+    await widget.viewModel.setRouteAndAuthor(routeListData, userData);
     widget.viewModel.addListener(
         () => returnToPrevious(), [MyRouteNotifiers.returnToPrevious]);
     navigationService.setCurrentHomeTabItem(TabItem.myRoutes);

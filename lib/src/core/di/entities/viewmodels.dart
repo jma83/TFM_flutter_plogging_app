@@ -6,7 +6,7 @@ import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/search_user_list.dart';
-import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
@@ -57,7 +57,8 @@ void $initViewModels() {
             getIt<GeolocatorService>(),
             getIt<UuidGeneratorService>(),
             getIt<ImagePickerService>(),
-            RouteProgressData(id: getIt<UuidGeneratorService>().generate())))
+            RouteProgressData(id: getIt<UuidGeneratorService>().generate()),
+            getIt<CalculatePointsDistance>()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),
@@ -73,5 +74,7 @@ void $initViewModels() {
         getIt<SearchUserList>(),
         getIt<LoadingService>()))
     ..registerFactory<RouteDetailPageViewModel>(() => RouteDetailPageViewModel(
-        getIt<AuthenticationService>(), getIt<ManageLikeRoute>()));
+        getIt<AuthenticationService>(),
+        getIt<ManageLikeRoute>(),
+        getIt<CalculatePointsDistance>()));
 }

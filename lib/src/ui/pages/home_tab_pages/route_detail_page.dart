@@ -72,7 +72,7 @@ class RouteDetailPage extends StatelessWidget {
         height: MediaQuery.of(context).size.width / 1.6,
         child: GoogleMap(
           //polylines: Set<Polyline>.of(viewModel.polylines.values),
-          initialCameraPosition: CameraPosition(target: LatLng(38, 8), zoom: 8),
+          initialCameraPosition: viewModel.setCameraPosition(),
           myLocationEnabled: false,
           myLocationButtonEnabled: false,
           scrollGesturesEnabled: false,
@@ -81,6 +81,7 @@ class RouteDetailPage extends StatelessWidget {
           zoomControlsEnabled: false,
           onMapCreated: (GoogleMapController controller) {
             viewModel.setMapController(controller);
+            viewModel.setCameraPosition();
             // viewModel.setCameraToCurrentLocation(first: true);
           },
         ));

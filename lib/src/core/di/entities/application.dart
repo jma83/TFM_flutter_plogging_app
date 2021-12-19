@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
+import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -42,5 +44,7 @@ void $initApplication() {
         () => SearchUserList(getIt<UserModel>()))
     ..registerLazySingleton<GetUserById>(() => GetUserById(getIt<UserModel>()))
     ..registerLazySingleton<GetUsersByIds>(
-        () => GetUsersByIds(getIt<UserModel>()));
+        () => GetUsersByIds(getIt<UserModel>()))
+    ..registerLazySingleton<CalculatePointsDistance>(
+        () => CalculatePointsDistance(getIt<GeolocatorService>()));
 }

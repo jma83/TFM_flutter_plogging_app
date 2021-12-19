@@ -71,32 +71,9 @@ class GeolocatorService {
     );
   }
 
-  double calculateDistance(Position startPoint, Position endPoint) {
+  double calculateDistance(LatLng startPoint, LatLng endPoint) {
     return Geolocator.distanceBetween(startPoint.latitude, startPoint.longitude,
         endPoint.latitude, endPoint.longitude);
-  }
-
-  double calculateFullDistance(List<LatLng> polylinePointList) {
-    late LatLng auxPosition;
-    double distance = 0;
-    for (int i = 0; i < polylinePointList.length; i++) {
-      if (i == 0) {
-        auxPosition = polylinePointList[i];
-        continue;
-      }
-      distance += Geolocator.distanceBetween(
-          auxPosition.latitude,
-          auxPosition.longitude,
-          polylinePointList[i].latitude,
-          polylinePointList[i].longitude);
-    }
-    return distance;
-  }
-
-  List<GeoPoint> convertLatLngToGeopoints(List<LatLng> polylinePointList) {
-    return polylinePointList
-        .map((element) => GeoPoint(element.latitude, element.longitude))
-        .toList();
   }
 
   Future<bool> _requestLocationPermission() async {

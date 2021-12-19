@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
+import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
@@ -34,6 +36,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   final UuidGeneratorService _uuidGeneratorService;
   final GeolocatorService _geolocatorService;
   final ImagePickerService _imagePickerService;
+  final CalculatePointsDistance _calculatePointsDistance;
 
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
@@ -50,7 +53,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       this._geolocatorService,
       this._uuidGeneratorService,
       this._imagePickerService,
-      this._routeProgressData)
+      this._routeProgressData,
+      this._calculatePointsDistance)
       : super(authenticationService);
 
   loadPage() {
@@ -122,10 +126,10 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   completeProgressRouteData() {
-    _routeProgressData.distance = _geolocatorService
-        .calculateFullDistance(_routeProgressData.polylinePointList);
-    _routeProgressData.locationArray = _geolocatorService
-        .convertLatLngToGeopoints(_routeProgressData.polylinePointList);
+    _routeProgressData.distance =
+        _calculatePointsDistance.execute(_routeProgressData.polylinePointList);
+    _routeProgressData.locationArray = GeoPointUtils.convertLatLngToGeopoints(
+        _routeProgressData.polylinePointList);
     _routeProgressData.endDate = Timestamp.now();
     _routeProgressData.duration = DateCustomUtils.calcDateDifference(
             _routeProgressData.startDate!, _routeProgressData.endDate!)
@@ -180,8 +184,12 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   hasMinDistanceToDraw() {
-    final double distance = _geolocatorService.calculateDistance(
-        _routeProgressData.lastPosition!, _routeProgressData.currentPosition);
+    List<Position> positionList = [];
+    positionList.add(_routeProgressData.lastPosition!);
+    positionList.add(_routeProgressData.currentPosition);
+
+    final double distance =
+        _calculatePointsDistance.executeByPositions(positionList);
     if (distance < minDistance) return false;
     return true;
   }

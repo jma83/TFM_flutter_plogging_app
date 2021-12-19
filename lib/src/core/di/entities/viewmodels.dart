@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/get_user_following.dart';
 import 'package:flutter_plogging/src/core/application/get_users_by_ids.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_plogging/src/core/application/search_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/search_user_list.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/profile_page_
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/route_detail_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/search_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/start_plogging_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/user_detail_page_view_model.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
@@ -58,7 +61,8 @@ void $initViewModels() {
             getIt<UuidGeneratorService>(),
             getIt<ImagePickerService>(),
             RouteProgressData(id: getIt<UuidGeneratorService>().generate()),
-            getIt<CalculatePointsDistance>()))
+            getIt<CalculatePointsDistance>(),
+            getIt<GenerateNewPolyline>()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),
@@ -76,5 +80,12 @@ void $initViewModels() {
     ..registerFactory<RouteDetailPageViewModel>(() => RouteDetailPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),
-        getIt<CalculatePointsDistance>()));
+        getIt<CalculatePointsDistance>(),
+        getIt<GenerateNewPolyline>()))
+    ..registerFactory<UserDetailPageViewModel>(() => UserDetailPageViewModel(
+        getIt<AuthenticationService>(),
+        getIt<GetRouteListByUser>(),
+        getIt<ManageLikeRoute>(),
+        getIt<ManageFollowUser>(),
+        getIt<CheckUserFollowed>()));
 }

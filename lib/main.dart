@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
               color: Colors.black87,
             )),
         home: getIt<StartRouteCoordinator>().mainWidget,
-        navigatorKey: getIt<NavigationService>().navigatorKey,
+        navigatorKey: getIt<NavigationService>().currentNavigator,
         builder: getIt<LoadingService>().init());
   }
 }

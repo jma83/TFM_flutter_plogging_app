@@ -41,7 +41,7 @@ class GeolocatorService {
   }
 
   Future<List<LatLng>> createPolylines(List<LatLng> polylineCoordinates,
-      Position startPoint, Position endPoint) async {
+      LatLng startPoint, LatLng endPoint) async {
     PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
       apiKey,
       PointLatLng(startPoint.latitude, startPoint.longitude),
@@ -59,16 +59,6 @@ class GeolocatorService {
       });
     }
     return polylineCoordinates;
-  }
-
-  Polyline generatePolyline(
-      PolylineId polylineId, List<LatLng> polylineCoordinates, Color color) {
-    return Polyline(
-      polylineId: polylineId,
-      color: color,
-      points: polylineCoordinates,
-      width: 3,
-    );
   }
 
   double calculateDistance(LatLng startPoint, LatLng endPoint) {

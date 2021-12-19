@@ -74,6 +74,19 @@ class FollowerModel implements IModel<FollowerData> {
         .toList();
   }
 
+  Future<FollowerData?> isUserFollowed(
+      String currentUserId, String userId) async {
+    final QuerySnapshot<Object?> docsData = await entity
+        .where(FollowerFieldData.userId, isEqualTo: currentUserId)
+        .where(FollowerFieldData.userFollowedId, isEqualTo: userId)
+        .get();
+    if (docsData.docs.isEmpty) return null;
+    String id = docsData.docs.first.id;
+    Map<String, dynamic> followerData =
+        docsData.docs.first.data() as Map<String, dynamic>;
+    return FollowerData.castMapToFollower(followerData, id);
+  }
+
   @override
   CollectionReference get entity {
     return _firebaseFirestore.collection(entityName);

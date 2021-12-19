@@ -1,4 +1,6 @@
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
+import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
+import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:get_it/get_it.dart';
 
@@ -46,5 +49,9 @@ void $initApplication() {
     ..registerLazySingleton<GetUsersByIds>(
         () => GetUsersByIds(getIt<UserModel>()))
     ..registerLazySingleton<CalculatePointsDistance>(
-        () => CalculatePointsDistance(getIt<GeolocatorService>()));
+        () => CalculatePointsDistance(getIt<GeolocatorService>()))
+    ..registerLazySingleton<GenerateNewPolyline>(() => GenerateNewPolyline(
+        getIt<GeolocatorService>(), getIt<UuidGeneratorService>()))
+    ..registerLazySingleton<CheckUserFollowed>(() => CheckUserFollowed(
+        getIt<FollowerModel>(), getIt<AuthenticationService>()));
 }

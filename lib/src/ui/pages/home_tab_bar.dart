@@ -27,19 +27,23 @@ class _HomeTabBarState extends State<HomeTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: getTabs()),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black87,
-        type: BottomNavigationBarType.fixed,
-        items: widget.navbarItems,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[700],
-        unselectedItemColor: Colors.white60,
-        unselectedLabelStyle: const TextStyle(color: Colors.black87),
-        onTap: _onItemTapped,
-      ),
-    );
+    return WillPopScope(
+        onWillPop: () async => !await widget._navigationService
+            .homeNavigatorKeys[selectedTabItem]!.currentState!
+            .maybePop(),
+        child: Scaffold(
+          body: Stack(children: getTabs()),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.black87,
+            type: BottomNavigationBarType.fixed,
+            items: widget.navbarItems,
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.green[700],
+            unselectedItemColor: Colors.white60,
+            unselectedLabelStyle: const TextStyle(color: Colors.black87),
+            onTap: _onItemTapped,
+          ),
+        ));
   }
 
   List<Widget> getTabs() {

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
@@ -18,10 +20,16 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   late UserData _userData;
   late GoogleMapController mapController;
 
+  final GenerateNewPolyline _generateNewPolyline;
   final ManageLikeRoute _manageLikeRoute;
   final CalculatePointsDistance _calculatePointsDistance;
-  RouteDetailPageViewModel(AuthenticationService authenticationService,
-      this._manageLikeRoute, this._calculatePointsDistance)
+  Map<PolylineId, Polyline> polylines = {};
+
+  RouteDetailPageViewModel(
+      AuthenticationService authenticationService,
+      this._manageLikeRoute,
+      this._calculatePointsDistance,
+      this._generateNewPolyline)
       : super(authenticationService);
 
   Future<void> setRouteAndAuthor(RouteListData route, UserData user) async {
@@ -43,10 +51,25 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     mapController = gmapController;
   }
 
-  CameraPosition setCameraPosition() {
-    if (route.locationArray.length <= 0) {
-      return CameraPosition(target: LatLng(0, 0), zoom: 8);
+  setPolylines() async {
+    List<LatLng> latLngPoints = [];
+
+    // GeoPointUtils.convertGeopointsToLatLng(route.locationArray)
+    for (int i = 0; i < route.locationArray.length; i++) {
+      if (i == 0) continue;
+      Polyline? polyline = await _generateNewPolyline.execute(
+          latLngPoints,
+          GeoPointUtils.convertGeopointToLatLng(route.locationArray[i - 1]),
+          GeoPointUtils.convertGeopointToLatLng(route.locationArray[i]),
+          Colors.red);
+      if (polyline == null) return;
+      latLngPoints = polyline.points;
+      polylines[polyline.polylineId] = polyline;
     }
+  }
+
+  void setCameraPosition() {
+    if (route.locationArray.isEmpty) return;
     double accLat = 0;
     double accLong = 0;
     double latitudeMedian = 0;
@@ -56,16 +79,17 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     for (int i = 0; i < route.locationArray.length; i++) {
       accLat += route.locationArray[i].latitude;
       accLong += route.locationArray[i].longitude;
-      if (i == route.locationArray.length - 1) {
-        latitudeMedian = accLat / route.locationArray.length;
-        longitudeMedian = accLong / route.locationArray.length;
-        List<LatLng> latLngList = [];
-        latLngList
-            .add(GeoPointUtils.convertGeopointToLatLng(route.locationArray[0]));
-        latLngList.add(GeoPointUtils.convertGeopointToLatLng(
-            route.locationArray[route.locationArray.length - 1]));
-        distance = _calculatePointsDistance.execute(latLngList);
+      if (i != route.locationArray.length - 1) {
+        continue;
       }
+      latitudeMedian = accLat / route.locationArray.length;
+      longitudeMedian = accLong / route.locationArray.length;
+      List<LatLng> latLngList = [];
+      latLngList
+          .add(GeoPointUtils.convertGeopointToLatLng(route.locationArray[0]));
+      latLngList.add(GeoPointUtils.convertGeopointToLatLng(
+          route.locationArray[route.locationArray.length - 1]));
+      distance = _calculatePointsDistance.execute(latLngList);
     }
 
     if (distance < 500) {
@@ -84,14 +108,24 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
       zoom = 15;
     }
 
-    return CameraPosition(
+    CameraUpdate cameraUpdate = CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(latitudeMedian, longitudeMedian),
-        zoom: zoom <= 8 ? 8 : zoom);
+        zoom: zoom <= 8 ? 8 : zoom));
+
+    animateCamera(cameraUpdate);
+  }
+
+  animateCamera(CameraUpdate cameraUpdate) {
+    mapController.animateCamera(cameraUpdate);
   }
 
   String getRouteDateWithFormat() {
     return DateCustomUtils.dateTimeToStringFormat(
         _routeListData.endDate!.toDate());
+  }
+
+  void navigateToAuthor() {
+    notifyListeners(RouteDetailNotifier.navigateToAuthor);
   }
 
   RouteListData get route {

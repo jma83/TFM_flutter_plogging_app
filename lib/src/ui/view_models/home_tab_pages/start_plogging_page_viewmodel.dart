@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
@@ -37,6 +38,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   final GeolocatorService _geolocatorService;
   final ImagePickerService _imagePickerService;
   final CalculatePointsDistance _calculatePointsDistance;
+  final GenerateNewPolyline _generateNewPolyline;
 
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
@@ -54,7 +56,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       this._uuidGeneratorService,
       this._imagePickerService,
       this._routeProgressData,
-      this._calculatePointsDistance)
+      this._calculatePointsDistance,
+      this._generateNewPolyline)
       : super(authenticationService);
 
   loadPage() {
@@ -195,18 +198,15 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> addPolyline() async {
-    final PolylineId polylineId = PolylineId(_uuidGeneratorService.generate());
-    final int lastLength = _routeProgressData.polylinePointList.length;
-
-    _routeProgressData.polylinePointList =
-        await _geolocatorService.createPolylines(
-            _routeProgressData.polylinePointList,
-            _routeProgressData.lastPosition!,
-            _routeProgressData.currentPosition);
-    if (lastLength == _routeProgressData.polylinePointList.length) return;
-    _routeProgressData.polylines[polylineId] =
-        _geolocatorService.generatePolyline(
-            polylineId, _routeProgressData.polylinePointList, Colors.red);
+    final Polyline? polyline = await _generateNewPolyline.execute(
+        _routeProgressData.polylinePointList,
+        LatLng(_routeProgressData.lastPosition!.latitude,
+            _routeProgressData.lastPosition!.longitude),
+        LatLng(_routeProgressData.currentPosition.latitude,
+            _routeProgressData.currentPosition.longitude),
+        Colors.red);
+    if (polyline == null) return;
+    _routeProgressData.polylines[polyline.polylineId] = polyline;
   }
 
   Future<void> getCurrentLocation() async {
@@ -266,8 +266,11 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   void dismissAlert() {
-    _routeProgressData =
-        RouteProgressData(id: _uuidGeneratorService.generate());
+    _routeProgressData = RouteProgressData(
+        id: _uuidGeneratorService.generate(),
+        currentZoom: _routeProgressData.currentZoom,
+        currentPosition: _routeProgressData.currentPosition,
+        serviceStatus: _routeProgressData.serviceStatus);
     notifyListeners("startPloggingRouteCoordinator_returnToPrevious");
   }
 

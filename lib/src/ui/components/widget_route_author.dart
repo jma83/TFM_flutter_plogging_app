@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
 class WidgetRouteAuthor extends StatefulWidget {
   final String name;
   final int level;
   final String date;
   final String? image;
+  final Function callbackAuthor;
   const WidgetRouteAuthor(
       {required this.name,
       required this.level,
       required this.date,
+      required this.callbackAuthor,
       this.image,
       Key? key})
       : super(key: key);
@@ -20,46 +23,48 @@ class WidgetRouteAuthor extends StatefulWidget {
 class _WidgetRouteAuthorState extends State<WidgetRouteAuthor> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-          margin: const EdgeInsets.only(top: 12),
-          child: SizedBox(
-              width: 50,
-              height: 50,
-              child: widget.image == null || widget.image == ""
-                  ? getImageFromAsset()
-                  : getImageFromNetwork())),
-      title: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return CardWidgetUtils.createClickableCard(
+        ListTile(
+          leading: Container(
+              margin: const EdgeInsets.only(top: 12),
+              child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: widget.image == null || widget.image == ""
+                      ? getImageFromAsset()
+                      : getImageFromNetwork())),
+          title: Row(
             children: [
-              const SizedBox(height: 5),
-              Text(
-                widget.name,
-                style: const TextStyle(fontSize: 17),
-              ),
-              const SizedBox(height: 6),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 5),
                   Text(
-                    "Level: ${widget.level}",
-                    style: const TextStyle(fontSize: 12),
+                    widget.name,
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Level: ${widget.level}",
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
-        ],
-      ),
-      trailing: Text(
-        "Date: ${widget.date}",
-        style: const TextStyle(fontSize: 16),
-        textAlign: TextAlign.end,
-      ),
-    );
+          trailing: Text(
+            "Date: ${widget.date}",
+            style: const TextStyle(fontSize: 16),
+            textAlign: TextAlign.end,
+          ),
+        ),
+        widget.callbackAuthor);
   }
 
   getImageFromNetwork() {

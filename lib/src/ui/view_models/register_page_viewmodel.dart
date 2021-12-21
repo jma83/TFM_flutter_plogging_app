@@ -1,19 +1,10 @@
 // ignore_for_file: constant_identifier_names
+import 'package:flutter_plogging/src/core/domain/gender_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
-
-abstract class Gender {
-  static const NotDefined = "Gender - Not defined";
-  static const Female = "Female";
-  static const Male = "Male";
-
-  static const NotDefinedIndex = 0;
-  static const FemaleIndex = 1;
-  static const MaleIndex = 2;
-}
 
 @injectable
 class RegisterPageViewModel extends AuthPropertyChangeNotifier {
@@ -37,7 +28,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   void validateForm() {
     toggleLoading();
     if (!_userViewModel.validateRegister(_email, _username, _password,
-        _confirmPassword, _age, getGenderIndex().toString())) {
+        _confirmPassword, _age, Gender.getGenderIndex(_gender).toString())) {
       setError(_userViewModel.errorMessage);
       return;
     }
@@ -62,7 +53,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
           id: authService.currentUser!.uid,
           username: _username,
           age: int.parse(_age),
-          gender: getGenderIndex()),
+          gender: Gender.getGenderIndex(_gender)),
     );
   }
 
@@ -74,19 +65,6 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
     _errorMessage = errorValue;
     toggleLoading();
     notifyListeners("error_signup");
-  }
-
-  getGenderIndex() {
-    switch (_gender) {
-      case Gender.NotDefined:
-        return Gender.NotDefinedIndex;
-      case Gender.Female:
-        return Gender.FemaleIndex;
-      case Gender.Male:
-        return Gender.MaleIndex;
-      default:
-        return -1;
-    }
   }
 
   @override

@@ -31,8 +31,9 @@ class _WidgetRouteAuthorState extends State<WidgetRouteAuthor> {
                   width: 50,
                   height: 50,
                   child: widget.image == null || widget.image == ""
-                      ? getImageFromAsset()
-                      : getImageFromNetwork())),
+                      ? CardWidgetUtils.getImageFromAsset(avatar: true)
+                      : CardWidgetUtils.getImageFromNetwork(widget.image!,
+                          avatar: true))),
           title: Row(
             children: [
               Column(

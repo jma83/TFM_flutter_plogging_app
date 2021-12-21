@@ -4,6 +4,7 @@ import 'package:flutter_plogging/src/core/application/get_user_following.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
+import 'package:flutter_plogging/src/core/domain/gender_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
@@ -59,6 +60,15 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
   navigateToRoute(RouteListData route) {
     setSelectedRoute(route);
     notifyListeners(UserDetailNotifier.navigateToRoute);
+  }
+
+  get formattedCreationDate {
+    return DateCustomUtils.dateTimeToStringFormat(user.creationDate.toDate(),
+        onlyDate: true);
+  }
+
+  get formattedGender {
+    return Gender.getGenderFromIndex(user.gender);
   }
 
   UserData get user {

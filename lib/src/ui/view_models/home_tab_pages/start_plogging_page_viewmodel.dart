@@ -97,6 +97,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     routeInterval = Timer.periodic(const Duration(seconds: 5), (_) async {
       if (!hasMinDistanceToDraw()) return;
       addPolyline();
+      saveInPointList();
       setLastPosition();
       notifyListeners("update_start_plogging_page");
     });
@@ -152,6 +153,12 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     _hasStartedRoute = !_hasStartedRoute;
   }
 
+  saveInPointList() {
+    _routeProgressData.polylinePointList.add(LatLng(
+        _routeProgressData.currentPosition.latitude,
+        _routeProgressData.currentPosition.longitude));
+  }
+
   setLastPosition() {
     _routeProgressData.lastPosition = _routeProgressData.currentPosition;
   }
@@ -197,14 +204,13 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     return true;
   }
 
-  Future<void> addPolyline() async {
-    final Polyline? polyline = await _generateNewPolyline.execute(
-        _routeProgressData.polylinePointList,
-        LatLng(_routeProgressData.lastPosition!.latitude,
-            _routeProgressData.lastPosition!.longitude),
-        LatLng(_routeProgressData.currentPosition.latitude,
-            _routeProgressData.currentPosition.longitude),
-        Colors.red);
+  void addPolyline() {
+    final Polyline? polyline = _generateNewPolyline.executeNew([
+      LatLng(_routeProgressData.lastPosition!.latitude,
+          _routeProgressData.lastPosition!.longitude),
+      LatLng(_routeProgressData.currentPosition.latitude,
+          _routeProgressData.currentPosition.longitude)
+    ], Colors.red);
     if (polyline == null) return;
     _routeProgressData.polylines[polyline.polylineId] = polyline;
   }

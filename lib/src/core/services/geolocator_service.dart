@@ -40,7 +40,7 @@ class GeolocatorService {
     return true;
   }
 
-  Future<List<LatLng>> createPolylines(List<LatLng> polylineCoordinates,
+  Future<List<LatLng>> createPolylines(
       LatLng startPoint, LatLng endPoint) async {
     PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
       apiKey,
@@ -48,17 +48,13 @@ class GeolocatorService {
       PointLatLng(endPoint.latitude, endPoint.longitude),
       travelMode: TravelMode.walking,
     );
-    print("result ${result.errorMessage} ${result.status}");
 
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates = [
-          ...polylineCoordinates,
-          LatLng(point.latitude, point.longitude)
-        ];
-      });
+    if (result.points.isEmpty) {
+      return [];
     }
-    return polylineCoordinates;
+    return result.points.map((PointLatLng point) {
+      return LatLng(point.latitude, point.longitude);
+    }).toList();
   }
 
   double calculateDistance(LatLng startPoint, LatLng endPoint) {

@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
 class CardRoute extends StatefulWidget {
+  final String id;
   final String name;
   final String description;
   final String authorName;
@@ -18,7 +19,8 @@ class CardRoute extends StatefulWidget {
   final bool isLiked;
 
   CardRoute(
-      {required this.callback,
+      {required this.id,
+      required this.callback,
       required this.callbackLike,
       this.name = "",
       this.description = "",
@@ -50,7 +52,7 @@ class _CardRouteState extends State<CardRoute> {
           height: widget.description != "" ? 240 : 225,
           alignment: Alignment.bottomRight,
           child: InputButtonLike(
-              width: 0,
+              id: widget.id,
               liked: widget.isLiked,
               likeCallback: widget.callbackLike))
     ]);
@@ -71,8 +73,10 @@ class _CardRouteState extends State<CardRoute> {
                 left: 15, right: 15, top: 10, bottom: 10)),
         SizedBox(
           child: widget.image != null && widget.image != ""
-              ? getImageFromNetwork()
-              : getImageFromAsset(),
+              ? CardWidgetUtils.getImageFromNetwork(widget.image!,
+                  fit: BoxFit.cover, height: widget.height, avatar: false)
+              : CardWidgetUtils.getImageFromAsset(
+                  fit: BoxFit.cover, height: widget.height, avatar: false),
           width: MediaQuery.of(context).size.width,
         ),
       ],
@@ -112,25 +116,5 @@ class _CardRouteState extends State<CardRoute> {
         ],
       )
     ];
-  }
-
-  getImageFromNetwork() {
-    return FadeInImage.assetNetwork(
-      image: widget.image!,
-      placeholder: widget.imagePlaceholder,
-      height: widget.height,
-      fadeInDuration: const Duration(milliseconds: 200),
-      fit: BoxFit.cover,
-    );
-  }
-
-  getImageFromAsset() {
-    const String image = "assets/img1.jpg";
-    return FadeInImage(
-        image: const AssetImage(image),
-        placeholder: AssetImage(widget.imagePlaceholder),
-        height: widget.height,
-        fadeInDuration: const Duration(milliseconds: 200),
-        fit: BoxFit.cover);
   }
 }

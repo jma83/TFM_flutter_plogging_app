@@ -33,4 +33,29 @@ class CardWidgetUtils {
           borderRadius: BorderRadius.circular(borderRadius),
         ));
   }
+
+  static getImageFromNetwork(String image,
+      {bool avatar = false, BoxFit fit = BoxFit.contain, double? height}) {
+    final String placeholderImg =
+        avatar ? "assets/logo.png" : "assets/img1.jpg";
+
+    return FadeInImage.assetNetwork(
+      image: image,
+      height: height,
+      placeholder: placeholderImg,
+      fadeInDuration: const Duration(milliseconds: 200),
+      fit: fit,
+    );
+  }
+
+  static getImageFromAsset(
+      {bool avatar = false, BoxFit fit = BoxFit.contain, double? height}) {
+    final String image = avatar ? "assets/logo.png" : "assets/img1.jpg";
+    return FadeInImage(
+        image: AssetImage(image),
+        placeholder: AssetImage(image),
+        height: height,
+        fadeInDuration: const Duration(milliseconds: 200),
+        fit: fit);
+  }
 }

@@ -7,14 +7,18 @@ class DateCustomUtils {
     return dateTime2.difference(dateTime1);
   }
 
-  static String dateTimeToStringFormat(DateTime dateTime) {
+  static String dateTimeToStringFormat(DateTime dateTime,
+      {bool onlyDate = false, bool onlyTime = false}) {
     final int day = dateTime.day;
     final int month = dateTime.month;
     final int year = dateTime.year;
     final int hour = dateTime.hour;
     final int min = dateTime.minute;
     final int sec = dateTime.second;
-
-    return "$day-$month-$year $hour:$min:$sec";
+    final String date = "$day-$month-$year";
+    final String time = "$hour:$min:$sec";
+    if (onlyDate) return date;
+    if (onlyTime) return time;
+    return "$date $time";
   }
 }

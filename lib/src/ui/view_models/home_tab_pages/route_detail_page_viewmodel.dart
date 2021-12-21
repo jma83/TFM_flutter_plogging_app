@@ -52,21 +52,16 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     mapController = gmapController;
   }
 
-  setPolylines() async {
-    List<LatLng> latLngPoints = [];
+  loadPolylines() {
+    generatePolylines();
+    updatePage();
+  }
 
-    // GeoPointUtils.convertGeopointsToLatLng(route.locationArray)
-    for (int i = 0; i < route.locationArray.length; i++) {
-      if (i == 0) continue;
-      Polyline? polyline = await _generateNewPolyline.execute(
-          latLngPoints,
-          GeoPointUtils.convertGeopointToLatLng(route.locationArray[i - 1]),
-          GeoPointUtils.convertGeopointToLatLng(route.locationArray[i]),
-          Colors.red);
-      if (polyline == null) return;
-      latLngPoints = polyline.points;
-      polylines[polyline.polylineId] = polyline;
-    }
+  void generatePolylines() {
+    Polyline? polyline = _generateNewPolyline.executeNew(
+        GeoPointUtils.convertGeopointsToLatLng(route.locationArray),
+        Colors.red);
+    polylines[polyline.polylineId] = polyline;
   }
 
   void setCameraPosition() {
@@ -127,6 +122,10 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
 
   void navigateToAuthor() {
     notifyListeners(RouteDetailNotifier.navigateToAuthor);
+  }
+
+  double truncateDistance() {
+    return double.parse((route.distance!).toStringAsFixed(2));
   }
 
   RouteListData get route {

@@ -20,10 +20,21 @@ class RouteDetailPage extends StatelessWidget {
         builder: (context, RouteDetailPageViewModel viewModel, child) {
           return Scaffold(
             floatingActionButton: InputButtonLike(
+                id: viewModel.instanceId,
                 liked: viewModel.route.isLiked,
                 likeCallback: viewModel.manageLikeRoute),
             appBar: AppBar(title: const Text("Route Detail")),
             body: Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.green[300]!,
+                    Colors.green,
+                  ],
+                )),
                 width: MediaQuery.of(context).size.width,
                 child: Card(
                     clipBehavior: Clip.antiAlias,
@@ -83,7 +94,7 @@ class RouteDetailPage extends StatelessWidget {
           onMapCreated: (GoogleMapController controller) {
             viewModel.setMapController(controller);
             viewModel.setCameraPosition();
-            viewModel.setPolylines();
+            viewModel.loadPolylines();
           },
         ));
   }
@@ -146,7 +157,7 @@ class RouteDetailPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          "Distance: ${viewModel.route.distance}m",
+          "Distance: ${viewModel.truncateDistance()}m",
           style: TextStyle(fontSize: 16),
         ),
         Text(

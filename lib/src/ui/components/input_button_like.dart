@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class InputButtonLike extends StatefulWidget {
+  String id;
   bool liked;
-  final double width;
   final Function likeCallback;
   InputButtonLike(
-      {required this.liked,
+      {required this.id,
+      required this.liked,
       required this.likeCallback,
-      this.width = 130,
       Key? key})
       : super(key: key);
 
@@ -24,7 +24,9 @@ class _InputButtonLikeState extends State<InputButtonLike> {
   likeButton() {
     final icon = widget.liked ? Icons.thumb_up : Icons.thumb_up_alt_outlined;
     return FloatingActionButton(
-        onPressed: () => widget.likeCallback(), child: Icon(icon));
+        heroTag: "like_${widget.id}",
+        onPressed: () => widget.likeCallback(),
+        child: Icon(icon));
   }
 
   buttonClick() {

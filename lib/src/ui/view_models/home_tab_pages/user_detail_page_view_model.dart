@@ -28,12 +28,13 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
   }
 
   loadPage() async {
+    final FollowerData? follower = await _checkUserFollowed.execute(user.id);
+    setUserData(_userData, follower: follower);
     await getUserRoutes();
     notifyListeners(UserDetailNotifier.updatePage);
   }
 
-  setUserData(UserData user) async {
-    final FollowerData? follower = await _checkUserFollowed.execute(user.id);
+  setUserData(UserData user, {FollowerData? follower}) async {
     _userData = UserSearchData(
         user: user, followerId: follower?.id, followingFlag: follower != null);
   }

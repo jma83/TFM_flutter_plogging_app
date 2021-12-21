@@ -6,12 +6,14 @@ import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
+import 'package:flutter_plogging/src/ui/notifiers/search_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class SearchPageViewModel extends HomeTabsChangeNotifier {
   String _searchValue = "";
+  late UserData _userSelected;
   List<UserSearchData> _users = [];
   List<FollowerData> _followingList = [];
   final ManageFollowUser _manageFollowUser;
@@ -29,6 +31,10 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   setSearchValue(String value) {
     _searchValue = value;
+  }
+
+  setSearchUser(UserData user) {
+    _userSelected = user;
   }
 
   Future<void> submitSearch(String value, bool isFirst) async {
@@ -67,8 +73,17 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     return user;
   }
 
+  navigateToUser(UserSearchData user) {
+    setSearchUser(user);
+    notifyListeners(SearchNotifiers.navigateToAuthor);
+  }
+
   get searchValue {
     return _searchValue;
+  }
+
+  get selectedUser {
+    return _userSelected;
   }
 
   List<UserSearchData> get users {

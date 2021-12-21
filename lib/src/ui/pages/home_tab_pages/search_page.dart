@@ -75,7 +75,7 @@ class SearchPage extends StatelessWidget {
             clickable: true,
             button1: "Follow",
             isSelf: viewModel.currentUserId == viewModel.users[index].id,
-            callback: () {},
+            callback: () => viewModel.navigateToUser(viewModel.users[index]),
             callbackButton: () =>
                 viewModel.handleFollowUser(viewModel.users[index]),
           );

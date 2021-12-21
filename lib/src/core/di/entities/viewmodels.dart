@@ -81,7 +81,8 @@ void $initViewModels() {
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),
         getIt<CalculatePointsDistance>(),
-        getIt<GenerateNewPolyline>()))
+        getIt<GenerateNewPolyline>(),
+        getIt<UuidGeneratorService>().generate()))
     ..registerFactory<UserDetailPageViewModel>(() => UserDetailPageViewModel(
         getIt<AuthenticationService>(),
         getIt<GetRouteListByUser>(),

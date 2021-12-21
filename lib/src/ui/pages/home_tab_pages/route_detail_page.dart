@@ -121,7 +121,7 @@ class RouteDetailPage extends StatelessWidget {
         name: viewModel.author.username,
         level: viewModel.author.level,
         image: viewModel.author.image,
-        callbackAuthor: viewModel.navigateToAuthor,
+        callbackAuthor: () => viewModel.navigateToAuthor(),
         date: viewModel.getRouteDateWithFormat());
   }
 

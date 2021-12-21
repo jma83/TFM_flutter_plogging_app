@@ -12,6 +12,7 @@ import 'package:flutter_plogging/src/ui/pages/home_tab_pages/start_plogging_page
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/my_routes_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/profile_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/route_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/user_detail_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/home_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/main_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/login_route_coordinator.dart';
@@ -81,6 +82,8 @@ Widget getRoute(String route) {
       return getIt<HomeTabBar>();
     case Ruta.RouteDetail:
       return getIt<RouteDetailPage>();
+    case Ruta.UserDetail:
+      return getIt<UserDetailPage>();
     default:
       return getIt<StartPage>();
   }

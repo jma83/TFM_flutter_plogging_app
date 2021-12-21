@@ -23,16 +23,18 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   final GenerateNewPolyline _generateNewPolyline;
   final ManageLikeRoute _manageLikeRoute;
   final CalculatePointsDistance _calculatePointsDistance;
+  final String _instanceId;
   Map<PolylineId, Polyline> polylines = {};
 
   RouteDetailPageViewModel(
       AuthenticationService authenticationService,
       this._manageLikeRoute,
       this._calculatePointsDistance,
-      this._generateNewPolyline)
+      this._generateNewPolyline,
+      this._instanceId)
       : super(authenticationService);
 
-  Future<void> setRouteAndAuthor(RouteListData route, UserData user) async {
+  void setRouteAndAuthor(RouteListData route, UserData user) {
     _routeListData = route;
     _userData = user;
   }
@@ -44,7 +46,6 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   @override
   updatePage() {
     notifyListeners(RouteDetailNotifier.updatePage);
-    notifyListeners(HomeNotifiers.updateHomePage);
   }
 
   setMapController(GoogleMapController gmapController) {
@@ -134,5 +135,9 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
 
   UserData get author {
     return _userData;
+  }
+
+  String get instanceId {
+    return _instanceId;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
-import 'package:flutter_plogging/src/core/application/get_user_following.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
@@ -28,11 +27,16 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
     return DateCustomUtils.dateTimeToStringFormat(route.endDate!.toDate());
   }
 
-  loadPage() async {
-    final FollowerData? follower = await _checkUserFollowed.execute(user.id);
-    setUserData(_userData, follower: follower);
-    await getUserRoutes();
+  @override
+  updatePage() {
     notifyListeners(UserDetailNotifier.updatePage);
+  }
+
+  loadPage() async {
+    await getUserFollowers();
+    updatePage();
+    await getUserRoutes();
+    updatePage();
   }
 
   setUserData(UserData user, {FollowerData? follower}) async {
@@ -42,6 +46,11 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
 
   setSelectedRoute(RouteListData route) {
     _routeListData = route;
+  }
+
+  getUserFollowers() async {
+    final FollowerData? follower = await _checkUserFollowed.execute(user.id);
+    setUserData(_userData, follower: follower);
   }
 
   getUserRoutes() async {
@@ -55,6 +64,7 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
   followUser() {
     _manageFollowUser.execute(
         _userData, UserSearchData(user: currentUser), updatePage);
+    updatePage();
   }
 
   navigateToRoute(RouteListData route) {
@@ -71,7 +81,7 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
     return Gender.getGenderFromIndex(user.gender);
   }
 
-  UserData get user {
+  UserSearchData get user {
     return _userData;
   }
 

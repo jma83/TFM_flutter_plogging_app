@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/search_notifiers.dart';
@@ -29,5 +30,16 @@ class SearchRouteCoordinator extends ParentRouteCoordinator {
     navigationService.navigateTo(routeBuild(userDetailPage!));
   }
 
-  navigateToRoute() {}
+  navigateToRoute(RouteListData routeListData, UserData userData) {
+    final SearchPage mainWidgetSearch = mainWidget as SearchPage;
+    routeDetailPage = genericNavigateToRoute(
+        routeListData,
+        userData,
+        (userData) => navigateToUserDetail(userData),
+        () => mainWidgetSearch.viewModel.updatePage());
+    userDetailPage = null;
+
+    navigationService.setCurrentHomeTabItem(TabItem.search);
+    navigationService.navigateTo(routeBuild(routeDetailPage!));
+  }
 }

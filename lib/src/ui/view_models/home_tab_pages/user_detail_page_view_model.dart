@@ -97,6 +97,10 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(UserDetailNotifier.navigateToRoute);
   }
 
+  void navigateToPrevious() {
+    notifyListeners(UserDetailNotifier.navigateToPrevious);
+  }
+
   get formattedCreationDate {
     return DateCustomUtils.dateTimeToStringFormat(user.creationDate.toDate(),
         onlyDate: true);

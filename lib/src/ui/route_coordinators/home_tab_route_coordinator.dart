@@ -4,8 +4,8 @@ import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/ui/notifiers/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/route_detail_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/user_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/route_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/user_detail_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/route_names.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
@@ -49,6 +49,8 @@ class HomeTabRouteCoordinator extends ParentRouteCoordinator {
       navigateToUserDetail(userData);
     }, [RouteDetailNotifier.navigateToAuthor]);
     newRouteDetailPage.viewModel.addListener(
+        () => returnToPrevious(), [RouteDetailNotifier.navigateToPrevious]);
+    newRouteDetailPage.viewModel.addListener(
         () => updatePageData(RouteListAuthorSearchData(
             newRouteDetailPage.viewModel.route, null)),
         [RouteDetailNotifier.updateData]);
@@ -68,6 +70,8 @@ class HomeTabRouteCoordinator extends ParentRouteCoordinator {
       navigateToRoute(nextUserDetailPage.viewModel.selectedRoute, userData);
     }, [UserDetailNotifier.navigateToRoute]);
     nextUserDetailPage.viewModel.addListener(
+        () => returnToPrevious(), [UserDetailNotifier.navigateToPrevious]);
+    nextUserDetailPage.viewModel.addListener(
         () => updatePageData(RouteListAuthorSearchData(
             nextUserDetailPage.viewModel.selectedRoute,
             nextUserDetailPage.viewModel.user)),
@@ -79,7 +83,9 @@ class HomeTabRouteCoordinator extends ParentRouteCoordinator {
   }
 
   Future<bool> returnToPrevious() async {
-    // viewModels.removeLast();
+    if (viewModels.isNotEmpty) {
+      viewModels.removeLast();
+    }
     final bool result =
         !await navigationService.currentNavigator.currentState!.maybePop();
     return result;

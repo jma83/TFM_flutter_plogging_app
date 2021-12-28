@@ -14,6 +14,8 @@ class SearchRouteCoordinator extends HomeTabRouteCoordinator {
     mainWidget.viewModel.addListener(
         () => navigateToUserDetail(mainWidget.viewModel.selectedUser),
         [SearchNotifiers.navigateToAuthor]);
+    mainWidget.viewModel.addListener(
+        () => returnToPrevious(), [SearchNotifiers.navigateToPrevious]);
     viewModels.add(mainWidget.viewModel);
   }
 

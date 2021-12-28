@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart';
 import 'package:flutter_plogging/src/ui/components/card_route.dart';
+import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/user_detail_page_view_model.dart';
 import 'package:stacked/stacked.dart';
@@ -21,7 +23,10 @@ class UserDetailPage extends StatelessWidget {
         },
         builder: (context, UserDetailPageViewModel viewModel, child) {
           return Scaffold(
-            appBar: AppBar(title: const Text("User Detail")),
+            appBar: TopNavigationBar.getTopNavigationBar(
+                title: "User detail",
+                isBackVisible: true,
+                goBackCallback: viewModel.navigateToPrevious),
             body: Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -99,19 +104,11 @@ class UserDetailPage extends StatelessWidget {
   card(UserDetailPageViewModel viewModel, int index) {
     return Container(
         margin: index != 0 ? const EdgeInsets.only(top: 20) : EdgeInsets.zero,
-        child: CardRoute(
-          id: "$index",
-          color: Colors.green[colorCodes[index % 5]],
-          height: 130,
-          image: viewModel.userRoutes[index].image,
-          name: viewModel.userRoutes[index].name!,
-          description: viewModel.userRoutes[index].description ?? "",
-          authorName: viewModel.currentUser.username,
-          date: viewModel.getDateFormat(viewModel.userRoutes[index]),
-          callback: () =>
-              viewModel.navigateToRoute(viewModel.userRoutes[index]),
-          callbackLike: () => viewModel.likeRoute(viewModel.userRoutes[index]),
-          isLiked: viewModel.userRoutes[index].isLiked,
-        ));
+        child: CardRoutePrefab(
+            authorUsername: viewModel.user.username,
+            index: index,
+            likeCallback: viewModel.likeRoute,
+            navigateRouteCallback: viewModel.navigateToRoute,
+            route: viewModel.userRoutes[index]));
   }
 }

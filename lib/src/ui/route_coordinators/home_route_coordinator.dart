@@ -15,8 +15,6 @@ class HomeRouteCoordinator extends HomeTabRouteCoordinator {
         () => navigateToRoute(mainWidget.viewModel.selectedRoute,
             mainWidget.viewModel.selectedAuthor),
         [HomeNotifiers.navigateToRoute]);
-    mainWidget.viewModel.addListener(
-        () => returnToPrevious(), [HomeNotifiers.returnToPrevious]);
     viewModels.add(mainWidget.viewModel);
   }
 

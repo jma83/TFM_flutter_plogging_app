@@ -28,7 +28,9 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   loadPage() async {
-    _updateFollowingUsers();
+    await _updateFollowingUsers();
+    _users =
+        UserSearchData.createListFromUsersAndFollows(_users, _followingList);
     updatePage();
   }
 

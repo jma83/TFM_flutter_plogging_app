@@ -1,10 +1,10 @@
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/my_routes_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/profile_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/route_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/route_detail_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/search_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/start_plogging_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/user_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/user_detail_page.dart';
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';

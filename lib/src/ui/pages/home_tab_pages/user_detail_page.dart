@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart';
 import 'package:flutter_plogging/src/ui/components/card_route.dart';
-import 'package:flutter_plogging/src/ui/components/input_button_follow.dart';
 import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/user_detail_page_view_model.dart';
-import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 import 'package:stacked/stacked.dart';
 
 final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
 
 class UserDetailPage extends StatelessWidget {
-  UserDetailPageViewModel viewModel;
-  UserDetailPage(this.viewModel, {Key? key}) : super(key: key);
+  final UserDetailPageViewModel viewModel;
+  const UserDetailPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

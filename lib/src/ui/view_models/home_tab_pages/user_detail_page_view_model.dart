@@ -1,14 +1,11 @@
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
-import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/gender_data.dart';
-import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
@@ -54,22 +51,17 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   updateData(RouteListAuthorSearchData data) {
-    updatePage();
-  }
-
-  /* @override
-  updateData(RouteListAuthorSearchData data) {
     if (data.routeListData != null) {
       _routeListData = data.routeListData!;
     }
     if (data.userData != null) {
       _userData = data.userData!;
     }
-  } */
+    updatePage();
+  }
 
-  setUserData(UserData user, {FollowerData? follower}) async {
-    _userData = UserSearchData(
-        user: user, followerId: follower?.id, followingFlag: follower != null);
+  setUserData(UserSearchData user) async {
+    _userData = user;
   }
 
   setSelectedRoute(RouteListData route) {
@@ -78,7 +70,8 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
 
   getUserFollowers() async {
     final FollowerData? follower = await _checkUserFollowed.execute(user.id);
-    setUserData(_userData, follower: follower);
+    _userData.followerId = follower?.id;
+    _userData.followingFlag = follower != null;
   }
 
   getUserRoutes() async {

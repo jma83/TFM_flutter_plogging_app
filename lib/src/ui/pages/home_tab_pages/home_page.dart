@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_route.dart';
+import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class HomePage extends StatelessWidget {
-  final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
-
   HomePageViewModel viewModel;
   HomePage(this.viewModel, {Key? key}) : super(key: key);
 
@@ -40,8 +39,26 @@ class HomePage extends StatelessWidget {
   getListViewHeader(HomePageViewModel viewModel) {
     return ListView(
       padding: EdgeInsets.all(10),
-      children: getHeaderWidgets(),
+      children: [...getHeaderWidgets(), getEmptySearch()],
     );
+  }
+
+  getEmptySearch() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const [
+        SizedBox(height: 20),
+        Image(image: AssetImage("assets/not-found.png"), width: 40),
+        SizedBox(height: 8),
+        Text(
+          "No routes found...\nBy following users, routes will appear here",
+          style: TextStyle(fontSize: 16),
+          textAlign: TextAlign.center,
+        )
+      ],
+    ));
   }
 
   List<Widget> getHeaderWidgets() {
@@ -67,11 +84,11 @@ class HomePage extends StatelessWidget {
   }
 
   getRouteList(HomePageViewModel viewModel) {
-    return viewModel.routes.isEmpty
+    return viewModel.routesWithAuthor.isEmpty
         ? getListViewHeader(viewModel)
         : ListView.builder(
             padding: const EdgeInsets.all(8),
-            itemCount: viewModel.routes.length,
+            itemCount: viewModel.routesWithAuthor.length,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Column(
@@ -85,18 +102,11 @@ class HomePage extends StatelessWidget {
   card(HomePageViewModel viewModel, int index) {
     return Container(
         margin: index != 0 ? const EdgeInsets.only(top: 20) : EdgeInsets.zero,
-        child: CardRoute(
-          id: "$index",
-          color: Colors.green[colorCodes[index % 5]],
-          height: 130,
-          image: viewModel.routes[index].image,
-          name: viewModel.routes[index].name!,
-          description: viewModel.routes[index].description ?? "",
-          authorName: viewModel.currentUser.username,
-          date: viewModel.getDateFormat(viewModel.routes[index]),
-          callback: () => viewModel.navigateToRoute(viewModel.routes[index]),
-          callbackLike: () => viewModel.likeRoute(viewModel.routes[index]),
-          isLiked: viewModel.routes[index].isLiked,
-        ));
+        child: CardRoutePrefab(
+            index: index,
+            route: viewModel.routesWithAuthor[index].routeListData,
+            authorUsername: viewModel.routesWithAuthor[index].userData.username,
+            likeCallback: viewModel.likeRoute,
+            navigateRouteCallback: viewModel.navigateToRoute));
   }
 }

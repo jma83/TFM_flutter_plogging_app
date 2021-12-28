@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/core/application/get_user_following.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/search_user_list.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
@@ -13,7 +14,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class SearchPageViewModel extends HomeTabsChangeNotifier {
   String _searchValue = "";
-  late UserData _userSelected;
+  late UserSearchData _userSelected;
   List<UserSearchData> _users = [];
   List<FollowerData> _followingList = [];
   final ManageFollowUser _manageFollowUser;
@@ -28,13 +29,14 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   @override
   loadPage() async {
     _updateFollowingUsers();
+    updatePage();
   }
 
   setSearchValue(String value) {
     _searchValue = value;
   }
 
-  setSearchUser(UserData user) {
+  setSearchUser(UserSearchData user) {
     _userSelected = user;
   }
 
@@ -54,7 +56,21 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   updatePage() {
-    notifyListeners("update_search_page");
+    notifyListeners(SearchNotifiers.updateSearchPage);
+  }
+
+  @override
+  updateData(RouteListAuthorSearchData data) {
+    for (int i = 0; i < _users.length; i++) {
+      if (_users[i].id != data.userData!.id) {
+        continue;
+      }
+      if (data.userData != null) {
+        _users[i] = data.userData!;
+      }
+      break;
+    }
+    updatePage();
   }
 
   toggleLoading() {
@@ -68,7 +84,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   UserSearchData get currentUserFromList {
     UserSearchData? user =
         _users.firstWhereOrNull((element) => element.id == currentUserId);
-    user ??= UserSearchData(
+    user = UserSearchData(
         user: currentUser, followerId: null, followingFlag: false);
 
     return user;
@@ -79,11 +95,11 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(SearchNotifiers.navigateToAuthor);
   }
 
-  get searchValue {
+  String get searchValue {
     return _searchValue;
   }
 
-  get selectedUser {
+  UserSearchData get selectedUser {
     return _userSelected;
   }
 

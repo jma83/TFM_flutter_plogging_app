@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_users_by_ids.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
@@ -5,10 +6,10 @@ import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
-import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -33,12 +34,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
     final List<UserData> users =
         await _getUsersByIds.execute(routes.map((e) => e.userId!).toList());
     if (users.isEmpty) return updateAndToggle();
-    for (int i = 0; i < routes.length; i++) {
-      _routesWithAuthor = [
-        ..._routesWithAuthor,
-        RouteListAuthorData(routes[i], users[i])
-      ];
-    }
+    _routesWithAuthor = RouteListAuthorData.convertRoutes(routes, users);
     updateAndToggle();
   }
 
@@ -63,14 +59,19 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
 
   @override
   updateData(RouteListAuthorSearchData data) {
-    notifyListeners(HomeNotifiers.updateHomePage);
-
-    /*_routesWithAuthor.forEach((element) {
-      if (element.routeListData.id == data.routeListData!.id) {
-        element.routeListData = data.routeListData!;
-        return;
+    for (int i = 0; i < _routesWithAuthor.length; i++) {
+      if (_routesWithAuthor[i].routeListData.id != data.routeListData!.id) {
+        continue;
       }
-    }); */
+      if (data.routeListData != null) {
+        _routesWithAuthor[i].routeListData = data.routeListData!;
+      }
+      if (data.userData != null) {
+        _routesWithAuthor[i].userData = data.userData!;
+      }
+      break;
+    }
+    updatePage();
   }
 
   toggleLoading() {
@@ -86,19 +87,15 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
     return _routesWithAuthor[_selectedRouteIndex].routeListData;
   }
 
-  UserData get selectedAuthor {
+  UserSearchData get selectedAuthor {
     return _routesWithAuthor[_selectedRouteIndex].userData;
   }
 
-  List<RouteListData> get routes {
-    return _routesWithAuthor.map((e) => e.routeListData).toList();
+  List<RouteListAuthorData> get routesWithAuthor {
+    return _routesWithAuthor;
   }
 
   String get username {
     return currentUser.username;
-  }
-
-  String getDateFormat(RouteListData route) {
-    return DateCustomUtils.dateTimeToStringFormat(route.endDate!.toDate());
   }
 }

@@ -7,7 +7,6 @@ class CardUser extends StatefulWidget {
   final int level;
   int followers;
   int following;
-  final String button1;
   final bool clickable;
   final bool followingUserFlag;
   final double borderRadius;
@@ -25,7 +24,6 @@ class CardUser extends StatefulWidget {
       this.following = 0,
       this.clickable = false,
       this.borderRadius = 20,
-      this.button1 = "",
       this.color = Colors.green,
       this.followingUserFlag = false,
       this.isSelf = false,

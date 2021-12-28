@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_route.dart';
+import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -26,7 +27,7 @@ class MyRoutesPage extends StatelessWidget {
                 children: [
                   InputSearch(
                       value: viewModel.searchValue,
-                      placeholder: "Search routes",
+                      placeholder: "Search route names",
                       maxLength: 30,
                       onChange: (value) => viewModel.setSearchValue(value),
                       onSubmit: (value) => viewModel.submitSearch(value)),
@@ -50,7 +51,7 @@ class MyRoutesPage extends StatelessWidget {
         Image(image: AssetImage("assets/not-found.png"), width: 50),
         SizedBox(height: 12),
         Text(
-          "Empty results",
+          "Couldn't find any route\nStart creating one now!",
           style: TextStyle(fontSize: 16),
           textAlign: TextAlign.center,
         )
@@ -63,24 +64,15 @@ class MyRoutesPage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         itemCount: viewModel.routes.length,
         itemBuilder: (BuildContext context, int index) {
-          //             color: Colors.green[colorCodes[index % 5]],
           return Container(
               margin:
                   index != 0 ? const EdgeInsets.only(top: 20) : EdgeInsets.zero,
-              child: CardRoute(
-                id: "$index",
-                color: Colors.green[colorCodes[index % 5]],
-                height: 130,
-                image: viewModel.routes[index].image,
-                name: viewModel.routes[index].name!,
-                description: viewModel.routes[index].description ?? "",
-                authorName: viewModel.currentUser.username,
-                date: viewModel.getDateFormat(viewModel.routes[index]),
-                callback: () =>
-                    viewModel.navigateToRoute(viewModel.routes[index]),
-                callbackLike: () =>
-                    viewModel.likeRoute(viewModel.routes[index]),
-                isLiked: viewModel.routes[index].isLiked,
+              child: CardRoutePrefab(
+                authorUsername: viewModel.currentUser.username,
+                index: index,
+                route: viewModel.routes[index].routeListData,
+                likeCallback: viewModel.likeRoute,
+                navigateRouteCallback: viewModel.navigateToRoute,
               ));
         });
   }

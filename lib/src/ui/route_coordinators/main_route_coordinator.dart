@@ -6,6 +6,6 @@ import 'package:injectable/injectable.dart';
 @injectable
 class MainRouteCoordinator extends ParentRouteCoordinator {
   MainRouteCoordinator(
-      HomeTabBar mainWidget, NavigationService navigationService, tabBarItem)
-      : super(mainWidget, navigationService, tabBarItem);
+      HomeTabBar mainWidget, NavigationService navigationService)
+      : super(mainWidget, navigationService);
 }

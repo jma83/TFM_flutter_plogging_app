@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
+import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/components/widget_route_author.dart';
 import 'package:flutter_plogging/src/ui/notifiers/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/route_detail_page_viewmodel.dart';
@@ -23,7 +24,10 @@ class RouteDetailPage extends StatelessWidget {
                 id: viewModel.instanceId,
                 liked: viewModel.route.isLiked,
                 likeCallback: viewModel.manageLikeRoute),
-            appBar: AppBar(title: const Text("Route Detail")),
+            appBar: TopNavigationBar.getTopNavigationBar(
+                title: "Route detail",
+                isBackVisible: true,
+                goBackCallback: viewModel.navigateToPrevious),
             body: Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(

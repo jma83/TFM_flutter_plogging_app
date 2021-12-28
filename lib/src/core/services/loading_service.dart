@@ -24,10 +24,11 @@ class LoadingService {
     if (!_isLoading) {
       return;
     }
-    _timer = Timer(const Duration(seconds: 5), () => clearTimeout());
+    _timer = Timer(const Duration(seconds: 6), () => clearTimeout());
   }
 
   clearTimeout() {
+    EasyLoading.dismiss();
     _timer?.cancel();
     _timer = null;
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
-import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/home_tab_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/tabs/tab_navigatior.dart';
@@ -18,8 +18,6 @@ class HomeTabBar extends StatefulWidget {
 class _HomeTabBarState extends State<HomeTabBar> {
   int _selectedIndex = 0;
   List<TabItem> _tabItemsList = [];
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,8 +28,10 @@ class _HomeTabBarState extends State<HomeTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    widget._navigationService.setCurrentHomeTabItem(selectedTabItem);
+
     return WillPopScope(
-        onWillPop: () => currentCoordinator.returnToPrevious(),
+        onWillPop: () async => await currentCoordinator.returnToPrevious(),
         child: Scaffold(
           body: Stack(children: getTabs()),
           bottomNavigationBar: BottomNavigationBar(
@@ -95,7 +95,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
     }
   }
 
-  ParentRouteCoordinator get currentCoordinator {
+  HomeTabRouteCoordinator get currentCoordinator {
     return getHomeTabsByCoordinator()[selectedTabItem]!;
   }
 }

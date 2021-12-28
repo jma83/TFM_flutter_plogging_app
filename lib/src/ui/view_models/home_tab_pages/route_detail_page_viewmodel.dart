@@ -1,14 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
-import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/route_detail_notifier.dart';
@@ -21,7 +20,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   late RouteListData _routeListData;
-  late UserData _userData;
+  late UserSearchData _userData;
   late GoogleMapController mapController;
 
   final GenerateNewPolyline _generateNewPolyline;
@@ -47,7 +46,7 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
 
   void setRouteAndAuthor(RouteListData route, UserData user) {
     _routeListData = route;
-    _userData = user;
+    _userData = UserSearchData(user: user);
   }
 
   @override
@@ -61,18 +60,14 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   updateData(RouteListAuthorSearchData data) {
-    updatePage();
-  }
-
-  /*@override
-  updateData(RouteListAuthorSearchData data) {
     if (data.routeListData != null) {
       _routeListData = data.routeListData!;
     }
     if (data.userData != null) {
       _userData = data.userData!;
     }
-  } */
+    updatePage();
+  }
 
   manageLikeRoute() {
     _manageLikeRoute.execute(_routeListData, updatePage);
@@ -160,6 +155,10 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(RouteDetailNotifier.navigateToAuthor);
   }
 
+  void navigateToPrevious() {
+    notifyListeners(RouteDetailNotifier.navigateToPrevious);
+  }
+
   double truncateDistance() {
     return double.parse((route.distance!).toStringAsFixed(2));
   }
@@ -168,7 +167,7 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     return _routeListData;
   }
 
-  UserData get author {
+  UserSearchData get author {
     return _userData;
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/core/di/injection.config.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_bar.dart';
 import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/home_tab_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/route_names.dart';
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
@@ -53,11 +54,11 @@ Map<String, ParentRouteCoordinator> getRoutesByCoordinator() {
 Map<String, WidgetBuilder> getRoutesBuilderByCoordinator() {
   return <String, WidgetBuilder>{
     Ruta.Start: (BuildContext context) =>
-        getIt<StartRouteCoordinator>().getAndUpdateWidget(),
+        getIt<StartRouteCoordinator>().mainWidget,
     Ruta.Login: (BuildContext context) =>
-        getIt<LoginRouteCoordinator>().getAndUpdateWidget(),
+        getIt<LoginRouteCoordinator>().mainWidget,
     Ruta.HomeTab: (BuildContext context) =>
-        getIt<MainRouteCoordinator>().getAndUpdateWidget(),
+        getIt<MainRouteCoordinator>().mainWidget,
     Ruta.Home: (BuildContext context) =>
         getIt<HomeRouteCoordinator>().getAndUpdateWidget(),
     Ruta.Search: (BuildContext context) =>
@@ -71,8 +72,8 @@ Map<String, WidgetBuilder> getRoutesBuilderByCoordinator() {
   };
 }
 
-Map<TabItem, ParentRouteCoordinator> getHomeTabsByCoordinator() {
-  return <TabItem, ParentRouteCoordinator>{
+Map<TabItem, HomeTabRouteCoordinator> getHomeTabsByCoordinator() {
+  return <TabItem, HomeTabRouteCoordinator>{
     TabItem.home: getIt<HomeRouteCoordinator>(),
     TabItem.search: getIt<SearchRouteCoordinator>(),
     TabItem.plogging: getIt<StartPloggingRouteCoordinator>(),

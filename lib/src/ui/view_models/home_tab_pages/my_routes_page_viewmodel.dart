@@ -1,9 +1,10 @@
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
@@ -12,7 +13,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
-  List<RouteListData> _routes = [];
+  List<RouteListAuthorData> _routes = [];
   String _searchValue = "";
   late RouteListData _selectedRoute;
   final GetRouteListByUser _getRouteListByUser;
@@ -30,11 +31,13 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> submitSearch(String value) async {
     toggleLoading();
+    List<RouteListData> routes = [];
     if (value.isEmpty) {
-      _routes = await _getRouteListByUser.execute(currentUserId);
+      routes = await _getRouteListByUser.execute(currentUserId);
     } else {
-      _routes = await _searchRouteList.execute(value, currentUserId);
+      routes = await _searchRouteList.execute(value, currentUserId);
     }
+    _routes = RouteListAuthorData.convertRoutesUniqueUser(routes, currentUser);
     toggleLoading();
     updatePage();
   }
@@ -52,8 +55,8 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
     return _selectedRoute;
   }
 
-  UserData get selectedAuthor {
-    return currentUser;
+  UserSearchData get selectedAuthor {
+    return UserSearchData(user: currentUser);
   }
 
   @override
@@ -63,14 +66,19 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   updateData(RouteListAuthorSearchData data) {
-    updatePage();
-
-    /*_routesWithAuthor.forEach((element) {
-      if (element.routeListData.id == data.routeListData!.id) {
-        element.routeListData = data.routeListData!;
-        return;
+    for (int i = 0; i < _routes.length; i++) {
+      if (_routes[i].routeListData.id != data.routeListData!.id) {
+        continue;
       }
-    }); */
+      if (data.routeListData != null) {
+        _routes[i].routeListData = data.routeListData!;
+      }
+      if (data.userData != null) {
+        _routes[i].userData = data.userData!;
+      }
+      break;
+    }
+    updatePage();
   }
 
   toggleLoading() {
@@ -85,7 +93,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
     return _searchValue;
   }
 
-  List<RouteListData> get routes {
+  List<RouteListAuthorData> get routes {
     return _routes;
   }
 

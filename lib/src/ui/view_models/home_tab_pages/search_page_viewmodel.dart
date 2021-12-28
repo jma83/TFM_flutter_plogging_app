@@ -25,6 +25,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
       this._getUserFollowing, this._searchUserList, this._loadingService)
       : super(authenticationService);
 
+  @override
   loadPage() async {
     _updateFollowingUsers();
   }

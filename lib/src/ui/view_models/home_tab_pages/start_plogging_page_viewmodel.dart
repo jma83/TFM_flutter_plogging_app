@@ -60,6 +60,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       this._generateNewPolyline)
       : super(authenticationService);
 
+  @override
   loadPage() {
     createConnectionStatusListener();
   }

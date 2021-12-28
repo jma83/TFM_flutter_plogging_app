@@ -7,8 +7,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class StartRouteCoordinator extends ParentRouteCoordinator {
-  StartRouteCoordinator(StartPage mainWidget, navigationService)
-      : super(mainWidget, navigationService) {
+  StartRouteCoordinator(StartPage mainWidget, navigationService, tabBarItem)
+      : super(mainWidget, navigationService, tabBarItem) {
     print("StartRouteCoordinator!");
     mainWidget.viewModel.addListener(
         () => navigateToHome(), ["startRouteCoordinator_navigateToHome"]);
@@ -28,9 +28,5 @@ class StartRouteCoordinator extends ParentRouteCoordinator {
     print("to login!");
     navigationService.navigateAndReplaceTo(
         routeBuild(getIt<LoginRouteCoordinator>().mainWidget));
-  }
-
-  returnToPrevious() {
-    navigationService.goBack();
   }
 }

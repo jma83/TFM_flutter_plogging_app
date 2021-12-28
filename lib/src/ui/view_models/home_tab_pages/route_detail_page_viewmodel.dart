@@ -2,11 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
+import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
+import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
-import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
@@ -23,6 +27,10 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   final GenerateNewPolyline _generateNewPolyline;
   final ManageLikeRoute _manageLikeRoute;
   final CalculatePointsDistance _calculatePointsDistance;
+  final GetRouteListById _getRouteListById;
+  final GetUserById _getUserById;
+  final LoadingService _loadingService;
+
   final String _instanceId;
   Map<PolylineId, Polyline> polylines = {};
 
@@ -31,7 +39,10 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
       this._manageLikeRoute,
       this._calculatePointsDistance,
       this._generateNewPolyline,
-      this._instanceId)
+      this._instanceId,
+      this._getRouteListById,
+      this._getUserById,
+      this._loadingService)
       : super(authenticationService);
 
   void setRouteAndAuthor(RouteListData route, UserData user) {
@@ -39,8 +50,33 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     _userData = user;
   }
 
+  @override
+  loadPage() async {
+    _loadingService.toggleLoading();
+    await _getRouteListById.execute(_routeListData.id!);
+    await _getUserById.execute(_userData.id);
+    updatePage();
+    _loadingService.toggleLoading();
+  }
+
+  @override
+  updateData(RouteListAuthorSearchData data) {
+    updatePage();
+  }
+
+  /*@override
+  updateData(RouteListAuthorSearchData data) {
+    if (data.routeListData != null) {
+      _routeListData = data.routeListData!;
+    }
+    if (data.userData != null) {
+      _userData = data.userData!;
+    }
+  } */
+
   manageLikeRoute() {
     _manageLikeRoute.execute(_routeListData, updatePage);
+    notifyListeners(RouteDetailNotifier.updateData);
   }
 
   @override

@@ -8,8 +8,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class LoginRouteCoordinator extends ParentRouteCoordinator {
-  LoginRouteCoordinator(LoginPage mainWidget, navigationService)
-      : super(mainWidget, navigationService) {
+  LoginRouteCoordinator(LoginPage mainWidget, navigationService, tabBarItem)
+      : super(mainWidget, navigationService, tabBarItem) {
     mainWidget.viewModel.addListener(() => navigateToRegister(),
         ["loginRouteCoordinator_navigateToRegister"]);
     mainWidget.viewModel.addListener(
@@ -34,9 +34,5 @@ class LoginRouteCoordinator extends ParentRouteCoordinator {
       navigateToHome();
     }, ["registerRouteCoordinator_navigateToHome"]);
     navigationService.navigateTo(routeBuild(widget));
-  }
-
-  returnToPrevious() {
-    navigationService.goBack();
   }
 }

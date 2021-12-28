@@ -2,6 +2,7 @@ import 'package:flutter_plogging/src/core/application/calculate_points_distance.
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
+import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_user_followers.dart';
@@ -18,7 +19,6 @@ import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
-import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -29,8 +29,10 @@ void $initApplication() {
         getIt<LikeModel>(),
         getIt<UuidGeneratorService>(),
         getIt<AuthenticationService>()))
-    ..registerLazySingleton<GetRouteListByUser>(
-        () => GetRouteListByUser(getIt<RouteModel>(), getIt<LikeModel>()))
+    ..registerLazySingleton<GetRouteListByUser>(() => GetRouteListByUser(
+        getIt<RouteModel>(),
+        getIt<LikeModel>(),
+        getIt<AuthenticationService>()))
     ..registerLazySingleton<SearchRouteList>(
         () => SearchRouteList(getIt<RouteModel>(), getIt<LikeModel>()))
     ..registerLazySingleton<GetFollowersRouteList>(() => GetFollowersRouteList(
@@ -53,5 +55,9 @@ void $initApplication() {
     ..registerLazySingleton<GenerateNewPolyline>(() => GenerateNewPolyline(
         getIt<GeolocatorService>(), getIt<UuidGeneratorService>()))
     ..registerLazySingleton<CheckUserFollowed>(() => CheckUserFollowed(
-        getIt<FollowerModel>(), getIt<AuthenticationService>()));
+        getIt<FollowerModel>(), getIt<AuthenticationService>()))
+    ..registerLazySingleton<GetRouteListById>(() => GetRouteListById(
+        getIt<RouteModel>(),
+        getIt<LikeModel>(),
+        getIt<AuthenticationService>()));
 }

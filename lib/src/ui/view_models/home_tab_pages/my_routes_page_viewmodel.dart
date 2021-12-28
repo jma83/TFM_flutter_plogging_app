@@ -1,6 +1,7 @@
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
@@ -13,7 +14,6 @@ import 'package:injectable/injectable.dart';
 class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   List<RouteListData> _routes = [];
   String _searchValue = "";
-  bool _isLoading = false;
   late RouteListData _selectedRoute;
   final GetRouteListByUser _getRouteListByUser;
   final SearchRouteList _searchRouteList;
@@ -59,6 +59,18 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   @override
   updatePage() {
     notifyListeners("update_my_routes");
+  }
+
+  @override
+  updateData(RouteListAuthorSearchData data) {
+    updatePage();
+
+    /*_routesWithAuthor.forEach((element) {
+      if (element.routeListData.id == data.routeListData!.id) {
+        element.routeListData = data.routeListData!;
+        return;
+      }
+    }); */
   }
 
   toggleLoading() {

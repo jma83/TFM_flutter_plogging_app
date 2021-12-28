@@ -1,20 +1,17 @@
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/route_detail_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/user_detail_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class HomeRouteCoordinator extends ParentRouteCoordinator {
-  RouteDetailPage? routeDetailPage;
-  UserDetailPage? userDetailPage;
-  HomeRouteCoordinator(HomePage mainWidget, NavigationService navigationService)
-      : super(mainWidget, navigationService) {
+  HomeRouteCoordinator(
+      HomePage mainWidget, NavigationService navigationService, tabBarItem)
+      : super(mainWidget, navigationService, tabBarItem) {
     mainWidget.viewModel.addListener(
         () => navigateToRoute(mainWidget.viewModel.selectedRoute,
             mainWidget.viewModel.selectedAuthor),
@@ -23,34 +20,24 @@ class HomeRouteCoordinator extends ParentRouteCoordinator {
 
   @override
   updateRoute() {
-    (mainWidget as HomePage).viewModel.updatePage();
-    routeDetailPage?.viewModel.updatePage();
-    userDetailPage?.viewModel.updatePage();
+    viewModels.forEach((element) => element.loadPage());
+    (mainWidget as HomePage).viewModel.loadPage();
+  }
+
+  @override
+  updatePageData(RouteListAuthorSearchData data) {
+    viewModels.forEach((element) {
+      element.updateData(data);
+    });
+    (mainWidget as HomePage).viewModel.updateData(data);
   }
 
   navigateToRoute(RouteListData routeListData, UserData userData) {
-    final HomePage mainWidgetHome = mainWidget as HomePage;
-    routeDetailPage = genericNavigateToRoute(
-        routeListData,
-        userData,
-        (userData) => navigateToUserDetail(userData),
-        () => mainWidgetHome.viewModel.updatePage());
-    userDetailPage = null;
-
-    navigationService.setCurrentHomeTabItem(TabItem.home);
-    navigationService.navigateTo(routeBuild(routeDetailPage!));
+    genericNavigateToRoute(
+        routeListData, userData, (userData) => navigateToUserDetail(userData));
   }
 
   navigateToUserDetail(UserData userData) async {
-    userDetailPage = genericNavigateToUser(userData, navigateToRoute);
-
-    routeDetailPage = null;
-    navigationService.setCurrentHomeTabItem(TabItem.home);
-
-    navigationService.navigateTo(routeBuild(userDetailPage!));
-  }
-
-  returnToPrevious() {
-    navigationService.goBack();
+    genericNavigateToUser(userData, navigateToRoute);
   }
 }

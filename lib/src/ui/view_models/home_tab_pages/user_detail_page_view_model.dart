@@ -1,26 +1,36 @@
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
+import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/gender_data.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 
 class UserDetailPageViewModel extends HomeTabsChangeNotifier {
   late UserSearchData _userData;
-  late RouteListData _routeListData;
+  RouteListData? _routeListData;
   List<RouteListData> _userRoutes = [];
   final GetRouteListByUser _getRouteListByUser;
   final ManageLikeRoute _manageLikeRoute;
   final ManageFollowUser _manageFollowUser;
   final CheckUserFollowed _checkUserFollowed;
-  UserDetailPageViewModel(authService, this._getRouteListByUser,
-      this._manageLikeRoute, this._manageFollowUser, this._checkUserFollowed)
+  final LoadingService _loadingService;
+  UserDetailPageViewModel(
+      authService,
+      this._getRouteListByUser,
+      this._manageLikeRoute,
+      this._manageFollowUser,
+      this._checkUserFollowed,
+      this._loadingService)
       : super(authService);
 
   String getDateFormat(RouteListData route) {
@@ -32,12 +42,30 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(UserDetailNotifier.updatePage);
   }
 
+  @override
   loadPage() async {
+    _loadingService.toggleLoading();
     await getUserFollowers();
     updatePage();
     await getUserRoutes();
     updatePage();
+    _loadingService.toggleLoading();
   }
+
+  @override
+  updateData(RouteListAuthorSearchData data) {
+    updatePage();
+  }
+
+  /* @override
+  updateData(RouteListAuthorSearchData data) {
+    if (data.routeListData != null) {
+      _routeListData = data.routeListData!;
+    }
+    if (data.userData != null) {
+      _userData = data.userData!;
+    }
+  } */
 
   setUserData(UserData user, {FollowerData? follower}) async {
     _userData = UserSearchData(
@@ -59,11 +87,15 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
 
   likeRoute(RouteListData routeData) async {
     _manageLikeRoute.execute(routeData, updatePage);
+    setSelectedRoute(routeData);
+    notifyListeners(UserDetailNotifier.updateData);
+    updatePage();
   }
 
   followUser() {
     _manageFollowUser.execute(
         _userData, UserSearchData(user: currentUser), updatePage);
+    notifyListeners(UserDetailNotifier.updateData);
     updatePage();
   }
 
@@ -85,7 +117,7 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
     return _userData;
   }
 
-  RouteListData get selectedRoute {
+  RouteListData? get selectedRoute {
     return _routeListData;
   }
 

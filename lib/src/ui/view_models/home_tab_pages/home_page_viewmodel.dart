@@ -2,6 +2,7 @@ import 'package:flutter_plogging/src/core/application/get_followers_route_list.d
 import 'package:flutter_plogging/src/core/application/get_users_by_ids.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
@@ -22,6 +23,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
       this._manageLikeRoute, this._loadingService, this._getUsersByIds)
       : super(authenticationService);
 
+  @override
   Future<void> loadPage() async {
     _routesWithAuthor.clear();
     toggleLoading();
@@ -57,6 +59,18 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
   @override
   updatePage() {
     notifyListeners(HomeNotifiers.updateHomePage);
+  }
+
+  @override
+  updateData(RouteListAuthorSearchData data) {
+    notifyListeners(HomeNotifiers.updateHomePage);
+
+    /*_routesWithAuthor.forEach((element) {
+      if (element.routeListData.id == data.routeListData!.id) {
+        element.routeListData = data.routeListData!;
+        return;
+      }
+    }); */
   }
 
   toggleLoading() {

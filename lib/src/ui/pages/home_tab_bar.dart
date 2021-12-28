@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
+import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/tabs/tab_navigatior.dart';
 
@@ -22,15 +24,14 @@ class _HomeTabBarState extends State<HomeTabBar> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      widget._navigationService.setCurrentHomeTabItem(selectedTabItem);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => !await widget._navigationService
-            .homeNavigatorKeys[selectedTabItem]!.currentState!
-            .maybePop(),
+        onWillPop: () => currentCoordinator.returnToPrevious(),
         child: Scaffold(
           body: Stack(children: getTabs()),
           bottomNavigationBar: BottomNavigationBar(
@@ -66,8 +67,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
               navigatorKey:
                   widget._navigationService.homeNavigatorKeys[tabItem]!,
               tabItem: tabItem,
-              initialRoute: route,
-            ),
+              initialRoute: route),
     );
   }
 
@@ -93,5 +93,9 @@ class _HomeTabBarState extends State<HomeTabBar> {
       default:
         return TabItem.home;
     }
+  }
+
+  ParentRouteCoordinator get currentCoordinator {
+    return getHomeTabsByCoordinator()[selectedTabItem]!;
   }
 }

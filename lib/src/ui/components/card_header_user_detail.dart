@@ -48,11 +48,11 @@ class CardHeaderUserDetail extends StatelessWidget {
             const SizedBox(
               height: 6,
             ),
-            !isSelf ? getLevelXp(context) : Container(),
+            isSelf ? getLevelXp(context) : Container(),
             const SizedBox(
               height: 15,
             ),
-            !isSelf ? getEditUserData() : getFollowButton(),
+            isSelf ? getEditUserData() : getFollowButton(),
             const SizedBox(
               height: 4,
             ),

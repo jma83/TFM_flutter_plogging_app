@@ -21,6 +21,7 @@ import 'package:flutter_plogging/src/ui/route_coordinators/profile_route_coordin
 import 'package:flutter_plogging/src/ui/route_coordinators/search_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_plogging_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
+import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 
 Map<String, WidgetBuilder> getRoutesBuilder() {
   return <String, WidgetBuilder>{
@@ -67,6 +68,16 @@ Map<String, WidgetBuilder> getRoutesBuilderByCoordinator() {
         getIt<MyRoutesRouteCoordinator>().getAndUpdateWidget(),
     Ruta.Profile: (BuildContext context) =>
         getIt<ProfileRouteCoordinator>().getAndUpdateWidget()
+  };
+}
+
+Map<TabItem, ParentRouteCoordinator> getHomeTabsByCoordinator() {
+  return <TabItem, ParentRouteCoordinator>{
+    TabItem.home: getIt<HomeRouteCoordinator>(),
+    TabItem.search: getIt<SearchRouteCoordinator>(),
+    TabItem.plogging: getIt<StartPloggingRouteCoordinator>(),
+    TabItem.myRoutes: getIt<MyRoutesRouteCoordinator>(),
+    TabItem.profile: getIt<ProfileRouteCoordinator>()
   };
 }
 

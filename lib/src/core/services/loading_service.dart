@@ -12,33 +12,39 @@ class LoadingService {
 
   toggleLoading({bool showLoadIcon = true}) {
     if (showLoadIcon) {
-      _isLoading
-          ? EasyLoading.dismiss()
-          : EasyLoading.show(status: 'loading...');
+      _showLoadIcon();
     }
     _isLoading = !_isLoading;
-    verifyTimeout();
+    _verifyTimeout();
   }
 
-  setLoading(bool value) {
-    _isLoading = value;
-  }
-
-  verifyTimeout() {
-    if (!_isLoading) {
-      return;
+  setLoading(bool value, {bool showLoadIcon = true}) {
+    if (showLoadIcon) {
+      _showLoadIcon();
     }
-    _timer = Timer(const Duration(seconds: 6), () => clearTimeout());
-  }
-
-  clearTimeout() {
-    EasyLoading.dismiss();
-    _isLoading = false;
-    _timer?.cancel();
-    _timer = null;
+    _isLoading = value;
+    _verifyTimeout();
   }
 
   get isLoading {
     return _isLoading;
+  }
+
+  _showLoadIcon() {
+    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
+  }
+
+  _verifyTimeout() {
+    if (!_isLoading) {
+      return;
+    }
+    _timer = Timer(const Duration(seconds: 6), () => _clearTimeout());
+  }
+
+  _clearTimeout() {
+    EasyLoading.dismiss();
+    _isLoading = false;
+    _timer?.cancel();
+    _timer = null;
   }
 }

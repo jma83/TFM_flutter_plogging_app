@@ -33,12 +33,13 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
           await authService.signIn(email: _email, password: _password);
       if (result != null) {
         setError(result);
-        return;
+        return toggleLoading();
       }
     } catch (e) {
       print(e);
+      return toggleLoading();
     }
-    toggleLoading();
+    _loadingService.setLoading(true);
   }
 
   setError(String errorValue) {

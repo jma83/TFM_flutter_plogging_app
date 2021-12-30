@@ -9,10 +9,16 @@ class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {
   HomeTabsChangeNotifier(this.authenticationService);
 
   UserData get currentUser {
+    final user = authenticationService.currentUserData;
+    if (user == null) {
+      return UserData(username: "", age: 0, gender: 0);
+    }
+
     return authenticationService.currentUserData!;
   }
 
   String get currentUserId {
+    if (currentUser.username.isEmpty) return "";
     return currentUser.id;
   }
 
@@ -29,9 +35,5 @@ class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {
   }
 
   @override
-  dispose() {
-    if (authenticationService.currentUser == null) {
-      super.dispose();
-    }
-  }
+  dispose() {}
 }

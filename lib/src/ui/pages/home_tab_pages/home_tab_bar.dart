@@ -13,6 +13,7 @@ class HomeTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    viewModel.onClickTab(0);
     return ViewModelBuilder<HomeTabBarViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {

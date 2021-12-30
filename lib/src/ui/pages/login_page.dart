@@ -7,9 +7,7 @@ import 'package:stacked/stacked.dart';
 
 class LoginPage extends StatelessWidget {
   final LoginPageViewModel viewModel;
-  LoginPage(this.viewModel, {Key? key}) : super(key: key) {
-    print("LoginPage!!");
-  }
+  const LoginPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

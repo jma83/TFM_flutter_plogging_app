@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/model/user_model.dart';
+import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs_notifiers.dart';
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
@@ -9,11 +10,11 @@ import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifie
 
 class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   final NavigationService _navigationService;
+  final LoadingService _loadingService;
   final List<TabItem> _instantiatedTabItems = [];
   int _selectedIndexTab = 0;
-
   HomeTabBarViewModel(AuthenticationService authService, UserModel userModel,
-      this._navigationService)
+      this._navigationService, this._loadingService)
       : super(authService, userModel) {
     createAuthListener();
   }
@@ -29,6 +30,7 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
 
   @override
   notifyNotLoggedIn() {
+    _loadingService.setLoading(true);
     notifyListeners(HomeTabsNotifiers.homeTabsLogout);
   }
 

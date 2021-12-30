@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 
 class MyRoutesPage extends StatelessWidget {
   final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
-  MyRoutesPageViewModel viewModel;
+  final MyRoutesPageViewModel viewModel;
   MyRoutesPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override

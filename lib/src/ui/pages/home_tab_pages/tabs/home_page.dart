@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
-import 'package:flutter_plogging/src/ui/components/card_route.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
@@ -21,7 +20,7 @@ class HomePage extends StatelessWidget {
         },
         builder: (context, HomePageViewModel viewModel, child) {
           return Scaffold(
-            appBar: AppBar(title: const Text("Home")),
+            appBar: AppBar(title: const Text("Plogging challenge")),
             body: getRouteList(viewModel),
           );
         });

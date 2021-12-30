@@ -24,7 +24,7 @@ class ProfilePage extends StatelessWidget {
           return Scaffold(
               floatingActionButton: getLoggoutFloatingButton(),
               floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-              appBar: AppBar(title: const Text("Profile")),
+              appBar: AppBar(title: const Text("My Profile")),
               body: DetailContentContainer(getListViewHeader(context)));
         });
   }

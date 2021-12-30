@@ -43,7 +43,8 @@ void $initViewModels() {
     ..registerFactory<HomeTabBarViewModel>(() => HomeTabBarViewModel(
         getIt<AuthenticationService>(),
         getIt<UserModel>(),
-        getIt<NavigationService>()))
+        getIt<NavigationService>(),
+        getIt<LoadingService>()))
     ..registerFactory<UserViewModel>(() => UserViewModel())
     ..registerFactory<StartPageViewModel>(() =>
         StartPageViewModel(getIt<AuthenticationService>(), getIt<UserModel>()))
@@ -79,8 +80,8 @@ void $initViewModels() {
         getIt<GetRouteListByUser>(),
         getIt<SearchRouteList>(),
         getIt<LoadingService>()))
-    ..registerFactory<ProfilePageViewModel>(
-        () => ProfilePageViewModel(getIt<AuthenticationService>()))
+    ..registerFactory<ProfilePageViewModel>(() => ProfilePageViewModel(
+        getIt<AuthenticationService>(), getIt<LoadingService>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageFollowUser>(),

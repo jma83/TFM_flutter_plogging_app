@@ -16,12 +16,10 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
     subscription = authService.authStateChanges.listen((User? user) async {
       if (user == null) {
         authService.setCurrentUserData(null);
-        print("logout!!");
 
         Future.delayed(const Duration(seconds: 1), () => notifyNotLoggedIn());
         return;
       }
-      print("login!!");
 
       authService
           .setCurrentUserData(await userModel.queryElementById(user.uid));
@@ -35,8 +33,6 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
 
   @override
   void dispose() {
-    print("Dispose!!!!!!");
-    super.dispose();
     subscription?.cancel();
   }
 }

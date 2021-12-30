@@ -20,6 +20,10 @@ class LoadingService {
     verifyTimeout();
   }
 
+  setLoading(bool value) {
+    _isLoading = value;
+  }
+
   verifyTimeout() {
     if (!_isLoading) {
       return;
@@ -29,6 +33,7 @@ class LoadingService {
 
   clearTimeout() {
     EasyLoading.dismiss();
+    _isLoading = false;
     _timer?.cancel();
     _timer = null;
   }

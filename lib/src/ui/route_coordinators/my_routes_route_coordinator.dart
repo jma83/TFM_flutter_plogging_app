@@ -2,9 +2,9 @@ import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/my_routes_notifiers.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/my_routes_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/route_detail_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/user_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/my_routes_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/route_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/user_detail_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/home_tab_route_coordinator.dart';
 import 'package:injectable/injectable.dart';
 

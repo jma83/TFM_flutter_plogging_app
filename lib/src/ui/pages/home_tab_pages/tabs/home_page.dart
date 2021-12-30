@@ -4,12 +4,12 @@ import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_route.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_notifiers.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class HomePage extends StatelessWidget {
-  HomePageViewModel viewModel;
-  HomePage(this.viewModel, {Key? key}) : super(key: key);
+  final HomePageViewModel viewModel;
+  const HomePage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +17,7 @@ class HomePage extends StatelessWidget {
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
           viewModel.loadPage();
-          viewModel.addListener(() {
-            print("heeeyye");
-          }, [HomeNotifiers.updateHomePage]);
+          viewModel.addListener(() {}, [HomeNotifiers.updateHomePage]);
         },
         builder: (context, HomePageViewModel viewModel, child) {
           return Scaffold(

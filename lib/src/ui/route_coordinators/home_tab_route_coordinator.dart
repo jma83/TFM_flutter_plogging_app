@@ -4,12 +4,12 @@ import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/ui/notifiers/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/route_detail_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/secondary/user_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/route_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/user_detail_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/route_names.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tabs_change_notifier.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 
 class HomeTabRouteCoordinator extends ParentRouteCoordinator {
   final TabItem? tabItem;

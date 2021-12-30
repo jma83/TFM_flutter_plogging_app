@@ -4,7 +4,7 @@ import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart'
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/notifiers/profile_notifiers.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/profile_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/profile_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -37,12 +37,14 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget getWrapHeader(BuildContext context) {
-    return CardHeaderUserDetail(
-      user: viewModel.user,
-      creationDate: viewModel.formattedCreationDate,
-      genderFormatted: viewModel.formattedGender,
-      isSelf: true,
-    );
+    return viewModel.user == null
+        ? Container()
+        : CardHeaderUserDetail(
+            user: viewModel.user!,
+            creationDate: viewModel.formattedCreationDate,
+            genderFormatted: viewModel.formattedGender,
+            isSelf: true,
+          );
   }
 
   Widget getLoggoutFloatingButton() {

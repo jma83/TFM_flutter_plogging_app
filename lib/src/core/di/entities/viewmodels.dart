@@ -12,14 +12,16 @@ import 'package:flutter_plogging/src/core/application/calculate_points_distance.
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_tab_bar.dart';
+import 'package:flutter_plogging/src/ui/tabs/home_nav_items.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/my_routes_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/profile_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/route_detail_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/search_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/start_plogging_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/user_detail_page_view_model.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/my_routes_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/profile_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/search_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/start_plogging_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_detail_page_view_model.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
@@ -31,11 +33,17 @@ import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
+import 'package:flutter_plogging/src/core/services/navigation_service.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
 
 final getIt = GetIt.instance;
 
 void $initViewModels() {
   getIt
+    ..registerFactory<HomeTabBarViewModel>(() => HomeTabBarViewModel(
+        getIt<AuthenticationService>(),
+        getIt<UserModel>(),
+        getIt<NavigationService>()))
     ..registerFactory<UserViewModel>(() => UserViewModel())
     ..registerFactory<StartPageViewModel>(() =>
         StartPageViewModel(getIt<AuthenticationService>(), getIt<UserModel>()))

@@ -4,7 +4,7 @@ import 'package:flutter_plogging/src/ui/components/card_user.dart';
 import 'package:flutter_plogging/src/ui/components/card_user_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/notifiers/search_notifiers.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/search_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/search_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 

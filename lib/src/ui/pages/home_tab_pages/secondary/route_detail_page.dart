@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/components/widget_route_author.dart';
@@ -8,8 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 class RouteDetailPage extends StatelessWidget {
-  RouteDetailPageViewModel viewModel;
-  RouteDetailPage(this.viewModel, {Key? key}) : super(key: key);
+  final RouteDetailPageViewModel viewModel;
+  const RouteDetailPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,65 +21,44 @@ class RouteDetailPage extends StatelessWidget {
         },
         builder: (context, RouteDetailPageViewModel viewModel, child) {
           return Scaffold(
-            floatingActionButton: InputButtonLike(
-                id: viewModel.instanceId,
-                liked: viewModel.route.isLiked,
-                likeCallback: viewModel.manageLikeRoute),
-            appBar: TopNavigationBar.getTopNavigationBar(
-                title: "Route detail",
-                isBackVisible: true,
-                goBackCallback: viewModel.navigateToPrevious),
-            body: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white,
-                    Colors.green[300]!,
-                    Colors.green,
-                  ],
-                )),
-                width: MediaQuery.of(context).size.width,
-                child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    margin: const EdgeInsets.all(8),
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green, width: 1)),
-                      child: InkWell(
-                        child: ListView(
-                          children: [
-                            getHeaderDetailInfo(context),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            geDistanceAndDurationInfo(),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            getMap(context),
-                            const SizedBox(
-                              height: 22,
-                            ),
-                            getDescription(),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            getImageTitle(),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            getImage(context)
-                          ],
-                        ),
-                      ),
-                    ))),
-          );
+              floatingActionButton: InputButtonLike(
+                  id: viewModel.instanceId,
+                  liked: viewModel.route.isLiked,
+                  likeCallback: viewModel.manageLikeRoute),
+              appBar: TopNavigationBar.getTopNavigationBar(
+                  title: "Route detail",
+                  isBackVisible: true,
+                  goBackCallback: viewModel.navigateToPrevious),
+              body: DetailContentContainer(getListViewRoute(context)));
         });
+  }
+
+  Widget getListViewRoute(BuildContext context) {
+    return ListView(
+      children: [
+        getHeaderDetailInfo(context),
+        const SizedBox(
+          height: 30,
+        ),
+        geDistanceAndDurationInfo(),
+        const SizedBox(
+          height: 16,
+        ),
+        getMap(context),
+        const SizedBox(
+          height: 22,
+        ),
+        getDescription(),
+        const SizedBox(
+          height: 20,
+        ),
+        getImageTitle(),
+        const SizedBox(
+          height: 20,
+        ),
+        getImage(context)
+      ],
+    );
   }
 
   Widget getMap(BuildContext context) {
@@ -143,7 +123,7 @@ class RouteDetailPage extends StatelessWidget {
   getHeaderDetailInfo(BuildContext context) {
     return Container(
         color: Colors.grey[300],
-        padding: EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,11 +142,11 @@ class RouteDetailPage extends StatelessWidget {
       children: [
         Text(
           "Distance: ${viewModel.truncateDistance()}m",
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
         Text(
           "Duration: ${viewModel.route.duration}s",
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

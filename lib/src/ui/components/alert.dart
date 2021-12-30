@@ -79,6 +79,7 @@ class Alert {
       TextButton(
         child: const Text("Cancel"),
         onPressed: () {
+          print("cancel pressed");
           dismissAction();
         },
       )

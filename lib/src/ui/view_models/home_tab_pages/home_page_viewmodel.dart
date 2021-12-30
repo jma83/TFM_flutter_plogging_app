@@ -60,7 +60,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
   @override
   updateData(RouteListAuthorSearchData data) {
     for (int i = 0; i < _routesWithAuthor.length; i++) {
-      if (_routesWithAuthor[i].routeListData.id != data.routeListData!.id) {
+      if (_routesWithAuthor[i].routeListData.id != data.routeListData?.id) {
         continue;
       }
       if (data.routeListData != null) {
@@ -83,12 +83,18 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
         .indexWhere((element) => element.routeListData.id == route.id);
   }
 
-  RouteListData get selectedRoute {
-    return _routesWithAuthor[_selectedRouteIndex].routeListData;
+  RouteListData? get selectedRoute {
+    final isInvalid = _selectedRouteIndex == -1 ||
+        _selectedRouteIndex >= _routesWithAuthor.length;
+    return isInvalid
+        ? null
+        : _routesWithAuthor[_selectedRouteIndex].routeListData;
   }
 
-  UserSearchData get selectedAuthor {
-    return _routesWithAuthor[_selectedRouteIndex].userData;
+  UserSearchData? get selectedAuthor {
+    final isInvalid = _selectedRouteIndex == -1 ||
+        _selectedRouteIndex >= _routesWithAuthor.length;
+    return isInvalid ? null : _routesWithAuthor[_selectedRouteIndex].userData;
   }
 
   List<RouteListAuthorData> get routesWithAuthor {

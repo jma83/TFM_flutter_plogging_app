@@ -64,7 +64,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   @override
   updateData(RouteListAuthorSearchData data) {
     for (int i = 0; i < _users.length; i++) {
-      if (_users[i].id != data.userData!.id) {
+      if (_users[i].id != data.userData?.id) {
         continue;
       }
       if (data.userData != null) {

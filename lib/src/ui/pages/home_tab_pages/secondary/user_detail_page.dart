@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart';
 import 'package:flutter_plogging/src/ui/components/card_route.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/user_detail_page_view_model.dart';
@@ -23,40 +24,17 @@ class UserDetailPage extends StatelessWidget {
         },
         builder: (context, UserDetailPageViewModel viewModel, child) {
           return Scaffold(
-            appBar: TopNavigationBar.getTopNavigationBar(
-                title: "User detail",
-                isBackVisible: true,
-                goBackCallback: viewModel.navigateToPrevious),
-            body: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white,
-                    Colors.green[300]!,
-                    Colors.green,
-                  ],
-                )),
-                width: MediaQuery.of(context).size.width,
-                child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    margin: const EdgeInsets.all(8),
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green, width: 1)),
-                      child: InkWell(child: getRouteList(viewModel, context)),
-                    ))),
-          );
+              appBar: TopNavigationBar.getTopNavigationBar(
+                  title: "User detail",
+                  isBackVisible: true,
+                  goBackCallback: viewModel.navigateToPrevious),
+              body: DetailContentContainer(getRouteList(context)));
         });
   }
 
   getListViewHeader(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       children: [getWrapHeader(context)],
     );
   }
@@ -71,7 +49,7 @@ class UserDetailPage extends StatelessWidget {
     );
   }
 
-  getRouteList(UserDetailPageViewModel viewModel, BuildContext context) {
+  getRouteList(BuildContext context) {
     return viewModel.userRoutes.isEmpty
         ? getListViewHeader(context)
         : ListView.builder(
@@ -88,7 +66,7 @@ class UserDetailPage extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(
                           vertical: 18, horizontal: 15),
                       child: const Text(
-                        "Rutas:",
+                        "Routes:",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w500),
                       ),

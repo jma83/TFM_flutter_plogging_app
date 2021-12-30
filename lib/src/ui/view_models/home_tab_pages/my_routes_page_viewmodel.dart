@@ -67,7 +67,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   @override
   updateData(RouteListAuthorSearchData data) {
     for (int i = 0; i < _routes.length; i++) {
-      if (_routes[i].routeListData.id != data.routeListData!.id) {
+      if (_routes[i].routeListData.id != data.routeListData?.id) {
         continue;
       }
       if (data.routeListData != null) {

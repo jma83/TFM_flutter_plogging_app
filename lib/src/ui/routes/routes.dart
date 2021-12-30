@@ -54,21 +54,20 @@ Map<String, ParentRouteCoordinator> getRoutesByCoordinator() {
 Map<String, WidgetBuilder> getRoutesBuilderByCoordinator() {
   return <String, WidgetBuilder>{
     Ruta.Start: (BuildContext context) =>
-        getIt<StartRouteCoordinator>().mainWidget,
+        getRouteByRouteCoordinator(Ruta.Start),
     Ruta.Login: (BuildContext context) =>
-        getIt<LoginRouteCoordinator>().mainWidget,
+        getRouteByRouteCoordinator(Ruta.Login),
     Ruta.HomeTab: (BuildContext context) =>
-        getIt<MainRouteCoordinator>().mainWidget,
-    Ruta.Home: (BuildContext context) =>
-        getIt<HomeRouteCoordinator>().getAndUpdateWidget(),
+        getRouteByRouteCoordinator(Ruta.HomeTab),
+    Ruta.Home: (BuildContext context) => getRouteByRouteCoordinator(Ruta.Home),
     Ruta.Search: (BuildContext context) =>
-        getIt<SearchRouteCoordinator>().getAndUpdateWidget(),
+        getRouteByRouteCoordinator(Ruta.Search),
     Ruta.Plogging: (BuildContext context) =>
-        getIt<StartPloggingRouteCoordinator>().getAndUpdateWidget(),
+        getRouteByRouteCoordinator(Ruta.Plogging),
     Ruta.MyRoutes: (BuildContext context) =>
-        getIt<MyRoutesRouteCoordinator>().getAndUpdateWidget(),
+        getRouteByRouteCoordinator(Ruta.MyRoutes),
     Ruta.Profile: (BuildContext context) =>
-        getIt<ProfileRouteCoordinator>().getAndUpdateWidget()
+        getRouteByRouteCoordinator(Ruta.Profile)
   };
 }
 
@@ -98,5 +97,28 @@ Widget getRoute(String route) {
       return getIt<UserDetailPage>();
     default:
       return getIt<StartPage>();
+  }
+}
+
+getRouteByRouteCoordinator(String route) {
+  switch (route) {
+    case Ruta.Start:
+      return getIt<StartRouteCoordinator>().mainWidget;
+    case Ruta.Login:
+      return getIt<LoginRouteCoordinator>().mainWidget;
+    case Ruta.HomeTab:
+      return getIt<MainRouteCoordinator>().mainWidget;
+    case Ruta.Home:
+      return getIt<HomeRouteCoordinator>().getAndUpdateWidget();
+    case Ruta.Search:
+      return getIt<SearchRouteCoordinator>().getAndUpdateWidget();
+    case Ruta.Plogging:
+      return getIt<StartPloggingRouteCoordinator>().getAndUpdateWidget();
+    case Ruta.MyRoutes:
+      return getIt<MyRoutesRouteCoordinator>().getAndUpdateWidget();
+    case Ruta.Profile:
+      return getIt<ProfileRouteCoordinator>().getAndUpdateWidget();
+    default:
+      return getIt<StartRouteCoordinator>().mainWidget;
   }
 }

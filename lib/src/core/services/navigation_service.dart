@@ -33,9 +33,10 @@ class NavigationService implements INavigationService {
   }
 
   @override
-  Widget getRouteWidget(String routeName) {
-    print("routeName $routeName");
-    return getRoute(routeName);
+  Widget getRouteWidget(String routeName, {bool byRouteCoordinator = false}) {
+    return !byRouteCoordinator
+        ? getRoute(routeName)
+        : getRouteByRouteCoordinator(routeName);
   }
 
   @override

@@ -18,7 +18,8 @@ class HomeRouteCoordinator extends HomeTabRouteCoordinator {
     viewModels.add(mainWidget.viewModel);
   }
 
-  navigateToRoute(RouteListData routeListData, UserSearchData userData) {
+  navigateToRoute(RouteListData? routeListData, UserSearchData? userData) {
+    if (routeListData == null || userData == null) return;
     genericNavigateToRoute(
         routeListData, userData, (userData) => navigateToUserDetail(userData));
   }

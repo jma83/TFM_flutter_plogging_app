@@ -71,8 +71,8 @@ void $initViewModels() {
         getIt<GetRouteListByUser>(),
         getIt<SearchRouteList>(),
         getIt<LoadingService>()))
-    ..registerFactory<ProfilePageViewModel>(() => ProfilePageViewModel(
-        getIt<AuthenticationService>(), getIt<UserModel>()))
+    ..registerFactory<ProfilePageViewModel>(
+        () => ProfilePageViewModel(getIt<AuthenticationService>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageFollowUser>(),

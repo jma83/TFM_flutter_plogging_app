@@ -1,12 +1,16 @@
 // ignore_for_file: constant_identifier_names
 
 class Ruta {
-  final String _value;
-  const Ruta._internal(this._value);
-  getValue() => _value;
-
-  static const Start = Ruta._internal('/');
-  static const Login = Ruta._internal('login');
-  static const Register = Ruta._internal('register');
-  static const Home = Ruta._internal('home');
+  static const Start = '/';
+  static const Login = 'login';
+  static const Register = 'register';
+  static const HomeTab = 'homeTab';
+  static const Home = 'home';
+  static const Search = 'search';
+  static const Plogging = 'plogging';
+  static const MyRoutes = 'myRoutes';
+  static const Profile = 'profile';
+  static const RouteDetail = 'routeDetail';
+  static const UserDetail = 'userDetail';
+  static const EditProfile = 'editProfile';
 }

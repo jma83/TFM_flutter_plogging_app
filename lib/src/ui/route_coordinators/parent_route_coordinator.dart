@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 
 class ParentRouteCoordinator {
+  final Widget mainWidget;
+  final NavigationService navigationService;
+
+  ParentRouteCoordinator(this.mainWidget, this.navigationService);
+
   routeBuild(Widget widgetRoute) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => widgetRoute,
@@ -18,5 +24,9 @@ class ParentRouteCoordinator {
         );
       },
     );
+  }
+
+  void goBack() {
+    navigationService.goBack();
   }
 }

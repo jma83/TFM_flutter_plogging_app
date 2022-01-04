@@ -44,7 +44,8 @@ class ProfilePage extends StatelessWidget {
             creationDate: viewModel.formattedCreationDate,
             genderFormatted: viewModel.formattedGender,
             isSelf: true,
-          );
+            editUserCallback: viewModel.navigateToEdit,
+            xp: viewModel.user!.xp);
   }
 
   Widget getLoggoutFloatingButton() {

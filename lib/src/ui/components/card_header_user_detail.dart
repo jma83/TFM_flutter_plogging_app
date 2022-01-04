@@ -9,8 +9,8 @@ class CardHeaderUserDetail extends StatelessWidget {
   final String genderFormatted;
   final String creationDate;
   final bool isSelf;
-  final double? maxXp;
-  final double? xp;
+  final int? maxXp;
+  final int? xp;
   final Function? followUserCallback;
   final Function? editUserCallback;
 

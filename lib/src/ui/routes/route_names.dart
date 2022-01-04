@@ -12,4 +12,5 @@ class Ruta {
   static const Profile = 'profile';
   static const RouteDetail = 'routeDetail';
   static const UserDetail = 'userDetail';
+  static const EditProfile = 'editProfile';
 }

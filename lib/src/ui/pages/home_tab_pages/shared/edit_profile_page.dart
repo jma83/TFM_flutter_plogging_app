@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/core/domain/gender_data.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
-import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/notifiers/edit_profile_notifiers.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
+import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
-class RegisterPage extends StatelessWidget {
-  final RegisterPageViewModel viewModel;
-  const RegisterPage(this.viewModel, {Key? key}) : super(key: key);
+@injectable
+class EditProfilePage extends StatelessWidget {
+  final EditProfilePageViewModel viewModel;
+  const EditProfilePage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<RegisterPageViewModel>.reactive(
+    return ViewModelBuilder<EditProfilePageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
-        onModelReady: (viewModel) => viewModel.addListener(
-            () => showErrorAlert(context, viewModel), ["error_signup"]),
-        builder: (context, RegisterPageViewModel viewModel, child) {
+        onModelReady: (viewModel) {
+          viewModel.addListener(
+              () => {}, [EditProfileNotifiers.updateEditProfilePage]);
+          viewModel.loadPage();
+          viewModel.addListener(() => showErrorAlert(context, viewModel),
+              [EditProfileNotifiers.editProfileProcessError]);
+        },
+        builder: (context, EditProfilePageViewModel viewModel, child) {
           return Scaffold(
-              appBar: AppBar(title: const Text("Plogging Challenge")),
+              appBar: AppBar(title: const Text("Edit profile data")),
               body: Container(
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -32,27 +41,17 @@ class RegisterPage extends StatelessWidget {
                       child: ListView(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 40, vertical: 20),
-                    children: [
-                      const SizedBox(height: 20),
-                      _getTitle(),
-                      const Divider(height: 40),
-                      _getForm(viewModel)
-                    ],
+                    children: [_getForm(viewModel)],
                   ))));
         });
   }
 
-  Widget _getTitle() {
-    return const Center(
-        child: Text(
-      "Sign up now!",
-      style: TextStyle(fontSize: 24),
-      textAlign: TextAlign.center,
-    ));
-  }
-
-  Widget _getForm(RegisterPageViewModel viewModel) {
+  Widget _getForm(EditProfilePageViewModel viewModel) {
     return ProfileFormFields(
+        email: viewModel.email,
+        username: viewModel.username,
+        age: viewModel.age,
+        gender: viewModel.gender,
         callbackValidateForm: viewModel.validateForm,
         isRegister: true,
         callbackSetAge: viewModel.setAge,
@@ -63,7 +62,7 @@ class RegisterPage extends StatelessWidget {
         callbackSetUsername: viewModel.setUsername);
   }
 
-  showErrorAlert(BuildContext context, RegisterPageViewModel viewModel) {
+  showErrorAlert(BuildContext context, EditProfilePageViewModel viewModel) {
     showDialog(
         context: context,
         builder: (_) => Alert.createInfoAlert(

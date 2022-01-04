@@ -1,32 +1,40 @@
 // ignore_for_file: constant_identifier_names
-import 'package:flutter_plogging/src/core/application/create_user.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/application/update_user.dart';
 import 'package:flutter_plogging/src/core/domain/gender_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
-import 'package:flutter_plogging/src/ui/notifiers/register_notifiers.dart';
-import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
+import 'package:flutter_plogging/src/ui/notifiers/edit_profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class RegisterPageViewModel extends AuthPropertyChangeNotifier {
+class EditProfilePageViewModel extends HomeTabsChangeNotifier {
   String _email = "";
   String _username = "";
   String _password = "";
   String _confirmPassword = "";
   String _age = "";
-  String _gender = Gender.NotDefined;
+  String _gender = "";
   String _errorMessage = "";
 
   final LoadingService _loadingService;
   final UserViewModel _userViewModel;
-  final CreateUser _createUser;
+  final UpdateUser _updateUser;
 
-  RegisterPageViewModel(authService, this._userViewModel, this._loadingService,
-      this._createUser, GetUserById getUserById)
-      : super(authService, getUserById) {
-    createAuthListener();
+  EditProfilePageViewModel(AuthenticationService authenticationService,
+      this._userViewModel, this._loadingService, this._updateUser)
+      : super(authenticationService);
+
+  @override
+  loadPage() {
+    _username = authenticationService.currentUserData!.username;
+    _age = authenticationService.currentUserData!.age.toString();
+    _gender = Gender.getGenderFromIndex(
+        authenticationService.currentUserData!.gender);
+    notifyListeners(EditProfileNotifiers.updateEditProfilePage);
   }
 
   void validateForm() {
@@ -40,23 +48,14 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   }
 
   void validationOkResponse() async {
-    try {
-      final String? result =
-          await authService.signUp(email: _email, password: _password);
-      if (result != null) {
-        setError(result);
-        return;
-      }
-    } catch (e) {
-      setError("Sorry, couldn't validate data. Please, try it again later");
-      print(e);
-    }
+    await _updateUser.execute(
+        authenticationService.currentUser!.uid,
+        UserData(
+            id: authenticationService.currentUser!.uid,
+            username: _username,
+            age: int.parse(_age),
+            gender: Gender.getGenderIndex(_gender)));
     toggleLoading();
-    await _createUser.execute(UserData(
-        id: authService.currentUser!.uid,
-        username: _username,
-        age: int.parse(_age),
-        gender: Gender.getGenderIndex(_gender)));
   }
 
   toggleLoading() {
@@ -66,16 +65,11 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   setError(String errorValue) {
     _errorMessage = errorValue;
     toggleLoading();
-    notifyListeners(RegisterNotifiers.registerProcessError);
-  }
-
-  @override
-  notifyLoggedIn() {
-    notifyListeners(RegisterNotifiers.navigateToHome);
+    notifyListeners(EditProfileNotifiers.editProfileProcessError);
   }
 
   void dismissAlert() {
-    notifyListeners(RegisterNotifiers.navigateToPrevious);
+    notifyListeners(EditProfileNotifiers.navigateToPrevious);
   }
 
   void setEmail(String email) {
@@ -102,8 +96,20 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
     _gender = gender;
   }
 
-  get gender {
+  String get gender {
     return _gender;
+  }
+
+  String get age {
+    return _age;
+  }
+
+  String get username {
+    return _username;
+  }
+
+  String get email {
+    return authenticationService.currentUser!.email!;
   }
 
   get errorMessage {

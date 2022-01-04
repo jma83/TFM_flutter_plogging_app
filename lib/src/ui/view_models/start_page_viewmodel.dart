@@ -1,10 +1,14 @@
+import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/services/authentication_service.dart';
+import 'package:flutter_plogging/src/ui/notifiers/start_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class StartPageViewModel extends AuthPropertyChangeNotifier {
-  StartPageViewModel(_authService, _userStoreService)
-      : super(_authService, _userStoreService);
+  StartPageViewModel(
+      AuthenticationService _authService, GetUserById _getUserById)
+      : super(_authService, _getUserById);
   bool alreadyDisposed = false;
 
   void checkUserRedirection() {
@@ -16,7 +20,7 @@ class StartPageViewModel extends AuthPropertyChangeNotifier {
     if (alreadyDisposed) {
       return;
     }
-    notifyListeners("startRouteCoordinator_navigateToHome");
+    notifyListeners(StartNotifiers.navigateToHome);
   }
 
   @override
@@ -24,7 +28,7 @@ class StartPageViewModel extends AuthPropertyChangeNotifier {
     if (alreadyDisposed) {
       return;
     }
-    notifyListeners("startRouteCoordinator_navigateToLogin");
+    notifyListeners(StartNotifiers.navigateToLogin);
   }
 
   @override

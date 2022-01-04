@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
-import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
 class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
   StreamSubscription<User?>? subscription;
   final AuthenticationService authService;
-  final UserModel userModel;
+  final GetUserById getUserById;
 
-  AuthPropertyChangeNotifier(this.authService, this.userModel);
+  AuthPropertyChangeNotifier(this.authService, this.getUserById);
 
   void createAuthListener() {
     subscription = authService.authStateChanges.listen((User? user) async {
@@ -21,8 +21,7 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
         return;
       }
 
-      authService
-          .setCurrentUserData(await userModel.queryElementById(user.uid));
+      authService.setCurrentUserData(await getUserById.execute(user.uid));
       notifyLoggedIn();
     });
   }

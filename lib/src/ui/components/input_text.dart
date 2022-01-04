@@ -10,6 +10,8 @@ class InputText extends StatefulWidget {
   final double bottomHeight;
   final TextInputType inputType;
   final bool isPasswordField;
+  final bool readonly;
+  final TextEditingController? textController;
 
   const InputText(
       {required this.label,
@@ -17,10 +19,12 @@ class InputText extends StatefulWidget {
       required this.icon,
       required this.maxLength,
       required this.onChange,
+      this.textController,
       this.inputType = TextInputType.name,
       this.isPasswordField = false,
       this.bottomHeight = 5,
       this.maxLines = 1,
+      this.readonly = false,
       Key? key})
       : super(key: key);
 
@@ -33,6 +37,8 @@ class _InputTextState extends State<InputText> {
   Widget build(BuildContext context) {
     return Column(children: [
       TextField(
+        readOnly: widget.readonly,
+        controller: widget.textController ?? defaultTextEditingController,
         textAlignVertical: TextAlignVertical.center,
         maxLines: widget.maxLines,
         maxLength: widget.maxLength == 0 ? null : widget.maxLength,
@@ -50,5 +56,9 @@ class _InputTextState extends State<InputText> {
       ),
       SizedBox(height: widget.bottomHeight)
     ]);
+  }
+
+  get defaultTextEditingController {
+    return TextEditingController(text: "");
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/ui/notifiers/login_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
@@ -14,7 +15,8 @@ class LoginPage extends StatelessWidget {
     return ViewModelBuilder<LoginPageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) => viewModel.addListener(
-            () => showErrorAlert(context, viewModel), ["error_signin"]),
+            () => showErrorAlert(context, viewModel),
+            [LoginNotifiers.loginProcessError]),
         builder: (context, LoginPageViewModel viewModel, child) {
           return Scaffold(
               appBar: AppBar(title: const Text("Plogging Challenge")),

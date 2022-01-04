@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
+import 'package:flutter_plogging/src/ui/notifiers/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/my_routes_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -16,7 +17,7 @@ class MyRoutesPage extends StatelessWidget {
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
           viewModel.submitSearch(viewModel.searchValue);
-          viewModel.addListener(() {}, ["update_my_routes"]);
+          viewModel.addListener(() {}, [MyRouteNotifiers.updateMyRoutesPage]);
           return;
         },
         builder: (context, MyRoutesPageViewModel viewModel, child) {

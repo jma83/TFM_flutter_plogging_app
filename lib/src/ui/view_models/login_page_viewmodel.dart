@@ -1,4 +1,6 @@
+import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
+import 'package:flutter_plogging/src/ui/notifiers/login_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:injectable/injectable.dart';
@@ -13,8 +15,8 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   final LoadingService _loadingService;
 
   LoginPageViewModel(_authenticationService, this._userViewModel,
-      this._loadingService, _userStoreService)
-      : super(_authenticationService, _userStoreService) {
+      this._loadingService, GetUserById _getUserById)
+      : super(_authenticationService, _getUserById) {
     createAuthListener();
   }
 
@@ -44,7 +46,7 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
 
   setError(String errorValue) {
     _errorMessage = errorValue;
-    notifyListeners("error_signin");
+    notifyListeners(LoginNotifiers.loginProcessError);
     toggleLoading();
   }
 
@@ -54,15 +56,15 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
 
   @override
   notifyLoggedIn() {
-    notifyListeners("loginRouteCoordinator_navigateToHome");
+    notifyListeners(LoginNotifiers.navigateToHome);
   }
 
   void manageRegisterNavigation() {
-    notifyListeners("loginRouteCoordinator_navigateToRegister");
+    notifyListeners(LoginNotifiers.navigateToRegister);
   }
 
   void dismissAlert() {
-    notifyListeners("loginRouteCoordinator_returnToPrevious");
+    notifyListeners(LoginNotifiers.navigateToPrevious);
   }
 
   void setEmail(String email) {

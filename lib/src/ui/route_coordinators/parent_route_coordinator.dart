@@ -27,7 +27,6 @@ class ParentRouteCoordinator {
   }
 
   void goBack() {
-    print("elpepe");
     navigationService.goBack();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_tab_bar.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/edit_profile_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/home_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/my_routes_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/profile_page.dart';
@@ -22,7 +23,7 @@ import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
-import 'package:flutter_plogging/src/core/services/navigation_service.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
 
 final getIt = GetIt.instance;
 
@@ -40,5 +41,6 @@ void $initViews() {
     ..registerFactory(() => MyRoutesPage(getIt<MyRoutesPageViewModel>()))
     ..registerFactory(() => ProfilePage(getIt<ProfilePageViewModel>()))
     ..registerFactory(() => RouteDetailPage(getIt<RouteDetailPageViewModel>()))
-    ..registerFactory(() => UserDetailPage(getIt<UserDetailPageViewModel>()));
+    ..registerFactory(() => UserDetailPage(getIt<UserDetailPageViewModel>()))
+    ..registerFactory(() => EditProfilePage(getIt<EditProfilePageViewModel>()));
 }

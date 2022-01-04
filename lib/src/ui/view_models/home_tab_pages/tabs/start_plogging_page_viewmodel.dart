@@ -10,6 +10,7 @@ import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
+import 'package:flutter_plogging/src/ui/notifiers/start_plogging_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
@@ -81,7 +82,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         .getStreamLocationPosition()
         .listen((Position position) {
       _routeProgressData.currentPosition = position;
-      notifyListeners("update_start_plogging_page");
+      notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
 
@@ -100,7 +101,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       addPolyline();
       saveInPointList();
       setLastPosition();
-      notifyListeners("update_start_plogging_page");
+      notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
 
@@ -112,7 +113,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     setStartDate();
     toggleRouteStatus();
     setLastPosition();
-    notifyListeners("update_start_plogging_page");
+    notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }
 
   endRoute() {
@@ -120,14 +121,14 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     removeListeners();
     completeProgressRouteData();
     toggleRouteStatus();
-    notifyListeners("update_start_plogging_confirm_route");
+    notifyListeners(StartPloggingNotifiers.confirmRoutePlogging);
   }
 
   confirmRoute() {
     confirmProgressRouteData();
     _routeModel.addElement(_routeProgressData);
     dismissAlert();
-    notifyListeners("update_start_plogging_page");
+    notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }
 
   completeProgressRouteData() {
@@ -278,7 +279,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         currentZoom: _routeProgressData.currentZoom,
         currentPosition: _routeProgressData.currentPosition,
         serviceStatus: _routeProgressData.serviceStatus);
-    notifyListeners("startPloggingRouteCoordinator_returnToPrevious");
+    notifyListeners(StartPloggingNotifiers.returnToPrevious);
   }
 
   bool get hasStartedRoute {

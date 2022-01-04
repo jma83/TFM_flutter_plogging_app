@@ -61,7 +61,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   updatePage() {
-    notifyListeners("update_my_routes");
+    notifyListeners(MyRouteNotifiers.updateMyRoutesPage);
   }
 
   @override

@@ -24,6 +24,10 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(ProfileNotifiers.goBackDismiss);
   }
 
+  navigateToEdit() {
+    notifyListeners(ProfileNotifiers.navigateToEditProfile);
+  }
+
   String get formattedCreationDate {
     if (user == null) return "";
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/create_route_confirmation.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/ui/notifiers/start_plogging_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/start_plogging_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
@@ -20,16 +21,18 @@ class StartPloggingPage extends StatelessWidget {
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
           viewModel.loadPage();
-          viewModel.addListener(() {}, ["update_start_plogging_page"]);
+          viewModel
+              .addListener(() {}, [StartPloggingNotifiers.updatePloggingPage]);
           viewModel.confirmRouteCallback =
               () => showRouteConfirmationAlert(context);
           viewModel.addListener(viewModel.confirmRouteCallback!,
-              ["update_start_plogging_confirm_route"]);
+              [StartPloggingNotifiers.confirmRoutePlogging]);
         },
         onDispose: (viewModel) {
-          viewModel.removeListener(() {}, ["update_start_plogging_page"]);
+          viewModel.removeListener(
+              () {}, [StartPloggingNotifiers.updatePloggingPage]);
           viewModel.removeListener(viewModel.confirmRouteCallback!,
-              ["update_start_plogging_confirm_route"]);
+              [StartPloggingNotifiers.confirmRoutePlogging]);
         },
         builder: (context, StartPloggingPageViewModel viewModel, child) {
           return Scaffold(

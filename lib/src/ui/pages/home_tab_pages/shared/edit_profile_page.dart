@@ -21,6 +21,9 @@ class EditProfilePage extends StatelessWidget {
           viewModel.loadPage();
           viewModel.addListener(() => showErrorAlert(context, viewModel),
               [EditProfileNotifiers.editProfileProcessError]);
+          viewModel.addListener(
+              () => showUpdateConfirmation(context, viewModel),
+              [EditProfileNotifiers.updateProfileData]);
         },
         builder: (context, EditProfilePageViewModel viewModel, child) {
           return Scaffold(
@@ -52,7 +55,7 @@ class EditProfilePage extends StatelessWidget {
         age: viewModel.age,
         gender: viewModel.gender,
         callbackValidateForm: viewModel.validateForm,
-        isRegister: true,
+        isRegister: false,
         callbackSetAge: viewModel.setAge,
         callbackSetPassword: viewModel.setPassword,
         callbackSetConfirmPassword: viewModel.setConfirmPassword,
@@ -66,5 +69,13 @@ class EditProfilePage extends StatelessWidget {
         context: context,
         builder: (_) => Alert.createInfoAlert(
             "Error", viewModel.errorMessage, viewModel.dismissAlert));
+  }
+
+  showUpdateConfirmation(
+      BuildContext context, EditProfilePageViewModel viewModel) {
+    showDialog(
+        context: context,
+        builder: (_) => Alert.createInfoAlert("Success",
+            "Your data has been updated successfully", viewModel.dismissAlert));
   }
 }

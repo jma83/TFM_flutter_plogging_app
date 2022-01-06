@@ -40,7 +40,7 @@ class ProfileFormFields extends StatelessWidget {
       children: [
         InputText(
           textController: TextEditingController(text: email ?? ""),
-          readonly: isRegister,
+          readonly: !isRegister,
           inputType: TextInputType.emailAddress,
           bottomHeight: 10,
           label: "Email",

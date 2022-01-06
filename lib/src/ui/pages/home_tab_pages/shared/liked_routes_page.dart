@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/liked_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -22,7 +23,10 @@ class LikedRoutesPage extends StatelessWidget {
         },
         builder: (context, LikedRoutesPageViewModel viewModel, child) {
           return Scaffold(
-              appBar: AppBar(title: const Text("My liked routes")),
+              appBar: TopNavigationBar.getTopNavigationBar(
+                  title: "My liked routes",
+                  isBackVisible: true,
+                  goBackCallback: viewModel.navigateToPrevious),
               body: viewModel.routes.isNotEmpty
                   ? getSearchList()
                   : getEmptySearch());

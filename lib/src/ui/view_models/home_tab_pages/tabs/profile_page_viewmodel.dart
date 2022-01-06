@@ -16,6 +16,16 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
     dismissAlert();
   }
 
+  @override
+  loadPage() {
+    updatePage();
+  }
+
+  @override
+  updatePage() {
+    notifyListeners(ProfileNotifiers.updateProfilePage);
+  }
+
   logout() {
     notifyListeners(ProfileNotifiers.showLogoutConfirmation);
   }

@@ -41,7 +41,9 @@ class NavigationService implements INavigationService {
 
   @override
   void goBack() {
-    return navigatorKey.currentState!.pop();
+    return navigatorKey.currentState != null
+        ? navigatorKey.currentState!.pop()
+        : currentNavigator.currentState!.pop();
   }
 
   setCurrentHomeTabItem(TabItem? tabItem) {

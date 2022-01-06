@@ -63,8 +63,6 @@ class AuthenticationService implements IAuthenticationService {
     _userData = currentUserData;
   }
 
-  void setCurrentUserData(UserData? userData) {}
-
   String getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
       case "ERROR_EMAIL_ALREADY_IN_USE":

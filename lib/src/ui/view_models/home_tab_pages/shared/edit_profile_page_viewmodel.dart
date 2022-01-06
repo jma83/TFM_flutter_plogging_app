@@ -29,6 +29,7 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
 
   @override
   loadPage() {
+    _email = authenticationService.currentUser!.email!;
     _username = authenticationService.currentUserData!.username;
     _age = authenticationService.currentUserData!.age.toString();
     _gender = Gender.getGenderFromIndex(
@@ -38,7 +39,7 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
 
   void validateForm() {
     toggleLoading();
-    if (!_userViewModel.validateRegister(_email, _username, _password,
+    if (!_userViewModel.validateUpdate(_email, _username, _password,
         _confirmPassword, _age, Gender.getGenderIndex(_gender).toString())) {
       setError(_userViewModel.errorMessage);
       return;
@@ -47,14 +48,23 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
   }
 
   void validationOkResponse() async {
-    await _updateUser.execute(
-        authenticationService.currentUser!.uid,
-        UserData(
-            id: authenticationService.currentUser!.uid,
-            username: _username,
-            age: int.parse(_age),
-            gender: Gender.getGenderIndex(_gender)));
-    toggleLoading();
+    final UserData user = authenticationService.currentUserData!;
+    final UserData newUser = UserData(
+        id: user.id,
+        username: _username,
+        age: int.parse(_age),
+        gender: Gender.getGenderIndex(_gender),
+        followers: user.followers,
+        following: user.following,
+        image: user.image,
+        level: user.level,
+        xp: user.xp,
+        initialCreationDate: user.creationDate);
+    _updateUser.execute(user.id, newUser).then((_) {
+      authenticationService.currentUserData = newUser;
+      notifyListeners(EditProfileNotifiers.updateProfileData);
+      _loadingService.setLoading(false);
+    });
   }
 
   toggleLoading() {

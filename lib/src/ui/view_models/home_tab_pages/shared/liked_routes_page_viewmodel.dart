@@ -60,6 +60,10 @@ class LikedRoutesPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(LikedRoutesNotifiers.navigateToRoute);
   }
 
+  navigateToPrevious() {
+    notifyListeners(LikedRoutesNotifiers.returnToPrevious);
+  }
+
   @override
   updateData(RouteListAuthorSearchData data) {
     for (int i = 0; i < _routesWithAuthor.length; i++) {

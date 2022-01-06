@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/edit_profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/liked_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/profile_notifiers.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/edit_profile_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/liked_routes_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/profile_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/home_tab_route_coordinator.dart';
@@ -25,7 +27,12 @@ class ProfileRouteCoordinator extends HomeTabRouteCoordinator {
   }
 
   navigateToEditProfile() {
-    final Widget widget = navigationService.getRouteWidget(Ruta.EditProfile);
+    final EditProfilePage widget =
+        navigationService.getRouteWidget(Ruta.EditProfile) as EditProfilePage;
+    widget.viewModel
+        .addListener(goBack, [EditProfileNotifiers.navigateToPrevious]);
+    widget.viewModel
+        .addListener(updateRoute, [EditProfileNotifiers.updateProfileData]);
     navigationService.navigateTo(routeBuild(widget));
   }
 
@@ -37,6 +44,8 @@ class ProfileRouteCoordinator extends HomeTabRouteCoordinator {
       navigateToRoute(
           widget.viewModel.selectedRoute, widget.viewModel.selectedUser);
     }, [LikedRoutesNotifiers.navigateToRoute]);
+    widget.viewModel
+        .addListener(returnToPrevious, [LikedRoutesNotifiers.returnToPrevious]);
     navigationService.navigateTo(routeBuild(widget));
   }
 

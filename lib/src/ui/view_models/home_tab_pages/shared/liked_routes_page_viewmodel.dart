@@ -1,7 +1,10 @@
+// ignore: implementation_imports
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
 import 'package:flutter_plogging/src/core/application/get_users_by_ids.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_author_data.dart';
+import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
@@ -48,10 +51,30 @@ class LikedRoutesPageViewModel extends HomeTabsChangeNotifier {
     updatePage();
   }
 
-  navigateToRoute(RouteListAuthorData data) {
-    setSelectedRoute(data.routeListData);
+  navigateToRoute(RouteListData route) {
+    final data = _routesWithAuthor
+        .firstWhereOrNull((e) => e.routeListData.id == route.id);
+
+    setSelectedRoute(data!.routeListData);
     setSelectedUser(data.userData);
     notifyListeners(LikedRoutesNotifiers.navigateToRoute);
+  }
+
+  @override
+  updateData(RouteListAuthorSearchData data) {
+    for (int i = 0; i < _routesWithAuthor.length; i++) {
+      if (_routesWithAuthor[i].routeListData.id != data.routeListData?.id) {
+        continue;
+      }
+      if (data.routeListData != null) {
+        _routesWithAuthor[i].routeListData = data.routeListData!;
+      }
+      if (data.userData != null) {
+        _routesWithAuthor[i].userData = data.userData!;
+      }
+      break;
+    }
+    updatePage();
   }
 
   setSelectedRoute(RouteListData route) {

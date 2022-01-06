@@ -10,7 +10,7 @@ import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
-import 'package:flutter_plogging/src/ui/notifiers/start_plogging_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/start_plogging_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:flutter_plogging/src/utils/geo_point_utils.dart';

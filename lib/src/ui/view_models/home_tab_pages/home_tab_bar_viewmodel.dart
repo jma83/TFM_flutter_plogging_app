@@ -3,7 +3,7 @@ import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
-import 'package:flutter_plogging/src/ui/notifiers/home_tabs_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';

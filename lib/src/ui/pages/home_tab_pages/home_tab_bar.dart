@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/notifiers/home_tabs_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/tabs/tab_navigatior.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';

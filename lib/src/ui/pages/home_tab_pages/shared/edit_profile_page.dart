@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
-import 'package:flutter_plogging/src/ui/notifiers/edit_profile_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/edit_profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';

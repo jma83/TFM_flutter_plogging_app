@@ -3,7 +3,7 @@ import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart'
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
-import 'package:flutter_plogging/src/ui/notifiers/user_detail_notifier.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/user_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_detail_page_view_model.dart';
 import 'package:stacked/stacked.dart';
 

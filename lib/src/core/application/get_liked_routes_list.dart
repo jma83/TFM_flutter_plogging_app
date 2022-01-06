@@ -1,7 +1,6 @@
 import 'package:flutter_plogging/src/core/domain/like_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/model/like_model.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:injectable/injectable.dart';

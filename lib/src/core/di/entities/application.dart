@@ -1,5 +1,6 @@
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
+import 'package:flutter_plogging/src/core/application/create_route.dart';
 import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
@@ -65,6 +66,7 @@ void $initApplication() {
         getIt<LikeModel>(),
         getIt<AuthenticationService>()))
     ..registerLazySingleton<CreateUser>(() => CreateUser(getIt<UserModel>()))
+    ..registerLazySingleton<CreateRoute>(() => CreateRoute(getIt<RouteModel>()))
     ..registerLazySingleton<UpdateUser>(() => UpdateUser(getIt<UserModel>()))
     ..registerLazySingleton<GetLikedRoutesList>(
         () => GetLikedRoutesList(getIt<RouteModel>(), getIt<LikeModel>()))

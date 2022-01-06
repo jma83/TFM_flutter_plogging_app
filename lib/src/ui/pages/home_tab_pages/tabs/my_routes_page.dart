@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
-import 'package:flutter_plogging/src/ui/notifiers/home_tabs/my_routes_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/my_routes_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 

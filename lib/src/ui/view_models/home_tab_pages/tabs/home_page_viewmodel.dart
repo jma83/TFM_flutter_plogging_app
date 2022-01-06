@@ -7,7 +7,7 @@ import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
-import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
 

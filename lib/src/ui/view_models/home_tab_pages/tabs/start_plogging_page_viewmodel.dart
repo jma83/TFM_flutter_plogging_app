@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/create_route.dart';
 import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
-import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
-import 'package:flutter_plogging/src/ui/notifiers/home_tabs/start_plogging_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/start_plogging_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
@@ -34,7 +34,7 @@ const double minDistance = 5.0;
 
 @injectable
 class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
-  final RouteModel _routeModel;
+  final CreateRoute _createRoute;
   final UuidGeneratorService _uuidGeneratorService;
   final GeolocatorService _geolocatorService;
   final ImagePickerService _imagePickerService;
@@ -52,7 +52,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   StartPloggingPageViewModel(
       AuthenticationService authenticationService,
-      this._routeModel,
+      this._createRoute,
       this._geolocatorService,
       this._uuidGeneratorService,
       this._imagePickerService,
@@ -126,7 +126,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   confirmRoute() {
     confirmProgressRouteData();
-    _routeModel.addElement(_routeProgressData);
+    _createRoute.execute(_routeProgressData);
     dismissAlert();
     notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }

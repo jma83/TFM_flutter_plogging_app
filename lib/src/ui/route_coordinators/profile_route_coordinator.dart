@@ -1,10 +1,9 @@
-import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/edit_profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/liked_routes_notifiers.dart';
-import 'package:flutter_plogging/src/ui/notifiers/home_tabs/profile_notifiers.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/edit_profile_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/liked_routes_page.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/profile_page.dart';

@@ -4,10 +4,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class CreateUser {
-  UserModel userModel;
-  CreateUser(this.userModel);
+  final UserModel _userModel;
+  CreateUser(this._userModel);
 
   Future<void> execute(UserData user) async {
-    return await userModel.addElement(user);
+    return await _userModel.addElement(user);
   }
 }

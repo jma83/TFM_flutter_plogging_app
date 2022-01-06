@@ -11,18 +11,19 @@ class LoadingService {
   }
 
   toggleLoading({bool showLoadIcon = true}) {
+    _isLoading = !_isLoading;
+
     if (showLoadIcon) {
       _showLoadIcon();
     }
-    _isLoading = !_isLoading;
     _verifyTimeout();
   }
 
   setLoading(bool value, {bool showLoadIcon = true}) {
+    _isLoading = value;
     if (showLoadIcon) {
       _showLoadIcon();
     }
-    _isLoading = value;
     _verifyTimeout();
   }
 
@@ -31,12 +32,14 @@ class LoadingService {
   }
 
   _showLoadIcon() {
-    _isLoading ? EasyLoading.dismiss() : EasyLoading.show(status: 'loading...');
+    !_isLoading
+        ? EasyLoading.dismiss()
+        : EasyLoading.show(status: 'loading...');
   }
 
   _verifyTimeout() {
     if (!_isLoading) {
-      return;
+      return _clearTimeout();
     }
     _timer = Timer(const Duration(seconds: 6), () => _clearTimeout());
   }

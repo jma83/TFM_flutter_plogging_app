@@ -113,8 +113,10 @@ class RouteModel implements IMediaModel<RouteData> {
   @override
   Future<List<RouteData>> queryElementInCriteria(
       String key, List<String> values) async {
+    final dynamic finalKey =
+        key == RouteFieldData.id ? FieldPath.documentId : key;
     final QuerySnapshot<Object?> docsData =
-        await entity.where(key, whereIn: values).get();
+        await entity.where(finalKey, whereIn: values).get();
     return docsData.docs
         .map((e) =>
             RouteData.castMapToRoute(e.data() as Map<String, dynamic>, e.id))

@@ -13,9 +13,11 @@ import 'package:flutter_plogging/src/core/application/search_user_list.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
+import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/my_routes_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/profile_page_viewmodel.dart';
@@ -35,6 +37,7 @@ import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
+import 'package:flutter_plogging/src/core/application/get_top_level_users.dart';
 
 final getIt = GetIt.instance;
 
@@ -88,7 +91,8 @@ void $initViewModels() {
         getIt<ManageFollowUser>(),
         getIt<GetUserFollowing>(),
         getIt<SearchUserList>(),
-        getIt<LoadingService>()))
+        getIt<LoadingService>(),
+        getIt<GetTopLevelUsers>()))
     ..registerFactory<RouteDetailPageViewModel>(() => RouteDetailPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),
@@ -109,5 +113,11 @@ void $initViewModels() {
         getIt<AuthenticationService>(),
         getIt<UserViewModel>(),
         getIt<LoadingService>(),
-        getIt<UpdateUser>()));
+        getIt<UpdateUser>()))
+    ..registerFactory<LikedRoutesPageViewModel>(() => LikedRoutesPageViewModel(
+        getIt<AuthenticationService>(),
+        getIt<ManageLikeRoute>(),
+        getIt<GetLikedRoutesList>(),
+        getIt<GetUsersByIds>(),
+        getIt<LoadingService>()));
 }

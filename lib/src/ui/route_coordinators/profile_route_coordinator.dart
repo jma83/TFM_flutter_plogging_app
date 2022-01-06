@@ -14,12 +14,19 @@ class ProfileRouteCoordinator extends HomeTabRouteCoordinator {
     mainWidget.viewModel.addListener(goBack, [ProfileNotifiers.goBackDismiss]);
     mainWidget.viewModel.addListener(
         navigateToEditProfile, [ProfileNotifiers.navigateToEditProfile]);
+    mainWidget.viewModel.addListener(
+        navigateToLikedRoutes, [ProfileNotifiers.navigateToLikedRoutes]);
 
     viewModels.add(mainWidget.viewModel);
   }
 
   navigateToEditProfile() {
     final Widget widget = navigationService.getRouteWidget(Ruta.EditProfile);
+    navigationService.navigateTo(routeBuild(widget));
+  }
+
+  navigateToLikedRoutes() {
+    final Widget widget = navigationService.getRouteWidget(Ruta.LikedRoutes);
     navigationService.navigateTo(routeBuild(widget));
   }
 }

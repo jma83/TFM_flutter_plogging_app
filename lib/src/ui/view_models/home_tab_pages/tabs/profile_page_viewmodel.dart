@@ -28,6 +28,10 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(ProfileNotifiers.navigateToEditProfile);
   }
 
+  navigateToLikedRoutes() {
+    notifyListeners(ProfileNotifiers.navigateToLikedRoutes);
+  }
+
   String get formattedCreationDate {
     if (user == null) return "";
 

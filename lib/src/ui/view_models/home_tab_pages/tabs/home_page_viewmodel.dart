@@ -26,7 +26,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
   @override
   Future<void> loadPage() async {
     _routesWithAuthor.clear();
-    toggleLoading();
+    toggleLoading(loading: true);
     final List<RouteListData> routes =
         await _getFollowersRouteList.execute(currentUserId);
     if (routes.isEmpty) return updateAndToggle();
@@ -38,7 +38,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
   }
 
   updateAndToggle() {
-    toggleLoading();
+    toggleLoading(loading: false);
     updatePage();
   }
 
@@ -73,8 +73,8 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
     updatePage();
   }
 
-  toggleLoading() {
-    _loadingService.toggleLoading();
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   setSelectedRoute(RouteListData route) {

@@ -32,6 +32,16 @@ class SearchPage extends StatelessWidget {
                       onChange: (value) => viewModel.setSearchValue(value),
                       onSubmit: (value) =>
                           viewModel.submitSearch(value, false)),
+                  viewModel.users.isEmpty
+                      ? Container()
+                      : Column(
+                          children: [
+                            const SizedBox(height: 5),
+                            Text(viewModel.title,
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500))
+                          ],
+                        ),
                   Expanded(
                       child: SizedBox(
                           height: 100.0,

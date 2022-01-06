@@ -45,6 +45,7 @@ class UserDetailPage extends StatelessWidget {
       genderFormatted: viewModel.formattedGender,
       followUserCallback: viewModel.followUser,
       isSelf: false,
+      hideFollow: viewModel.user.id == viewModel.currentUserId,
     );
   }
 

@@ -45,6 +45,7 @@ class ProfilePage extends StatelessWidget {
             genderFormatted: viewModel.formattedGender,
             isSelf: true,
             editUserCallback: viewModel.navigateToEdit,
+            likedRoutesCallback: viewModel.navigateToLikedRoutes,
             xp: viewModel.user!.xp);
   }
 

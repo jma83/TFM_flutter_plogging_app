@@ -2,8 +2,10 @@ import 'package:flutter_plogging/src/core/application/calculate_points_distance.
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
+import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
+import 'package:flutter_plogging/src/core/application/get_top_level_users.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_user_followers.dart';
 import 'package:flutter_plogging/src/core/application/get_user_following.dart';
@@ -63,5 +65,9 @@ void $initApplication() {
         getIt<LikeModel>(),
         getIt<AuthenticationService>()))
     ..registerLazySingleton<CreateUser>(() => CreateUser(getIt<UserModel>()))
-    ..registerLazySingleton<UpdateUser>(() => UpdateUser(getIt<UserModel>()));
+    ..registerLazySingleton<UpdateUser>(() => UpdateUser(getIt<UserModel>()))
+    ..registerLazySingleton<GetLikedRoutesList>(
+        () => GetLikedRoutesList(getIt<RouteModel>(), getIt<LikeModel>()))
+    ..registerLazySingleton<GetTopLevelUsers>(
+        () => GetTopLevelUsers(getIt<UserModel>()));
 }

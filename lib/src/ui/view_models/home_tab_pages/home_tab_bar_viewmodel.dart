@@ -35,6 +35,7 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   }
 
   onClickTab(int index) {
+    if (index == selectedIndex) return;
     setSelectedIndex(index);
     setCurrentHomeTabItem(selectedTabItem);
     notifyListeners(HomeTabsNotifiers.updateHomeTabs);

@@ -9,20 +9,24 @@ class CardHeaderUserDetail extends StatelessWidget {
   final String genderFormatted;
   final String creationDate;
   final bool isSelf;
+  final bool hideFollow;
   final int? maxXp;
   final int? xp;
   final Function? followUserCallback;
   final Function? editUserCallback;
+  final Function? likedRoutesCallback;
 
   const CardHeaderUserDetail(
       {required this.user,
       required this.genderFormatted,
       required this.creationDate,
       required this.isSelf,
+      this.hideFollow = false,
       this.maxXp,
       this.xp,
       this.followUserCallback,
       this.editUserCallback,
+      this.likedRoutesCallback,
       Key? key})
       : super(key: key);
 
@@ -63,16 +67,32 @@ class CardHeaderUserDetail extends StatelessWidget {
   }
 
   getEditUserData() {
-    return InputButton(
-      label: const Text("Edit profile"),
-      onPress: editUserCallback ?? () {},
-      width: 120,
-      horizontalPadding: 10,
-    );
+    return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InputButton(
+            label: const Text("Edit profile"),
+            onPress: editUserCallback ?? () {},
+            width: 120,
+            horizontalPadding: 10,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          InputButton(
+            buttonType: InputButtonType.outlined,
+            label: const Text("Liked routes"),
+            onPress: likedRoutesCallback ?? () {},
+            width: 120,
+            horizontalPadding: 10,
+          )
+        ]);
   }
 
   getFollowButton() {
     return InputButtonFollow(
+        isSelf: hideFollow,
         following: user.followingFlag,
         followCallback: followUserCallback ?? () {});
   }

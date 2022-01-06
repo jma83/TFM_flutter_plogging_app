@@ -1,5 +1,6 @@
 // ignore: implementation_imports
 import 'package:collection/src/iterable_extensions.dart';
+import 'package:flutter_plogging/src/core/application/get_top_level_users.dart';
 import 'package:flutter_plogging/src/core/application/get_user_following.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/search_user_list.dart';
@@ -15,6 +16,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class SearchPageViewModel extends HomeTabsChangeNotifier {
   String _searchValue = "";
+  bool _isTop = true;
   late UserSearchData _userSelected;
   List<UserSearchData> _users = [];
   List<FollowerData> _followingList = [];
@@ -22,16 +24,23 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   final GetUserFollowing _getUserFollowing;
   final SearchUserList _searchUserList;
   final LoadingService _loadingService;
+  final GetTopLevelUsers _getTopLevelUsers;
 
-  SearchPageViewModel(authenticationService, this._manageFollowUser,
-      this._getUserFollowing, this._searchUserList, this._loadingService)
+  SearchPageViewModel(
+      authenticationService,
+      this._manageFollowUser,
+      this._getUserFollowing,
+      this._searchUserList,
+      this._loadingService,
+      this._getTopLevelUsers)
       : super(authenticationService);
 
   @override
   loadPage() async {
     await _updateFollowingUsers();
-    _users =
-        UserSearchData.createListFromUsersAndFollows(_users, _followingList);
+    final List<UserData> usersFound = await _getTopLevelUsers.execute();
+    _users = UserSearchData.createListFromUsersAndFollows(
+        usersFound, _followingList);
     updatePage();
   }
 
@@ -44,6 +53,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> submitSearch(String value, bool isFirst) async {
+    _isTop = false;
     toggleLoading();
     final List<UserData> usersFound = await _searchUserList.execute(value);
     _users = UserSearchData.createListFromUsersAndFollows(
@@ -108,5 +118,9 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   List<UserSearchData> get users {
     return _users;
+  }
+
+  String get title {
+    return _isTop ? "Featured users:" : "Search results: ";
   }
 }

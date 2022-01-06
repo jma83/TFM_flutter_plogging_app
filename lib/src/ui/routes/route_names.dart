@@ -13,4 +13,5 @@ class Ruta {
   static const RouteDetail = 'routeDetail';
   static const UserDetail = 'userDetail';
   static const EditProfile = 'editProfile';
+  static const LikedRoutes = 'likedRoutes';
 }

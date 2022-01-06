@@ -70,6 +70,15 @@ class UserModel implements IMediaModel<UserData> {
         .toList();
   }
 
+  Future<List<UserData>> getTopLevelUsers(int limit) async {
+    final QuerySnapshot<Object?> docsData =
+        await entity.orderBy(UserFieldData.level).limit(limit).get();
+    return docsData.docs
+        .map((e) =>
+            UserData.castMapToUser(e.data() as Map<String, dynamic>, e.id))
+        .toList();
+  }
+
   @override
   CollectionReference get entity {
     return _firebaseFirestore.collection(entityName);

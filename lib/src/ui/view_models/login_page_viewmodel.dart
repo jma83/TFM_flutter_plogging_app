@@ -38,6 +38,7 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
         return toggleLoading();
       }
     } catch (e) {
+      // ignore: avoid_print
       print(e);
       return toggleLoading();
     }

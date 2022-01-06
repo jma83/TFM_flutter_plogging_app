@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 const int maxLengthName = 20;
 const int maxLengthDescription = 100;
 
+// ignore: must_be_immutable
 class CreateRouteConfirmation extends StatefulWidget {
   final Function setName;
   final Function setDescription;
@@ -31,7 +32,7 @@ class CreateRouteConfirmation extends StatefulWidget {
 class _CreateRouteConfirmation extends State<CreateRouteConfirmation> {
   @override
   Widget build(BuildContext context) {
-    return Container(width: 300, height: 800, child: _getForm());
+    return SizedBox(width: 300, height: 800, child: _getForm());
   }
 
   Widget _getForm() {

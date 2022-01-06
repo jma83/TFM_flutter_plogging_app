@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/domain/gender_data.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/notifiers/edit_profile_notifiers.dart';

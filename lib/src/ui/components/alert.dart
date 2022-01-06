@@ -38,7 +38,7 @@ class Alert {
         )),
         child: content,
       ),
-      contentPadding: EdgeInsets.all(0.0),
+      contentPadding: const EdgeInsets.all(0.0),
       actions: getButtonChoices(confirmAction, dismissAction),
     );
   }
@@ -63,7 +63,7 @@ class Alert {
         )),
         child: content,
       ),
-      contentPadding: EdgeInsets.all(0.0),
+      contentPadding: const EdgeInsets.all(0.0),
       actions: getButtonConfirmation(action),
     );
   }
@@ -79,7 +79,6 @@ class Alert {
       TextButton(
         child: const Text("Cancel"),
         onPressed: () {
-          print("cancel pressed");
           dismissAction();
         },
       )

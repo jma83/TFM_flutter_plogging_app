@@ -7,9 +7,9 @@ class InputSearch extends StatefulWidget {
   final Function onChange;
   final Function onSubmit;
   final double padding;
-  String value;
+  final String value;
 
-  InputSearch(
+  const InputSearch(
       {required this.placeholder,
       required this.maxLength,
       required this.onChange,

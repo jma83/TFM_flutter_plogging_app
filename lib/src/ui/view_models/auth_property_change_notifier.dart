@@ -1,3 +1,5 @@
+// ignore_for_file: must_call_super
+
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,13 +17,13 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
   void createAuthListener() {
     subscription = authService.authStateChanges.listen((User? user) async {
       if (user == null) {
-        authService.setCurrentUserData(null);
+        authService.currentUserData = null;
 
         Future.delayed(const Duration(seconds: 1), () => notifyNotLoggedIn());
         return;
       }
 
-      authService.setCurrentUserData(await getUserById.execute(user.uid));
+      authService.currentUserData = await getUserById.execute(user.uid);
       notifyLoggedIn();
     });
   }

@@ -49,17 +49,21 @@ class AuthenticationService implements IAuthenticationService {
     return _firebaseAuth.currentUser;
   }
 
+  @override
   UserData? get currentUserData {
     return _userData;
   }
 
-  void setCurrentUserData(UserData? userData) {
+  @override
+  set currentUserData(UserData? currentUserData) {
     if (currentUser == null) {
       _userData = null;
       return;
     }
-    _userData = userData;
+    _userData = currentUserData;
   }
+
+  void setCurrentUserData(UserData? userData) {}
 
   String getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
@@ -87,10 +91,5 @@ class AuthenticationService implements IAuthenticationService {
       default:
         return "Login failed. Please try again.";
     }
-  }
-
-  @override
-  set currentUser(User? _currentUser) {
-    // TODO: implement currentUser
   }
 }

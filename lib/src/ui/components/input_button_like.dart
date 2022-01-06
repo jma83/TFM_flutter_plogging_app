@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class InputButtonLike extends StatefulWidget {
-  String id;
+  final String id;
   bool liked;
   final Function likeCallback;
   InputButtonLike(

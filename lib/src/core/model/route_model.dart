@@ -43,7 +43,6 @@ class RouteModel implements IMediaModel<RouteData> {
     }
     Map<String, dynamic> mapData = docData.data() as Map<String, dynamic>;
     final result = RouteData.castMapToRoute(mapData, id);
-    print("result $result");
     return result;
   }
 

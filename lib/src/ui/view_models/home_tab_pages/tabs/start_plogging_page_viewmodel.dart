@@ -222,6 +222,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       _routeProgressData.currentPosition =
           await _geolocatorService.getCurrentLocation();
     } catch (e) {
+      // ignore: avoid_print
       print("error getting location $e");
     }
   }

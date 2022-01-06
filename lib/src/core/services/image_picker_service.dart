@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ImagePickerService {
-  ImagePicker _imagePicker;
+  final ImagePicker _imagePicker;
 
   ImagePickerService(this._imagePicker);
 

@@ -3,7 +3,7 @@ import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 
 class TabNavigator extends StatelessWidget {
-  TabNavigator(
+  const TabNavigator(
       {Key? key,
       required this.navigatorKey,
       required this.tabItem,

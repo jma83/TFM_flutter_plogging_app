@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 
 class CardImageContainer extends StatefulWidget {
-  CardImageContainer(
+  const CardImageContainer(
       {this.cardType = 0,
       this.clickable = false,
       this.borderRadius = 20,
@@ -14,14 +14,14 @@ class CardImageContainer extends StatefulWidget {
       Key? key})
       : super(key: key);
 
-  int cardType;
-  bool clickable;
-  double borderRadius;
-  double? height;
-  Function? callback;
-  String image;
-  String imagePlaceholder;
-  String text;
+  final int cardType;
+  final bool clickable;
+  final double borderRadius;
+  final double? height;
+  final Function? callback;
+  final String image;
+  final String imagePlaceholder;
+  final String text;
   @override
   _CardImageContainerState createState() => _CardImageContainerState();
 }
@@ -51,7 +51,7 @@ class _CardImageContainerState extends State<CardImageContainer> {
   _card1() {
     final card = Column(
       children: <Widget>[
-        Container(
+        SizedBox(
           child: FadeInImage(
             image: AssetImage(widget.image),
             placeholder: AssetImage(widget.imagePlaceholder),
@@ -77,7 +77,7 @@ class _CardImageContainerState extends State<CardImageContainer> {
     final card = Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        Container(
+        SizedBox(
           child: FadeInImage(
             image: AssetImage(widget.image),
             placeholder: AssetImage(widget.imagePlaceholder),
@@ -113,7 +113,7 @@ class _CardImageContainerState extends State<CardImageContainer> {
                   color: Colors.white, fontWeight: FontWeight.bold),
             )),
             padding: const EdgeInsets.all(10)),
-        Container(
+        SizedBox(
           child: FadeInImage(
             image: AssetImage(widget.image),
             placeholder: AssetImage(widget.imagePlaceholder),

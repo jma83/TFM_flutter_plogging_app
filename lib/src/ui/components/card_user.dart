@@ -5,8 +5,8 @@ import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 class CardUser extends StatefulWidget {
   final String name;
   final int level;
-  int followers;
-  int following;
+  final int followers;
+  final int following;
   final bool clickable;
   final bool followingUserFlag;
   final double borderRadius;
@@ -15,7 +15,7 @@ class CardUser extends StatefulWidget {
   final Color color;
   final bool isSelf;
 
-  CardUser(
+  const CardUser(
       {required this.callback,
       required this.callbackButton,
       this.name = "",
@@ -106,12 +106,12 @@ class _CardUserState extends State<CardUser> {
                 children: [
                   Text(
                     "Followers: ${widget.followers}",
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(width: 10),
                   Text(
                     "Following: ${widget.following}",
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   )
                 ],
               ),

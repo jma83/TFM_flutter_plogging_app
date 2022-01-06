@@ -90,7 +90,7 @@ class CardHeaderUserDetail extends StatelessWidget {
     return Center(
         child: Text(
       user.username,
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
       textAlign: TextAlign.center,
     ));
   }
@@ -98,7 +98,7 @@ class CardHeaderUserDetail extends StatelessWidget {
   Widget getUserLevel() {
     return Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         decoration: BoxDecoration(
             color: Colors.yellow[300],
             border: Border.all(color: Colors.grey, width: 1),
@@ -106,7 +106,7 @@ class CardHeaderUserDetail extends StatelessWidget {
         width: 100,
         child: Text(
           "- Level ${user.level} -",
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ));
   }
@@ -120,7 +120,7 @@ class CardHeaderUserDetail extends StatelessWidget {
         child: Wrap(alignment: WrapAlignment.center, children: [
           Text(
             progressText,
-            style: TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: FontWeight.w500),
           ),
           LinearProgressIndicator(
             value: progress,
@@ -138,17 +138,17 @@ class CardHeaderUserDetail extends StatelessWidget {
         children: [
           Text(
             "Followers: ${user.followers}",
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
           const SizedBox(width: 10),
           Text(
             "Following: ${user.following}",
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           )
         ],
       ),
       Container(
-        margin: EdgeInsets.symmetric(vertical: 15),
+        margin: const EdgeInsets.symmetric(vertical: 15),
         width: MediaQuery.of(context).size.width / 2,
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(width: 1, color: Colors.black))),
@@ -161,18 +161,18 @@ class CardHeaderUserDetail extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Gender: ${genderFormatted}",
-          style: TextStyle(fontSize: 16),
+          "Gender: $genderFormatted",
+          style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(width: 10),
         Text(
           "Age: ${user.age}",
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(width: 10),
         Text(
-          "Creation date: ${creationDate}",
-          style: TextStyle(fontSize: 16),
+          "Creation date: $creationDate",
+          style: const TextStyle(fontSize: 16),
         )
       ],
     );

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 class Gender {
   static const NotDefined = "Gender - Not defined";
   static const Female = "Female";

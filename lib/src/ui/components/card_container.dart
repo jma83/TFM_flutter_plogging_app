@@ -3,7 +3,7 @@ import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
 class CardContainer extends StatefulWidget {
-  CardContainer(
+  const CardContainer(
       {this.title = "",
       this.description = "",
       this.cardType = 0,
@@ -15,14 +15,14 @@ class CardContainer extends StatefulWidget {
       Key? key})
       : super(key: key);
 
-  String title;
-  String description;
-  String button1;
-  String button2;
-  int cardType;
-  bool clickable;
-  double borderRadius;
-  Function? callback;
+  final String title;
+  final String description;
+  final String button1;
+  final String button2;
+  final int cardType;
+  final bool clickable;
+  final double borderRadius;
+  final Function? callback;
   @override
   _CardContainerState createState() => _CardContainerState();
 }

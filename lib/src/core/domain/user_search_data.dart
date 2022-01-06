@@ -1,3 +1,4 @@
+// ignore: implementation_imports
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter_plogging/src/core/domain/follower_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';

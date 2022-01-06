@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_adjacent_string_concatenation
+
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
@@ -35,7 +37,7 @@ class HomePage extends StatelessWidget {
 
   getListViewHeader(HomePageViewModel viewModel) {
     return ListView(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       children: [...getHeaderWidgets(), getEmptySearch()],
     );
   }
@@ -70,7 +72,7 @@ class HomePage extends StatelessWidget {
           callback: () {},
           clickable: true),
       const SizedBox(height: 15),
-      CardImageContainer(
+      const CardImageContainer(
         cardType: 1,
         clickable: true,
         text: "Watch your today's progress",

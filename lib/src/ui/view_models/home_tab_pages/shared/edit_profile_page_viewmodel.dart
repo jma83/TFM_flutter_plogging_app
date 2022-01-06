@@ -1,5 +1,4 @@
 // ignore_for_file: constant_identifier_names
-import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/update_user.dart';
 import 'package:flutter_plogging/src/core/domain/gender_data.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';

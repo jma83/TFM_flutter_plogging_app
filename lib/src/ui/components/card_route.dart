@@ -18,7 +18,7 @@ class CardRoute extends StatefulWidget {
   final Function callbackLike;
   final bool isLiked;
 
-  CardRoute(
+  const CardRoute(
       {required this.id,
       required this.callback,
       required this.callbackLike,

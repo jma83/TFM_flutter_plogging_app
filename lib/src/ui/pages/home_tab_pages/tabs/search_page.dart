@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/card_user.dart';
 import 'package:flutter_plogging/src/ui/components/card_user_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/notifiers/search_notifiers.dart';
@@ -11,7 +10,7 @@ import 'package:stacked/stacked.dart';
 @injectable
 class SearchPage extends StatelessWidget {
   final SearchPageViewModel viewModel;
-  SearchPage(this.viewModel, {Key? key}) : super(key: key);
+  const SearchPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

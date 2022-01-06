@@ -49,6 +49,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
       }
     } catch (e) {
       setError("Sorry, couldn't validate data. Please, try it again later");
+      // ignore: avoid_print
       print(e);
     }
     toggleLoading();

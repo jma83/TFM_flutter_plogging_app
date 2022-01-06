@@ -7,12 +7,13 @@ final boxDecoration = BoxDecoration(
         Border.all(width: 1, color: Colors.black54, style: BorderStyle.solid),
     borderRadius: BorderRadius.circular(10));
 
+// ignore: must_be_immutable
 class InputDropdown extends StatefulWidget {
   String value;
-  Icon icon;
-  Function onChange;
-  List<String> values;
-  double bottomHeight;
+  final Icon icon;
+  final Function onChange;
+  final List<String> values;
+  final double bottomHeight;
 
   InputDropdown(this.value, this.values, this.icon, this.onChange,
       {Key? key, this.bottomHeight = 20})

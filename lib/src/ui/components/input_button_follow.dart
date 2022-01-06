@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 
+// ignore: must_be_immutable
 class InputButtonFollow extends StatefulWidget {
   bool following;
-  bool isSelf;
+  final bool isSelf;
   final double width;
   final Function followCallback;
   InputButtonFollow(

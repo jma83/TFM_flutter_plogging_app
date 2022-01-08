@@ -25,6 +25,7 @@ import 'package:flutter_plogging/src/ui/route_coordinators/search_route_coordina
 import 'package:flutter_plogging/src/ui/route_coordinators/start_plogging_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 
 Map<String, WidgetBuilder> getRoutesBuilder() {
   return <String, WidgetBuilder>{
@@ -106,25 +107,62 @@ Widget getRoute(String route) {
   }
 }
 
-getRouteByRouteCoordinator(String route) {
+HomeTabsChangeNotifier getHomeViewModelByRouteCoordinator(String route,
+    {bool update = true}) {
+  switch (route) {
+    case Ruta.Home:
+      return (getIt<HomeRouteCoordinator>().mainWidget as HomePage).viewModel;
+    case Ruta.Search:
+      return (getIt<SearchRouteCoordinator>().mainWidget as SearchPage)
+          .viewModel;
+    case Ruta.Plogging:
+      return (getIt<StartPloggingRouteCoordinator>().mainWidget
+              as StartPloggingPage)
+          .viewModel;
+    case Ruta.MyRoutes:
+      return (getIt<MyRoutesRouteCoordinator>().mainWidget as MyRoutesPage)
+          .viewModel;
+
+    case Ruta.Profile:
+      return (getIt<ProfileRouteCoordinator>().mainWidget as ProfilePage)
+          .viewModel;
+    default:
+      return (getIt<HomeRouteCoordinator>().mainWidget as HomePage).viewModel;
+  }
+}
+
+getRouteByRouteCoordinator(String route, {bool update = true}) {
   switch (route) {
     case Ruta.Start:
-      return getIt<StartRouteCoordinator>().mainWidget;
+      return getIt<StartRouteCoordinator>().mainWidget as StartPage;
     case Ruta.Login:
-      return getIt<LoginRouteCoordinator>().mainWidget;
+      return getIt<LoginRouteCoordinator>().mainWidget as LoginPage;
     case Ruta.HomeTab:
-      return getIt<MainRouteCoordinator>().mainWidget;
+      return getIt<MainRouteCoordinator>().mainWidget as HomeTabBar;
     case Ruta.Home:
-      return getIt<HomeRouteCoordinator>().getAndUpdateWidget();
+      return update
+          ? getIt<HomeRouteCoordinator>().getAndUpdateWidget() as HomePage
+          : getIt<HomeRouteCoordinator>().mainWidget as HomePage;
     case Ruta.Search:
-      return getIt<SearchRouteCoordinator>().getAndUpdateWidget();
+      return update
+          ? getIt<SearchRouteCoordinator>().getAndUpdateWidget() as SearchPage
+          : getIt<SearchRouteCoordinator>().mainWidget as SearchPage;
     case Ruta.Plogging:
-      return getIt<StartPloggingRouteCoordinator>().getAndUpdateWidget();
+      return update
+          ? getIt<StartPloggingRouteCoordinator>().getAndUpdateWidget()
+              as StartPloggingPage
+          : getIt<StartPloggingRouteCoordinator>().mainWidget
+              as StartPloggingPage;
     case Ruta.MyRoutes:
-      return getIt<MyRoutesRouteCoordinator>().getAndUpdateWidget();
+      return update
+          ? getIt<MyRoutesRouteCoordinator>().getAndUpdateWidget()
+              as MyRoutesPage
+          : getIt<MyRoutesRouteCoordinator>().mainWidget as MyRoutesPage;
     case Ruta.Profile:
-      return getIt<ProfileRouteCoordinator>().getAndUpdateWidget();
+      return update
+          ? getIt<ProfileRouteCoordinator>().getAndUpdateWidget() as ProfilePage
+          : getIt<ProfileRouteCoordinator>().mainWidget as ProfilePage;
     default:
-      return getIt<StartRouteCoordinator>().mainWidget;
+      return getIt<StartRouteCoordinator>().mainWidget as StartPage;
   }
 }

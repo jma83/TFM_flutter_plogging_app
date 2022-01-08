@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart';
+import 'package:flutter_plogging/src/ui/components/card_progress_user.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/profile_notifiers.dart';
@@ -30,10 +31,12 @@ class ProfilePage extends StatelessWidget {
   }
 
   getListViewHeader(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(8),
-      children: [getWrapHeader(context)],
-    );
+    return ListView(padding: const EdgeInsets.all(8), children: [
+      getWrapHeader(context),
+      CardProgressUser(
+          value: viewModel.objectiveProgress,
+          redirectCallback: viewModel.redirectToPlogging)
+    ]);
   }
 
   Widget getWrapHeader(BuildContext context) {

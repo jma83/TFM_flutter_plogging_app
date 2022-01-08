@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_navigation_service.dart';
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
@@ -12,6 +14,7 @@ class NavigationService implements INavigationService {
   NavigationService(
       this.navigatorKey, this.homeNavigatorKeys, this.homeTabsRoutesMap);
   TabItem? currentHomeTabItem;
+  StreamController<TabItem?> controllerTabItem = StreamController<TabItem>();
   @override
   Future<dynamic> navigateTo(Route route) {
     return currentNavigator.currentState!.push(route);
@@ -47,6 +50,7 @@ class NavigationService implements INavigationService {
   }
 
   setCurrentHomeTabItem(TabItem? tabItem) {
+    controllerTabItem.add(tabItem);
     currentHomeTabItem = tabItem;
   }
 
@@ -56,5 +60,9 @@ class NavigationService implements INavigationService {
 
   GlobalKey<NavigatorState> get currentNavigator {
     return homeNavigatorKeys[currentHomeTabItem] ?? navigatorKey;
+  }
+
+  Stream<TabItem?> getStreamHomeTabItem() {
+    return controllerTabItem.stream;
   }
 }

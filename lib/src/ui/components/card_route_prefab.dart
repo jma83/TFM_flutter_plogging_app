@@ -9,12 +9,14 @@ final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
 class CardRoutePrefab extends StatelessWidget {
   final RouteListData route;
   final int index;
+  final String id;
   final String authorUsername;
   final Function likeCallback;
   final Function navigateRouteCallback;
 
   const CardRoutePrefab(
-      {required this.index,
+      {required this.id,
+      required this.index,
       required this.route,
       required this.authorUsername,
       required this.likeCallback,
@@ -25,7 +27,7 @@ class CardRoutePrefab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardRoute(
-      id: "$index",
+      id: id,
       color: Colors.green[colorCodes[index % 5]],
       height: 130,
       image: route.image,

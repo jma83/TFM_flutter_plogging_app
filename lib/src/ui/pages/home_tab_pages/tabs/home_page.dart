@@ -103,6 +103,7 @@ class HomePage extends StatelessWidget {
         margin: index != 0 ? const EdgeInsets.only(top: 20) : EdgeInsets.zero,
         child: CardRoutePrefab(
             index: index,
+            id: viewModel.routesWithAuthor[index].routeListData.id!,
             route: viewModel.routesWithAuthor[index].routeListData,
             authorUsername: viewModel.routesWithAuthor[index].userData.username,
             likeCallback: viewModel.likeRoute,

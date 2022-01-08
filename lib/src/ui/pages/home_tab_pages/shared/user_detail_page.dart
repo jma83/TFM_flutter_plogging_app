@@ -83,6 +83,7 @@ class UserDetailPage extends StatelessWidget {
     return Container(
         margin: index != 0 ? const EdgeInsets.only(top: 20) : EdgeInsets.zero,
         child: CardRoutePrefab(
+            id: viewModel.user.id,
             authorUsername: viewModel.user.username,
             index: index,
             likeCallback: viewModel.likeRoute,

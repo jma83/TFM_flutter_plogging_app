@@ -90,6 +90,18 @@ class RouteModel implements IMediaModel<RouteData> {
         .toList();
   }
 
+  Future<List<RouteData>> getRoutesbyDateAndUserId(
+      Timestamp date, String authorId) async {
+    final Query<Object?> query1 =
+        _getQueryEqualByCriteria(RouteFieldData.userId, authorId, entity);
+    final QuerySnapshot<Object?> docsData =
+        await query1.where(RouteFieldData.startDate, isGreaterThan: date).get();
+    return docsData.docs
+        .map((e) =>
+            RouteData.castMapToRoute(e.data() as Map<String, dynamic>, e.id))
+        .toList();
+  }
+
   @override
   CollectionReference get entity {
     return _firebaseFirestore.collection(entityName);

@@ -6,6 +6,7 @@ import 'package:flutter_plogging/src/core/application/get_followers_route_list.d
 import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
+import 'package:flutter_plogging/src/core/application/get_today_user_distance.dart';
 import 'package:flutter_plogging/src/core/application/get_top_level_users.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_user_followers.dart';
@@ -68,6 +69,8 @@ void $initApplication() {
     ..registerLazySingleton<CreateUser>(() => CreateUser(getIt<UserModel>()))
     ..registerLazySingleton<CreateRoute>(() => CreateRoute(getIt<RouteModel>()))
     ..registerLazySingleton<UpdateUser>(() => UpdateUser(getIt<UserModel>()))
+    ..registerLazySingleton<GetTodayUserDistance>(() => GetTodayUserDistance(
+        getIt<RouteModel>(), getIt<AuthenticationService>()))
     ..registerLazySingleton<GetLikedRoutesList>(
         () => GetLikedRoutesList(getIt<RouteModel>(), getIt<LikeModel>()))
     ..registerLazySingleton<GetTopLevelUsers>(

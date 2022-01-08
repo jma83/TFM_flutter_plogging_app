@@ -14,6 +14,7 @@ import 'package:flutter_plogging/src/core/application/calculate_points_distance.
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
+import 'package:flutter_plogging/src/core/application/get_today_user_distance.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
@@ -85,7 +86,9 @@ void $initViewModels() {
         getIt<SearchRouteList>(),
         getIt<LoadingService>()))
     ..registerFactory<ProfilePageViewModel>(() => ProfilePageViewModel(
-        getIt<AuthenticationService>(), getIt<LoadingService>()))
+        getIt<AuthenticationService>(),
+        getIt<LoadingService>(),
+        getIt<GetTodayUserDistance>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageFollowUser>(),

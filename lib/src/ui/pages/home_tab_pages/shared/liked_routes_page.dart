@@ -59,6 +59,7 @@ class LikedRoutesPage extends StatelessWidget {
               margin:
                   index != 0 ? const EdgeInsets.only(top: 20) : EdgeInsets.zero,
               child: CardRoutePrefab(
+                id: viewModel.routes[index].routeListData.id!,
                 authorUsername: viewModel.routes[index].userData.username,
                 index: index,
                 route: viewModel.routes[index].routeListData,

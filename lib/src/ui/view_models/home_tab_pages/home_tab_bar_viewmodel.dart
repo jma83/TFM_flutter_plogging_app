@@ -17,6 +17,11 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
       GetUserById getUserById, this._navigationService, this._loadingService)
       : super(authService, getUserById) {
     createAuthListener();
+    _navigationService.getStreamHomeTabItem().listen((event) {
+      if (event == null) return;
+      if (event == selectedTabItem) return;
+      onClickTab(getSelectedIndexFromTab(event), updateNavigator: false);
+    });
   }
 
   setSelectedIndex(int index) {
@@ -34,10 +39,13 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
     notifyListeners(HomeTabsNotifiers.homeTabsLogout);
   }
 
-  onClickTab(int index) {
+  onClickTab(int index, {bool updateNavigator = true}) {
     if (index == selectedIndex) return;
     setSelectedIndex(index);
-    setCurrentHomeTabItem(selectedTabItem);
+    if (updateNavigator) setCurrentHomeTabItem(selectedTabItem);
+    if (!checkIsInstantiated(selectedTabItem)) {
+      notifyListeners(HomeTabsNotifiers.instanceHomeTab);
+    }
     notifyListeners(HomeTabsNotifiers.updateHomeTabs);
   }
 
@@ -57,8 +65,7 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   }
 
   bool checkIsInstantiated(TabItem tabItem) {
-    return _instantiatedTabItems.contains(tabItem) ||
-        selectedTabItem == tabItem;
+    return _instantiatedTabItems.contains(tabItem);
   }
 
   Map<TabItem, String> get homeTabsRoutesMap {
@@ -86,6 +93,22 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
       case 0:
       default:
         return TabItem.home;
+    }
+  }
+
+  int getSelectedIndexFromTab(TabItem tab) {
+    switch (tab) {
+      case TabItem.search:
+        return 1;
+      case TabItem.plogging:
+        return 2;
+      case TabItem.myRoutes:
+        return 3;
+      case TabItem.profile:
+        return 4;
+      case TabItem.home:
+      default:
+        return 0;
     }
   }
 }

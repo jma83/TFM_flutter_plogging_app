@@ -32,38 +32,43 @@ class CardHeaderUserDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-            color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            getAvatar(context),
-            const SizedBox(
-              height: 10,
-            ),
-            getUsername(),
-            const SizedBox(
-              height: 4,
-            ),
-            getUserLevel(),
-            const SizedBox(
-              height: 6,
-            ),
-            isSelf ? getLevelXp(context) : Container(),
-            const SizedBox(
-              height: 15,
-            ),
-            isSelf ? getEditUserData() : getFollowButton(),
-            const SizedBox(
-              height: 4,
-            ),
-            getFollowersCount(context),
-            getUserDetails()
-          ],
-        ));
+    return Card(
+        clipBehavior: Clip.antiAlias,
+        margin: const EdgeInsets.all(8),
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            decoration: BoxDecoration(color: Colors.grey[200]),
+            child: InkWell(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                getAvatar(context),
+                const SizedBox(
+                  height: 10,
+                ),
+                getUsername(),
+                const SizedBox(
+                  height: 4,
+                ),
+                getUserLevel(),
+                const SizedBox(
+                  height: 6,
+                ),
+                isSelf ? getLevelXp(context) : Container(),
+                const SizedBox(
+                  height: 15,
+                ),
+                isSelf ? getEditUserData() : getFollowButton(),
+                const SizedBox(
+                  height: 4,
+                ),
+                getFollowersCount(context),
+                getUserDetails()
+              ],
+            ))));
   }
 
   getEditUserData() {

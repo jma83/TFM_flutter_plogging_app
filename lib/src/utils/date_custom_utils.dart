@@ -21,4 +21,9 @@ class DateCustomUtils {
     if (onlyTime) return time;
     return "$date $time";
   }
+
+  static Timestamp convertDatetimeToTimestamp(DateTime dateTime) {
+    var miliseconds = dateTime.millisecondsSinceEpoch;
+    return Timestamp((miliseconds / 1000).round(), 0);
+  }
 }

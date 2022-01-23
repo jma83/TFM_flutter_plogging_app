@@ -67,11 +67,12 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
     notifyListeners(HomeTabsNotifiers.homeTabsLogout);
   }
 
-  onClickTab(int index, {bool updateNavigator = true}) {
+  onClickTab(int index, {bool updateNavigator = true, bool first = false}) {
+    if (first) notifyListeners(HomeTabsNotifiers.instanceHomeTab);
     if (index == selectedIndex) return;
     setSelectedIndex(index);
     if (updateNavigator) setCurrentHomeTabItem(selectedTabItem);
-    if (!checkIsInstantiated(selectedTabItem)) {
+    if (!checkIsInstantiated(selectedTabItem) && !first) {
       notifyListeners(HomeTabsNotifiers.instanceHomeTab);
     }
     notifyListeners(HomeTabsNotifiers.updateHomeTabs);

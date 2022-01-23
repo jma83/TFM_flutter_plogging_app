@@ -9,7 +9,8 @@ class CardContainer extends StatelessWidget {
       this.cardType = 0,
       this.clickable = false,
       this.borderRadius = 20,
-      this.callback,
+      this.callback1,
+      this.callback2,
       this.button1 = "",
       this.button2 = "",
       Key? key})
@@ -22,7 +23,8 @@ class CardContainer extends StatelessWidget {
   final int cardType;
   final bool clickable;
   final double borderRadius;
-  final Function? callback;
+  final Function? callback1;
+  final Function? callback2;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class CardContainer extends StatelessWidget {
         child: InkWell(
           child: Column(
             children: <Widget>[
-              clickable && callback != null
+              clickable
                   ? CardWidgetUtils.createClickableCard(
                       _createListTitle(), () {})
                   : _createListTitle(),
@@ -54,12 +56,12 @@ class CardContainer extends StatelessWidget {
                 children: <Widget>[
                   InputButton(
                     label: Text(button1),
-                    onPress: () => callback!(),
+                    onPress: () => callback1!(),
                     buttonType: InputButtonType.outlined,
                   ),
                   InputButton(
                     label: Text(button2),
-                    onPress: () => callback!(),
+                    onPress: () => callback2!(),
                     buttonType: InputButtonType.elevated,
                   ),
                 ],

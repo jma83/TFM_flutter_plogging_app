@@ -18,7 +18,14 @@ class HomeRouteCoordinator extends HomeTabRouteCoordinator {
         () =>
             navigateToRoute(viewModel.selectedRoute, viewModel.selectedAuthor),
         [HomeNotifiers.navigateToRoute]);
+    viewModel.addListener(
+        () => navigateToHowItWorks(), [HomeNotifiers.navigateToHowItWorks]);
+
     viewModels.add(mainWidget.viewModel as HomeTabsChangeNotifier);
+  }
+
+  navigateToHowItWorks() {
+    // TODO
   }
 
   navigateToRoute(RouteListData? routeListData, UserSearchData? userData) {

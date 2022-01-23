@@ -4,9 +4,11 @@ import 'package:flutter_plogging/src/core/application/user/get_users_by_ids.dart
 import 'package:flutter_plogging/src/core/domain/route/route_list_author_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
+import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:injectable/injectable.dart';
@@ -44,6 +46,20 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
 
   likeRoute(RouteListData routeData) async {
     _manageLikeRoute.execute(routeData, updatePage);
+  }
+
+  redirectToPlogging() {
+    nextTabItem = TabItem.plogging;
+    notifyListeners(HomeTabsNotifiers.redirectHomeTabNavigation);
+  }
+
+  redirectToProfile() {
+    nextTabItem = TabItem.profile;
+    notifyListeners(HomeTabsNotifiers.redirectHomeTabNavigation);
+  }
+
+  navigateToHowItWorks() {
+    notifyListeners(HomeNotifiers.navigateToHowItWorks);
   }
 
   navigateToRoute(RouteListData route) {

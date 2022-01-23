@@ -30,7 +30,7 @@ class MainRouteCoordinator extends ParentRouteCoordinator {
     HomeTabBar myWidget = mainWidget as HomeTabBar;
     HomeTabBarViewModel viewModel = myWidget.viewModel as HomeTabBarViewModel;
     HomeTabsChangeNotifier homeTabsChangeNotifier =
-        viewModel.getViewModel(navigationService.currentHomeTabItem!);
+        viewModel.getViewModel(viewModel.selectedTabItem);
     homeTabsChangeNotifier.addListener(
         () => manageNavigation(homeTabsChangeNotifier.nextTabItem),
         [HomeTabsNotifiers.redirectHomeTabNavigation]);

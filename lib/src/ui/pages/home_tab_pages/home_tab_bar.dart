@@ -12,7 +12,7 @@ class HomeTabBar extends PageWidget {
 
   @override
   Widget build(BuildContext context) {
-    currentViewModel.onClickTab(0);
+    currentViewModel.onClickTab(0, first: true);
     return ViewModelBuilder<HomeTabBarViewModel>.reactive(
         viewModelBuilder: () => viewModel as HomeTabBarViewModel,
         onModelReady: (viewModel) {

@@ -64,18 +64,20 @@ class HomePage extends HomePageWidget {
   List<Widget> getHeaderWidgets() {
     return <Widget>[
       CardContainer(
-          title: "Welcome ${(viewModel as HomePageViewModel).username}!\n" +
+          title: "Welcome ${currentViewModel.username}!\n" +
               "You and the community are helping while doing sport.\n" +
               "Keep on the good actions!",
           button1: "How it works",
           button2: "Start plogging",
           cardType: 0,
-          callback: () {},
+          callback1: () => currentViewModel.navigateToHowItWorks(),
+          callback2: () => currentViewModel.redirectToPlogging(),
           clickable: true),
       const SizedBox(height: 15),
-      const CardImageContainer(
+      CardImageContainer(
         cardType: 1,
         clickable: true,
+        callback: () => currentViewModel.redirectToProfile(),
         text: "Watch your today's progress",
         height: 100,
       ),
@@ -109,5 +111,9 @@ class HomePage extends HomePageWidget {
             authorUsername: viewModel.routesWithAuthor[index].userData.username,
             likeCallback: viewModel.likeRoute,
             navigateRouteCallback: viewModel.navigateToRoute));
+  }
+
+  HomePageViewModel get currentViewModel {
+    return viewModel as HomePageViewModel;
   }
 }

@@ -13,10 +13,10 @@ void $initGetIt({String environment = Env.Default}) {
   if (environment != Env.Default) {
     return;
   }
-  $initServices(getIt);
-  $initModels(getIt);
-  $initApplication(getIt);
-  $initViewModels(getIt);
-  $initViews(getIt);
-  $initRouteCoordinators(getIt);
+  $initServices();
+  $initModels();
+  $initApplication();
+  $initViewModels();
+  $initViews();
+  $initRouteCoordinators();
 }

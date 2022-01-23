@@ -4,9 +4,12 @@ import 'package:flutter_plogging/src/core/model/like_model.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
+import 'package:get_it/get_it.dart';
+
+final getIt = GetIt.instance;
 
 final firestoneInstance = FirebaseFirestore.instance;
-void $initModels(getIt) {
+void $initModels() {
   getIt
     ..registerLazySingleton<UserModel>(
         () => UserModel(firestoneInstance, getIt<StorageService>()))

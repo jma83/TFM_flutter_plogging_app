@@ -25,8 +25,11 @@ import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
+import 'package:get_it/get_it.dart';
 
-void $initApplication(getIt) {
+final getIt = GetIt.instance;
+
+void $initApplication() {
   getIt
     ..registerLazySingleton<ManageLikeRoute>(() => ManageLikeRoute(
         getIt<LikeModel>(),

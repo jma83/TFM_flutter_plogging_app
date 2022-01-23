@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
-class CardRoute extends StatefulWidget {
+class CardRoute extends StatelessWidget {
   final String id;
   final String name;
   final String description;
@@ -37,46 +37,39 @@ class CardRoute extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CardRouteState createState() => _CardRouteState();
-}
-
-class _CardRouteState extends State<CardRoute> {
-  @override
   Widget build(BuildContext context) {
     return Stack(children: [
       CardWidgetUtils.createClickableCard(
-          CardWidgetUtils.createCardContainer(card(), widget.borderRadius),
-          widget.callback),
+          CardWidgetUtils.createCardContainer(card(context), borderRadius),
+          callback),
       Container(
           width: MediaQuery.of(context).size.width - 20,
-          height: widget.description != "" ? 240 : 225,
+          height: description != "" ? 240 : 225,
           alignment: Alignment.bottomRight,
           child: InputButtonLike(
-              id: widget.id,
-              liked: widget.isLiked,
-              likeCallback: widget.callbackLike))
+              id: id, liked: isLiked, likeCallback: callbackLike))
     ]);
   }
 
-  card() {
+  card(BuildContext context) {
     final card = Column(
       children: <Widget>[
         Container(
-            decoration: BoxDecoration(color: widget.color ?? Colors.green),
+            decoration: BoxDecoration(color: color ?? Colors.green),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: getCardInfoInColumn(),
+              children: getCardInfoInColumn(context),
             ),
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(
                 left: 15, right: 15, top: 10, bottom: 10)),
         SizedBox(
-          child: widget.image != null && widget.image != ""
-              ? CardWidgetUtils.getImageFromNetwork(widget.image!,
-                  fit: BoxFit.cover, height: widget.height, avatar: false)
+          child: image != null && image != ""
+              ? CardWidgetUtils.getImageFromNetwork(image!,
+                  fit: BoxFit.cover, height: height, avatar: false)
               : CardWidgetUtils.getImageFromAsset(
-                  fit: BoxFit.cover, height: widget.height, avatar: false),
+                  fit: BoxFit.cover, height: height, avatar: false),
           width: MediaQuery.of(context).size.width,
         ),
       ],
@@ -84,7 +77,7 @@ class _CardRouteState extends State<CardRoute> {
     return card;
   }
 
-  List<Widget> getCardInfoInColumn() {
+  List<Widget> getCardInfoInColumn(BuildContext context) {
     return [
       Container(
           padding: const EdgeInsets.all(5),
@@ -95,24 +88,22 @@ class _CardRouteState extends State<CardRoute> {
               border: Border.all(
                   width: 1, color: Colors.black54, style: BorderStyle.solid)),
           child: Text(
-            widget.name,
+            name,
             textAlign: TextAlign.center,
             style: const TextStyle(
                 color: Colors.black87, fontWeight: FontWeight.bold),
           )),
       const SizedBox(height: 10),
-      widget.description != ""
-          ? Text("Description: ${widget.description}")
-          : Container(),
+      description != "" ? Text("Description: $description") : Container(),
       const SizedBox(height: 5),
-      Text("Distance: ${widget.distance} meters"),
+      Text("Distance: $distance meters"),
       const SizedBox(height: 5),
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Date: ${widget.date}"),
-          Text("Author: ${widget.authorName}"),
+          Text("Date: $date"),
+          Text("Author: $authorName"),
         ],
       )
     ];

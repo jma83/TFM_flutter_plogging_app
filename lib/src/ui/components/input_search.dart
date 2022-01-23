@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class InputSearch extends StatefulWidget {
+class InputSearch extends StatelessWidget {
   final String placeholder;
   final double maxLength;
   final Function onChange;
@@ -20,26 +20,21 @@ class InputSearch extends StatefulWidget {
       : super(key: key);
 
   @override
-  _InputTextState createState() => _InputTextState();
-}
-
-class _InputTextState extends State<InputSearch> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(color: Colors.black87),
-      padding: EdgeInsets.all(widget.padding),
+      padding: EdgeInsets.all(padding),
       child: CupertinoSearchTextField(
-        controller: TextEditingController(text: widget.value),
-        itemSize: widget.maxLength,
+        controller: TextEditingController(text: value),
+        itemSize: maxLength,
         padding: const EdgeInsets.all(8),
         backgroundColor: Colors.white,
-        placeholder: widget.placeholder,
+        placeholder: placeholder,
         onChanged: (String value) {
-          widget.onChange(value);
+          onChange(value);
         },
         onSubmitted: (String value) {
-          widget.onSubmit(value);
+          onSubmit(value);
         },
       ),
     );

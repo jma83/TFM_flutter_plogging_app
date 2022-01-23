@@ -16,7 +16,7 @@ class GeolocatorService {
   }
 
   Stream<Position> getStreamLocationPosition() {
-    return Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.high);
+    return Geolocator.getPositionStream();
   }
 
   Future<Position> getCurrentLocation() async {

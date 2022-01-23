@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
-class CardContainer extends StatefulWidget {
+class CardContainer extends StatelessWidget {
   const CardContainer(
       {this.title = "",
       this.description = "",
@@ -23,47 +23,43 @@ class CardContainer extends StatefulWidget {
   final bool clickable;
   final double borderRadius;
   final Function? callback;
-  @override
-  _CardContainerState createState() => _CardContainerState();
-}
 
-class _CardContainerState extends State<CardContainer> {
   @override
   Widget build(BuildContext context) {
-    return _createCard(widget);
+    return _createCard();
   }
 
-  Widget _createCard(CardContainer cardContainer) {
-    switch (cardContainer.cardType) {
+  Widget _createCard() {
+    switch (cardType) {
       case 0:
       default:
-        return _card0(cardContainer);
+        return _card0();
     }
   }
 
-  _card0(CardContainer cardContainer) {
+  _card0() {
     return Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(cardContainer.borderRadius)),
+            borderRadius: BorderRadius.circular(borderRadius)),
         child: InkWell(
           child: Column(
             children: <Widget>[
-              widget.clickable && widget.callback != null
+              clickable && callback != null
                   ? CardWidgetUtils.createClickableCard(
-                      _createListTitle(cardContainer), () {})
-                  : _createListTitle(cardContainer),
+                      _createListTitle(), () {})
+                  : _createListTitle(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   InputButton(
-                    label: Text(cardContainer.button1),
-                    onPress: () => cardContainer.callback!(),
+                    label: Text(button1),
+                    onPress: () => callback!(),
                     buttonType: InputButtonType.outlined,
                   ),
                   InputButton(
-                    label: Text(cardContainer.button2),
-                    onPress: () => cardContainer.callback!(),
+                    label: Text(button2),
+                    onPress: () => callback!(),
                     buttonType: InputButtonType.elevated,
                   ),
                 ],
@@ -73,11 +69,11 @@ class _CardContainerState extends State<CardContainer> {
         ));
   }
 
-  Widget _createListTitle(CardContainer cardContainer) {
+  Widget _createListTitle() {
     return ListTile(
       leading: const Icon(Icons.photo_album, color: Colors.blue),
-      title: Text(cardContainer.title),
-      subtitle: Text(cardContainer.description),
+      title: Text(title),
+      subtitle: Text(description),
     );
   }
 }

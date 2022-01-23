@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
-class CardImageContainer extends StatefulWidget {
+class CardImageContainer extends StatelessWidget {
   const CardImageContainer(
       {this.cardType = 0,
       this.clickable = false,
@@ -22,40 +23,36 @@ class CardImageContainer extends StatefulWidget {
   final String image;
   final String imagePlaceholder;
   final String text;
-  @override
-  _CardImageContainerState createState() => _CardImageContainerState();
-}
 
-class _CardImageContainerState extends State<CardImageContainer> {
   @override
   Widget build(BuildContext context) {
-    Widget card = _createCard(widget);
-    if (widget.clickable) {
-      card = _createClickableCard(card, widget.callback);
+    Widget card = _createCard(context);
+    if (clickable) {
+      card = CardWidgetUtils.createClickableCard(card, callback);
     }
     return card;
   }
 
-  Widget _createCard(CardImageContainer cardimage) {
-    switch (cardimage.cardType) {
+  Widget _createCard(BuildContext context) {
+    switch (cardType) {
       case 3:
-        return _createCardContainer(_card3());
+        return _createCardContainer(_card3(context));
       case 2:
-        return _createCardContainer(_card2());
+        return _createCardContainer(_card2(context));
       case 0:
       default:
-        return _createCardContainer(_card1());
+        return _createCardContainer(_card1(context));
     }
   }
 
-  _card1() {
+  _card1(BuildContext context) {
     final card = Column(
       children: <Widget>[
         SizedBox(
           child: FadeInImage(
-            image: AssetImage(widget.image),
-            placeholder: AssetImage(widget.imagePlaceholder),
-            height: widget.height,
+            image: AssetImage(image),
+            placeholder: AssetImage(imagePlaceholder),
+            height: height,
             fadeInDuration: const Duration(milliseconds: 200),
             fit: BoxFit.cover,
           ),
@@ -64,7 +61,7 @@ class _CardImageContainerState extends State<CardImageContainer> {
         Container(
             child: Center(
                 child: Text(
-              widget.text,
+              text,
               textAlign: TextAlign.center,
             )),
             padding: const EdgeInsets.all(10))
@@ -73,24 +70,24 @@ class _CardImageContainerState extends State<CardImageContainer> {
     return card;
   }
 
-  _card2() {
+  _card2(BuildContext context) {
     final card = Stack(
       alignment: Alignment.center,
       children: <Widget>[
         SizedBox(
           child: FadeInImage(
-            image: AssetImage(widget.image),
-            placeholder: AssetImage(widget.imagePlaceholder),
+            image: AssetImage(image),
+            placeholder: AssetImage(imagePlaceholder),
             fadeInDuration: const Duration(milliseconds: 200),
             fit: BoxFit.fitWidth,
-            height: widget.height,
+            height: height,
           ),
           width: MediaQuery.of(context).size.width,
         ),
         Center(
             child: InputButton(
                 label: Text(
-                  widget.text,
+                  text,
                   textAlign: TextAlign.center,
                 ),
                 onPress: () {},
@@ -100,14 +97,14 @@ class _CardImageContainerState extends State<CardImageContainer> {
     return card;
   }
 
-  _card3() {
+  _card3(BuildContext context) {
     final card = Column(
       children: <Widget>[
         Container(
             decoration: const BoxDecoration(color: Colors.green),
             child: Center(
                 child: Text(
-              widget.text,
+              text,
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold),
@@ -115,9 +112,9 @@ class _CardImageContainerState extends State<CardImageContainer> {
             padding: const EdgeInsets.all(10)),
         SizedBox(
           child: FadeInImage(
-            image: AssetImage(widget.image),
-            placeholder: AssetImage(widget.imagePlaceholder),
-            height: widget.height,
+            image: AssetImage(image),
+            placeholder: AssetImage(imagePlaceholder),
+            height: height,
             fadeInDuration: const Duration(milliseconds: 200),
             fit: BoxFit.cover,
           ),
@@ -131,7 +128,7 @@ class _CardImageContainerState extends State<CardImageContainer> {
   Widget _createCardContainer(Widget card) {
     return Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
+            borderRadius: BorderRadius.circular(borderRadius),
             color: Colors.white,
             boxShadow: const <BoxShadow>[
               BoxShadow(
@@ -142,22 +139,7 @@ class _CardImageContainerState extends State<CardImageContainer> {
             ]),
         child: ClipRRect(
           child: card,
-          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius),
         ));
-  }
-
-  Widget _createClickableCard(Widget widget, Function? callback) {
-    final fun = callback ?? () {};
-    return Stack(
-      children: [
-        widget,
-        Positioned.fill(
-            child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => fun(),
-                ))),
-      ],
-    );
   }
 }

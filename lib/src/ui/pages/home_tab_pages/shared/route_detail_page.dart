@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
-import 'package:flutter_plogging/src/ui/components/widget_route_author.dart';
+import 'package:flutter_plogging/src/ui/components/badge_route_author.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -112,7 +112,7 @@ class RouteDetailPage extends StatelessWidget {
   }
 
   getAuthorWidget() {
-    return WidgetRouteAuthor(
+    return BadgeRouteAuthor(
         name: viewModel.author.username,
         level: viewModel.author.level,
         image: viewModel.author.image,

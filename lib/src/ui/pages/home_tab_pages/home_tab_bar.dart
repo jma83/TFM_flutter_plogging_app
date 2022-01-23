@@ -7,9 +7,7 @@ import 'package:stacked/stacked.dart';
 
 class HomeTabBar extends StatelessWidget {
   final HomeTabBarViewModel viewModel;
-  final List<BottomNavigationBarItem> navbarItems;
-  const HomeTabBar(this.viewModel, this.navbarItems, {Key? key})
-      : super(key: key);
+  const HomeTabBar(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,7 @@ class HomeTabBar extends StatelessWidget {
     return BottomNavigationBar(
       backgroundColor: Colors.black87,
       type: BottomNavigationBarType.fixed,
-      items: navbarItems,
+      items: viewModel.navbarItems,
       currentIndex: viewModel.selectedIndex,
       selectedItemColor: Colors.green[700],
       unselectedItemColor: Colors.white60,

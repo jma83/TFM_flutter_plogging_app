@@ -11,7 +11,6 @@ import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/user_detail_
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_nav_items.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/my_routes_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/profile_page_viewmodel.dart';
@@ -25,11 +24,13 @@ import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';
+import 'package:get_it/get_it.dart';
 
-void $initViews(getIt) {
+final getIt = GetIt.instance;
+
+void $initViews() {
   getIt
-    ..registerFactory(
-        () => HomeTabBar(getIt<HomeTabBarViewModel>(), navbarItems))
+    ..registerFactory(() => HomeTabBar(getIt<HomeTabBarViewModel>()))
     ..registerFactory(() => LoginPage(getIt<LoginPageViewModel>()))
     ..registerFactory(() => StartPage(getIt<StartPageViewModel>()))
     ..registerFactory(() => RegisterPage(getIt<RegisterPageViewModel>()))

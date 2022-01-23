@@ -12,9 +12,15 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   final NavigationService _navigationService;
   final LoadingService _loadingService;
   final List<TabItem> _instantiatedTabItems = [];
+  final List<BottomNavigationBarItem> navbarItems;
+
   int _selectedIndexTab = 0;
-  HomeTabBarViewModel(AuthenticationService authService,
-      GetUserById getUserById, this._navigationService, this._loadingService)
+  HomeTabBarViewModel(
+      AuthenticationService authService,
+      GetUserById getUserById,
+      this._navigationService,
+      this._loadingService,
+      this.navbarItems)
       : super(authService, getUserById) {
     createAuthListener();
     _navigationService.getStreamHomeTabItem().listen((event) {

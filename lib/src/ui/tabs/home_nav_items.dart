@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-const List<BottomNavigationBarItem> navbarItems = <BottomNavigationBarItem>[
+const List<BottomNavigationBarItem> bottomNavBarItems =
+    <BottomNavigationBarItem>[
   BottomNavigationBarItem(
     activeIcon: Icon(Icons.home),
     icon: Icon(Icons.home_outlined),

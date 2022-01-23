@@ -11,12 +11,14 @@ import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_tabs_routes_map.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 final storageInstance = firebase_storage.FirebaseStorage.instance;
+final getIt = GetIt.instance;
 
-void $initServices(getIt) {
+void $initServices() {
   getIt
     ..registerLazySingleton<NavigationService>(() => NavigationService(
         GlobalKey<NavigatorState>(), navigatorKeys, homeTabsRoutesMap))

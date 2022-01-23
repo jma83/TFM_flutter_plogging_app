@@ -16,8 +16,11 @@ import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinat
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
+import 'package:get_it/get_it.dart';
 
-void $initRouteCoordinators(getIt) {
+final getIt = GetIt.instance;
+
+void $initRouteCoordinators() {
   getIt
     ..registerLazySingleton(() =>
         StartRouteCoordinator(getIt<StartPage>(), getIt<NavigationService>()))

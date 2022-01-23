@@ -4,19 +4,20 @@ import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/user_detail_notifier.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_detail_page_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
 
-class UserDetailPage extends StatelessWidget {
-  final UserDetailPageViewModel viewModel;
-  const UserDetailPage(this.viewModel, {Key? key}) : super(key: key);
+class UserDetailPage extends HomePageWidget {
+  const UserDetailPage(UserDetailPageViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UserDetailPageViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as UserDetailPageViewModel,
         onModelReady: (viewModel) {
           viewModel.loadPage();
           viewModel.addListener(() {}, [UserDetailNotifier.updatePage]);
@@ -40,21 +41,21 @@ class UserDetailPage extends StatelessWidget {
 
   Widget getWrapHeader(BuildContext context) {
     return CardHeaderUserDetail(
-      user: viewModel.user,
-      creationDate: viewModel.formattedCreationDate,
-      genderFormatted: viewModel.formattedGender,
-      followUserCallback: viewModel.followUser,
+      user: currentViewModel.user,
+      creationDate: currentViewModel.formattedCreationDate,
+      genderFormatted: currentViewModel.formattedGender,
+      followUserCallback: currentViewModel.followUser,
       isSelf: false,
-      hideFollow: viewModel.user.id == viewModel.currentUserId,
+      hideFollow: currentViewModel.user.id == currentViewModel.currentUserId,
     );
   }
 
   getRouteList(BuildContext context) {
-    return viewModel.userRoutes.isEmpty
+    return currentViewModel.userRoutes.isEmpty
         ? getListViewHeader(context)
         : ListView.builder(
             padding: const EdgeInsets.all(8),
-            itemCount: viewModel.userRoutes.length,
+            itemCount: currentViewModel.userRoutes.length,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Column(
@@ -71,11 +72,11 @@ class UserDetailPage extends StatelessWidget {
                             fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    card(viewModel, index)
+                    card(currentViewModel, index)
                   ],
                 );
               }
-              return card(viewModel, index);
+              return card(currentViewModel, index);
             });
   }
 
@@ -89,5 +90,9 @@ class UserDetailPage extends StatelessWidget {
             likeCallback: viewModel.likeRoute,
             navigateRouteCallback: viewModel.navigateToRoute,
             route: viewModel.userRoutes[index]));
+  }
+
+  UserDetailPageViewModel get currentViewModel {
+    return viewModel as UserDetailPageViewModel;
   }
 }

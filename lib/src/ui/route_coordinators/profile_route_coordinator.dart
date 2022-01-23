@@ -9,6 +9,8 @@ import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/liked_routes
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/profile_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/home_tab_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/route_names.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -22,7 +24,7 @@ class ProfileRouteCoordinator extends HomeTabRouteCoordinator {
     mainWidget.viewModel.addListener(
         navigateToLikedRoutes, [ProfileNotifiers.navigateToLikedRoutes]);
 
-    viewModels.add(mainWidget.viewModel);
+    viewModels.add(mainWidget.viewModel as HomeTabsChangeNotifier);
   }
 
   navigateToEditProfile() {
@@ -38,10 +40,11 @@ class ProfileRouteCoordinator extends HomeTabRouteCoordinator {
   navigateToLikedRoutes() {
     final LikedRoutesPage widget =
         navigationService.getRouteWidget(Ruta.LikedRoutes) as LikedRoutesPage;
+    final LikedRoutesPageViewModel viewModel =
+        widget.viewModel as LikedRoutesPageViewModel;
     widget.viewModel.addListener(() {
-      viewModels.add(widget.viewModel);
-      navigateToRoute(
-          widget.viewModel.selectedRoute, widget.viewModel.selectedUser);
+      viewModels.add(widget.viewModel as HomeTabsChangeNotifier);
+      navigateToRoute(viewModel.selectedRoute, viewModel.selectedUser);
     }, [LikedRoutesNotifiers.navigateToRoute]);
     widget.viewModel
         .addListener(returnToPrevious, [LikedRoutesNotifiers.returnToPrevious]);

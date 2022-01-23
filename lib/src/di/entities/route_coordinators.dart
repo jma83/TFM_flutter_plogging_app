@@ -22,23 +22,23 @@ final getIt = GetIt.instance;
 
 void $initRouteCoordinators() {
   getIt
-    ..registerLazySingleton(() =>
+    ..registerFactory(() =>
         StartRouteCoordinator(getIt<StartPage>(), getIt<NavigationService>()))
-    ..registerLazySingleton(() =>
+    ..registerFactory(() =>
         LoginRouteCoordinator(getIt<LoginPage>(), getIt<NavigationService>()))
-    ..registerLazySingleton(() =>
+    ..registerFactory(() =>
         MainRouteCoordinator(getIt<HomeTabBar>(), getIt<NavigationService>()))
-    ..registerLazySingleton(() => HomeRouteCoordinator(
+    ..registerFactory(() => HomeRouteCoordinator(
         getIt<HomePage>(), getIt<NavigationService>(), TabItem.home))
-    ..registerLazySingleton(() => SearchRouteCoordinator(
+    ..registerFactory(() => SearchRouteCoordinator(
         getIt<SearchPage>(), getIt<NavigationService>(), TabItem.search))
-    ..registerLazySingleton(() => StartPloggingRouteCoordinator(
+    ..registerFactory(() => StartPloggingRouteCoordinator(
         getIt<StartPloggingPage>(),
         getIt<NavigationService>(),
         TabItem.plogging))
-    ..registerLazySingleton(() => MyRoutesRouteCoordinator(
+    ..registerFactory(() => MyRoutesRouteCoordinator(
         getIt<MyRoutesPage>(), getIt<NavigationService>(), TabItem.myRoutes))
-    ..registerLazySingleton(() => ProfileRouteCoordinator(
+    ..registerFactory(() => ProfileRouteCoordinator(
         getIt<ProfilePage>(), getIt<NavigationService>(), TabItem.profile));
   //HomeRouteCoordinator
 }

@@ -8,3 +8,11 @@ Map<TabItem, String> homeTabsRoutesMap = {
   TabItem.myRoutes: Ruta.MyRoutes,
   TabItem.profile: Ruta.Profile
 };
+
+Map<int, TabItem> homeTabsMap = {
+  0: TabItem.home,
+  1: TabItem.search,
+  2: TabItem.plogging,
+  3: TabItem.myRoutes,
+  4: TabItem.profile
+};

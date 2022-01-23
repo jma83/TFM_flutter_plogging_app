@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/create_route_confirmation.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/start_plogging_notifiers.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/start_plogging_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
@@ -11,14 +12,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 enum MapButtonType { zoomIn, zoomOut, myLocation }
 
 @injectable
-class StartPloggingPage extends StatelessWidget {
-  final StartPloggingPageViewModel viewModel;
-  const StartPloggingPage(this.viewModel, {Key? key}) : super(key: key);
+class StartPloggingPage extends HomePageWidget {
+  const StartPloggingPage(StartPloggingPageViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<StartPloggingPageViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as StartPloggingPageViewModel,
         onModelReady: (viewModel) {
           viewModel.loadPage();
           viewModel
@@ -51,19 +52,19 @@ class StartPloggingPage extends StatelessWidget {
 
   Widget getMap() {
     return GoogleMap(
-      polylines: Set<Polyline>.of(viewModel.polylines.values),
+      polylines: Set<Polyline>.of(currentViewModel.polylines.values),
       initialCameraPosition: CameraPosition(
-          target: LatLng(viewModel.currentPosition.latitude,
-              viewModel.currentPosition.longitude),
-          zoom: viewModel.currentZoom),
+          target: LatLng(currentViewModel.currentPosition.latitude,
+              currentViewModel.currentPosition.longitude),
+          zoom: currentViewModel.currentZoom),
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       mapType: MapType.normal,
       zoomGesturesEnabled: false,
       zoomControlsEnabled: false,
       onMapCreated: (GoogleMapController controller) {
-        viewModel.setMapController(controller);
-        viewModel.setCameraToCurrentLocation(first: true);
+        currentViewModel.setMapController(controller);
+        currentViewModel.setCameraToCurrentLocation(first: true);
       },
     );
   }
@@ -122,16 +123,16 @@ class StartPloggingPage extends StatelessWidget {
 
   dynamic getDataByButtonType(MapButtonType buttonType) {
     //  MapButtonType.zoomIn
-    Function callback = viewModel.zoomIn;
+    Function callback = currentViewModel.zoomIn;
     IconData iconData = Icons.add;
 
     if (buttonType == MapButtonType.zoomOut) {
-      callback = viewModel.zoomOut;
+      callback = currentViewModel.zoomOut;
       iconData = Icons.remove;
     }
 
     if (buttonType == MapButtonType.myLocation) {
-      callback = viewModel.setCameraToCurrentLocation;
+      callback = currentViewModel.setCameraToCurrentLocation;
       iconData = Icons.my_location;
     }
 
@@ -148,15 +149,15 @@ class StartPloggingPage extends StatelessWidget {
   }
 
   Widget getRouteButtonByType() {
-    return !viewModel.hasStartedRoute
+    return !currentViewModel.hasStartedRoute
         ? InputButton(
             label: const Text("Start"),
-            onPress: () => viewModel.beginRoute(),
+            onPress: () => currentViewModel.beginRoute(),
             buttonType: InputButtonType.elevated,
           )
         : InputButton(
             label: const Text("End"),
-            onPress: () => viewModel.endRoute(),
+            onPress: () => currentViewModel.endRoute(),
             buttonType: InputButtonType.outlined);
   }
 
@@ -167,12 +168,16 @@ class StartPloggingPage extends StatelessWidget {
         builder: (_) => Alert.createCustomOptionsAlert(
             "Create route confirmation",
             CreateRouteConfirmation(
-              setName: viewModel.setRouteName,
-              setDescription: viewModel.setRouteDescription,
-              setImage: viewModel.setRouteImage,
-              uploadImage: viewModel.uploadRouteImage,
+              setName: currentViewModel.setRouteName,
+              setDescription: currentViewModel.setRouteDescription,
+              setImage: currentViewModel.setRouteImage,
+              uploadImage: currentViewModel.uploadRouteImage,
             ),
-            viewModel.confirmRoute,
-            viewModel.dismissAlert));
+            currentViewModel.confirmRoute,
+            currentViewModel.dismissAlert));
+  }
+
+  get currentViewModel {
+    return viewModel as StartPloggingPageViewModel;
   }
 }

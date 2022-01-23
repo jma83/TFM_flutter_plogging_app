@@ -5,6 +5,7 @@ import 'package:flutter_plogging/src/core/services/interfaces/i_navigation_servi
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: INavigationService)
 class NavigationService implements INavigationService {
@@ -14,7 +15,7 @@ class NavigationService implements INavigationService {
   NavigationService(
       this.navigatorKey, this.homeNavigatorKeys, this.homeTabsRoutesMap);
   TabItem? currentHomeTabItem;
-  StreamController<TabItem?> controllerTabItem = StreamController<TabItem>();
+  StreamController<TabItem?> controllerTabItem = BehaviorSubject<TabItem?>();
   @override
   Future<dynamic> navigateTo(Route route) {
     return currentNavigator.currentState!.push(route);
@@ -36,10 +37,8 @@ class NavigationService implements INavigationService {
   }
 
   @override
-  Widget getRouteWidget(String routeName, {bool byRouteCoordinator = false}) {
-    return !byRouteCoordinator
-        ? getRoute(routeName)
-        : getRouteByRouteCoordinator(routeName);
+  Widget getRouteWidget(String routeName) {
+    return getRoute(routeName);
   }
 
   @override

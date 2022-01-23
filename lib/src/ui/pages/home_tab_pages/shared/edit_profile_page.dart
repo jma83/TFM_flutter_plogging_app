@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/edit_profile_notifiers.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
 @injectable
-class EditProfilePage extends StatelessWidget {
-  final EditProfilePageViewModel viewModel;
-  const EditProfilePage(this.viewModel, {Key? key}) : super(key: key);
+class EditProfilePage extends HomePageWidget {
+  const EditProfilePage(EditProfilePageViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<EditProfilePageViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as EditProfilePageViewModel,
         onModelReady: (viewModel) {
           viewModel.addListener(
               () => {}, [EditProfileNotifiers.updateEditProfilePage]);

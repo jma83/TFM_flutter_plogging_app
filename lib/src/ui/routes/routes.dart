@@ -25,7 +25,6 @@ import 'package:flutter_plogging/src/ui/route_coordinators/search_route_coordina
 import 'package:flutter_plogging/src/ui/route_coordinators/start_plogging_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
-import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 
 Map<String, WidgetBuilder> getRoutesBuilder() {
   return <String, WidgetBuilder>{
@@ -51,26 +50,6 @@ Map<String, ParentRouteCoordinator> getRoutesByCoordinator() {
     Ruta.Plogging: getIt<StartPloggingRouteCoordinator>(),
     Ruta.MyRoutes: getIt<MyRoutesRouteCoordinator>(),
     Ruta.Profile: getIt<ProfileRouteCoordinator>()
-  };
-}
-
-Map<String, WidgetBuilder> getRoutesBuilderByCoordinator() {
-  return <String, WidgetBuilder>{
-    Ruta.Start: (BuildContext context) =>
-        getRouteByRouteCoordinator(Ruta.Start),
-    Ruta.Login: (BuildContext context) =>
-        getRouteByRouteCoordinator(Ruta.Login),
-    Ruta.HomeTab: (BuildContext context) =>
-        getRouteByRouteCoordinator(Ruta.HomeTab),
-    Ruta.Home: (BuildContext context) => getRouteByRouteCoordinator(Ruta.Home),
-    Ruta.Search: (BuildContext context) =>
-        getRouteByRouteCoordinator(Ruta.Search),
-    Ruta.Plogging: (BuildContext context) =>
-        getRouteByRouteCoordinator(Ruta.Plogging),
-    Ruta.MyRoutes: (BuildContext context) =>
-        getRouteByRouteCoordinator(Ruta.MyRoutes),
-    Ruta.Profile: (BuildContext context) =>
-        getRouteByRouteCoordinator(Ruta.Profile)
   };
 }
 
@@ -107,62 +86,19 @@ Widget getRoute(String route) {
   }
 }
 
-HomeTabsChangeNotifier getHomeViewModelByRouteCoordinator(String route,
-    {bool update = true}) {
+getHomeTabFromRoute(String route) {
   switch (route) {
     case Ruta.Home:
-      return (getIt<HomeRouteCoordinator>().mainWidget as HomePage).viewModel;
+      return TabItem.home;
     case Ruta.Search:
-      return (getIt<SearchRouteCoordinator>().mainWidget as SearchPage)
-          .viewModel;
+      return TabItem.search;
     case Ruta.Plogging:
-      return (getIt<StartPloggingRouteCoordinator>().mainWidget
-              as StartPloggingPage)
-          .viewModel;
+      return TabItem.plogging;
     case Ruta.MyRoutes:
-      return (getIt<MyRoutesRouteCoordinator>().mainWidget as MyRoutesPage)
-          .viewModel;
-
+      return TabItem.myRoutes;
     case Ruta.Profile:
-      return (getIt<ProfileRouteCoordinator>().mainWidget as ProfilePage)
-          .viewModel;
+      return TabItem.profile;
     default:
-      return (getIt<HomeRouteCoordinator>().mainWidget as HomePage).viewModel;
-  }
-}
-
-getRouteByRouteCoordinator(String route, {bool update = true}) {
-  switch (route) {
-    case Ruta.Start:
-      return getIt<StartRouteCoordinator>().mainWidget as StartPage;
-    case Ruta.Login:
-      return getIt<LoginRouteCoordinator>().mainWidget as LoginPage;
-    case Ruta.HomeTab:
-      return getIt<MainRouteCoordinator>().mainWidget as HomeTabBar;
-    case Ruta.Home:
-      return update
-          ? getIt<HomeRouteCoordinator>().getAndUpdateWidget() as HomePage
-          : getIt<HomeRouteCoordinator>().mainWidget as HomePage;
-    case Ruta.Search:
-      return update
-          ? getIt<SearchRouteCoordinator>().getAndUpdateWidget() as SearchPage
-          : getIt<SearchRouteCoordinator>().mainWidget as SearchPage;
-    case Ruta.Plogging:
-      return update
-          ? getIt<StartPloggingRouteCoordinator>().getAndUpdateWidget()
-              as StartPloggingPage
-          : getIt<StartPloggingRouteCoordinator>().mainWidget
-              as StartPloggingPage;
-    case Ruta.MyRoutes:
-      return update
-          ? getIt<MyRoutesRouteCoordinator>().getAndUpdateWidget()
-              as MyRoutesPage
-          : getIt<MyRoutesRouteCoordinator>().mainWidget as MyRoutesPage;
-    case Ruta.Profile:
-      return update
-          ? getIt<ProfileRouteCoordinator>().getAndUpdateWidget() as ProfilePage
-          : getIt<ProfileRouteCoordinator>().mainWidget as ProfilePage;
-    default:
-      return getIt<StartRouteCoordinator>().mainWidget as StartPage;
+      return TabItem.home;
   }
 }

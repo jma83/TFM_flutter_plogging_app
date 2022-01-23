@@ -5,17 +5,18 @@ import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/home_notifiers.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class HomePage extends StatelessWidget {
-  final HomePageViewModel viewModel;
-  const HomePage(this.viewModel, {Key? key}) : super(key: key);
+class HomePage extends HomePageWidget {
+  const HomePage(HomePageViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomePageViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as HomePageViewModel,
         onModelReady: (viewModel) {
           viewModel.loadPage();
           viewModel.addListener(() {}, [HomeNotifiers.updateHomePage]);
@@ -63,7 +64,7 @@ class HomePage extends StatelessWidget {
   List<Widget> getHeaderWidgets() {
     return <Widget>[
       CardContainer(
-          title: "Welcome ${viewModel.username}!\n" +
+          title: "Welcome ${(viewModel as HomePageViewModel).username}!\n" +
               "You and the community are helping while doing sport.\n" +
               "Keep on the good actions!",
           button1: "How it works",

@@ -10,6 +10,8 @@ import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordina
 import 'package:flutter_plogging/src/ui/routes/route_names.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_detail_page_view_model.dart';
 
 class HomeTabRouteCoordinator extends ParentRouteCoordinator {
   final TabItem? tabItem;
@@ -44,18 +46,20 @@ class HomeTabRouteCoordinator extends ParentRouteCoordinator {
       UserSearchData userData, Function navigateToUserDetail) {
     RouteDetailPage newRouteDetailPage =
         navigationService.getRouteWidget(Ruta.RouteDetail) as RouteDetailPage;
-    newRouteDetailPage.viewModel.setRouteAndAuthor(routeListData, userData);
-    newRouteDetailPage.viewModel.addListener(() {
+    RouteDetailPageViewModel viewModel =
+        newRouteDetailPage.viewModel as RouteDetailPageViewModel;
+
+    viewModel.setRouteAndAuthor(routeListData, userData);
+    viewModel.addListener(() {
       navigateToUserDetail(userData);
     }, [RouteDetailNotifier.navigateToAuthor]);
     newRouteDetailPage.viewModel.addListener(
         () => returnToPrevious(), [RouteDetailNotifier.navigateToPrevious]);
     newRouteDetailPage.viewModel.addListener(
-        () => updatePageData(RouteListAuthorSearchData(
-            newRouteDetailPage.viewModel.route, null)),
+        () => updatePageData(RouteListAuthorSearchData(viewModel.route, null)),
         [RouteDetailNotifier.updateData]);
 
-    viewModels.add(newRouteDetailPage.viewModel);
+    viewModels.add(newRouteDetailPage.viewModel as HomeTabsChangeNotifier);
     navigationService.setCurrentHomeTabItem(tabItem);
     navigationService.navigateTo(routeBuild(newRouteDetailPage));
   }
@@ -64,20 +68,21 @@ class HomeTabRouteCoordinator extends ParentRouteCoordinator {
       UserSearchData userData, Function navigateToRoute) {
     UserDetailPage nextUserDetailPage =
         navigationService.getRouteWidget(Ruta.UserDetail) as UserDetailPage;
-    nextUserDetailPage.viewModel.setUserData(userData);
+    UserDetailPageViewModel viewModel =
+        nextUserDetailPage.viewModel as UserDetailPageViewModel;
+    viewModel.setUserData(userData);
 
     nextUserDetailPage.viewModel.addListener(() {
-      navigateToRoute(nextUserDetailPage.viewModel.selectedRoute, userData);
+      navigateToRoute(viewModel.selectedRoute, userData);
     }, [UserDetailNotifier.navigateToRoute]);
     nextUserDetailPage.viewModel.addListener(
         () => returnToPrevious(), [UserDetailNotifier.navigateToPrevious]);
     nextUserDetailPage.viewModel.addListener(
-        () => updatePageData(RouteListAuthorSearchData(
-            nextUserDetailPage.viewModel.selectedRoute,
-            nextUserDetailPage.viewModel.user)),
+        () => updatePageData(
+            RouteListAuthorSearchData(viewModel.selectedRoute, viewModel.user)),
         [UserDetailNotifier.updateData]);
 
-    viewModels.add(nextUserDetailPage.viewModel);
+    viewModels.add(nextUserDetailPage.viewModel as HomeTabsChangeNotifier);
     navigationService.setCurrentHomeTabItem(tabItem);
     navigationService.navigateTo(routeBuild(nextUserDetailPage));
   }

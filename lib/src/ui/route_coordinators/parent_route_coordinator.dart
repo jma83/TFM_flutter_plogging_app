@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
+import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 
 class ParentRouteCoordinator {
-  final Widget mainWidget;
+  final PageWidget mainWidget;
   final NavigationService navigationService;
 
   ParentRouteCoordinator(this.mainWidget, this.navigationService);

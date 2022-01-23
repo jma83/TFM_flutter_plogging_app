@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
+import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
-import 'package:flutter_plogging/src/ui/tabs/tab_navigatior.dart';
+import 'package:flutter_plogging/src/ui/tabs/tab_navigator.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeTabBar extends StatelessWidget {
-  final HomeTabBarViewModel viewModel;
-  const HomeTabBar(this.viewModel, {Key? key}) : super(key: key);
+class HomeTabBar extends PageWidget {
+  const HomeTabBar(HomeTabBarViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
-    viewModel.onClickTab(0);
+    currentViewModel.onClickTab(0);
     return ViewModelBuilder<HomeTabBarViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as HomeTabBarViewModel,
         onModelReady: (viewModel) {
           viewModel.addListener(() {}, [HomeTabsNotifiers.updateHomeTabs]);
         },
@@ -28,7 +29,7 @@ class HomeTabBar extends StatelessWidget {
 
   List<Widget> getTabs() {
     List<Widget> tabs = [];
-    viewModel.homeTabsRoutesMap.forEach((key, value) {
+    currentViewModel.homeTabsRoutesMap.forEach((key, value) {
       tabs.add(getOffstageTabNavigator(key, value));
     });
     return tabs;
@@ -38,27 +39,31 @@ class HomeTabBar extends StatelessWidget {
     return BottomNavigationBar(
       backgroundColor: Colors.black87,
       type: BottomNavigationBarType.fixed,
-      items: viewModel.navbarItems,
-      currentIndex: viewModel.selectedIndex,
+      items: currentViewModel.navbarItems,
+      currentIndex: currentViewModel.selectedIndex,
       selectedItemColor: Colors.green[700],
       unselectedItemColor: Colors.white60,
       unselectedLabelStyle: const TextStyle(color: Colors.black87),
-      onTap: (index) => viewModel.onClickTab(index),
+      onTap: (index) => currentViewModel.onClickTab(index),
     );
   }
 
   Widget getOffstageTabNavigator(TabItem tabItem, String route) {
-    viewModel.updateItemsList();
-    final bool isInstanciated = viewModel.checkIsInstantiated(tabItem);
+    currentViewModel.updateItemsList();
+    final bool isInstanciated = currentViewModel.checkIsInstantiated(tabItem);
 
     return Offstage(
-      offstage: viewModel.selectedTabItem != tabItem,
+      offstage: currentViewModel.selectedTabItem != tabItem,
       child: !isInstanciated
           ? Container()
           : TabNavigator(
-              navigatorKey: viewModel.homeNavigatorKeys[tabItem]!,
-              tabItem: tabItem,
+              navigatorKey: currentViewModel.homeNavigatorKeys[tabItem]!,
+              routeBuilders: currentViewModel.getRoutesBuilders,
               initialRoute: route),
     );
+  }
+
+  HomeTabBarViewModel get currentViewModel {
+    return viewModel as HomeTabBarViewModel;
   }
 }

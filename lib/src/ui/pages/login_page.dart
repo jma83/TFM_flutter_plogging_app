@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
 import 'package:flutter_plogging/src/ui/notifiers/login_notifiers.dart';
+import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';
 
-class LoginPage extends StatelessWidget {
-  final LoginPageViewModel viewModel;
-  const LoginPage(this.viewModel, {Key? key}) : super(key: key);
+class LoginPage extends PageWidget {
+  const LoginPage(LoginPageViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginPageViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as LoginPageViewModel,
         onModelReady: (viewModel) => viewModel.addListener(
             () => showErrorAlert(context, viewModel),
             [LoginNotifiers.loginProcessError]),

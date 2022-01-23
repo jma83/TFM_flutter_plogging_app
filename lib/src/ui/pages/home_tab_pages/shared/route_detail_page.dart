@@ -4,18 +4,19 @@ import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/components/badge_route_author.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
-class RouteDetailPage extends StatelessWidget {
-  final RouteDetailPageViewModel viewModel;
-  const RouteDetailPage(this.viewModel, {Key? key}) : super(key: key);
+class RouteDetailPage extends HomePageWidget {
+  const RouteDetailPage(RouteDetailPageViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RouteDetailPageViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as RouteDetailPageViewModel,
         onModelReady: (viewModel) {
           viewModel.addListener(() {}, [RouteDetailNotifier.updatePage]);
         },
@@ -66,7 +67,7 @@ class RouteDetailPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.width / 1.6,
         child: GoogleMap(
-          polylines: Set<Polyline>.of(viewModel.polylines.values),
+          polylines: Set<Polyline>.of(currentViewModel.polylines.values),
           initialCameraPosition:
               const CameraPosition(target: LatLng(0, 0), zoom: 8),
           myLocationEnabled: false,
@@ -76,9 +77,9 @@ class RouteDetailPage extends StatelessWidget {
           zoomGesturesEnabled: false,
           zoomControlsEnabled: false,
           onMapCreated: (GoogleMapController controller) {
-            viewModel.setMapController(controller);
-            viewModel.setCameraPosition();
-            viewModel.loadPolylines();
+            currentViewModel.setMapController(controller);
+            currentViewModel.setCameraPosition();
+            currentViewModel.loadPolylines();
           },
         ));
   }
@@ -87,7 +88,7 @@ class RouteDetailPage extends StatelessWidget {
     const String image = "assets/img1.jpg";
 
     return FadeInImage.assetNetwork(
-      image: viewModel.route.image!,
+      image: currentViewModel.route.image!,
       placeholder: image,
       height: 100,
       fadeInDuration: const Duration(milliseconds: 200),
@@ -104,7 +105,7 @@ class RouteDetailPage extends StatelessWidget {
             border: Border.all(
                 width: 1, color: Colors.black54, style: BorderStyle.solid)),
         child: Text(
-          viewModel.route.name!,
+          currentViewModel.route.name!,
           textAlign: TextAlign.center,
           style: const TextStyle(
               color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 24),
@@ -113,11 +114,11 @@ class RouteDetailPage extends StatelessWidget {
 
   getAuthorWidget() {
     return BadgeRouteAuthor(
-        name: viewModel.author.username,
-        level: viewModel.author.level,
-        image: viewModel.author.image,
-        callbackAuthor: () => viewModel.navigateToAuthor(),
-        date: viewModel.getRouteDateWithFormat());
+        name: currentViewModel.author.username,
+        level: currentViewModel.author.level,
+        image: currentViewModel.author.image,
+        callbackAuthor: () => currentViewModel.navigateToAuthor(),
+        date: currentViewModel.getRouteDateWithFormat());
   }
 
   getHeaderDetailInfo(BuildContext context) {
@@ -141,11 +142,11 @@ class RouteDetailPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          "Distance: ${viewModel.truncateDistance()}m",
+          "Distance: ${currentViewModel.truncateDistance()}m",
           style: const TextStyle(fontSize: 16),
         ),
         Text(
-          "Duration: ${viewModel.route.duration}s",
+          "Duration: ${currentViewModel.route.duration}s",
           style: const TextStyle(fontSize: 16),
         ),
       ],
@@ -153,9 +154,9 @@ class RouteDetailPage extends StatelessWidget {
   }
 
   getDescription() {
-    return viewModel.route.description!.isNotEmpty
+    return currentViewModel.route.description!.isNotEmpty
         ? Text(
-            "Description: ${viewModel.route.description}",
+            "Description: ${currentViewModel.route.description}",
             style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.center,
           )
@@ -167,7 +168,8 @@ class RouteDetailPage extends StatelessWidget {
   }
 
   getImageTitle() {
-    return viewModel.route.image != null && viewModel.route.image != ""
+    return currentViewModel.route.image != null &&
+            currentViewModel.route.image != ""
         ? const Text(
             "Image:",
             style: TextStyle(fontSize: 15),
@@ -182,11 +184,16 @@ class RouteDetailPage extends StatelessWidget {
 
   getImage(BuildContext context) {
     return SizedBox(
-      child: viewModel.route.image != null && viewModel.route.image != ""
+      child: currentViewModel.route.image != null &&
+              currentViewModel.route.image != ""
           ? getImageFromNetwork()
           : Container(),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width / 2,
     );
+  }
+
+  get currentViewModel {
+    return viewModel as RouteDetailPageViewModel;
   }
 }

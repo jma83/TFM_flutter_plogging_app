@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
 @injectable
-class StartPage extends StatelessWidget {
-  final StartPageViewModel viewModel;
-  const StartPage(this.viewModel, {Key? key}) : super(key: key);
+class StartPage extends PageWidget {
+  const StartPage(StartPageViewModel viewModel, {Key? key})
+      : super(viewModel, key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<StartPageViewModel>.reactive(
-        viewModelBuilder: () => viewModel,
+        viewModelBuilder: () => viewModel as StartPageViewModel,
         onModelReady: (viewModel) => viewModel.checkUserRedirection(),
         builder: (context, StartPageViewModel viewModel, child) =>
             getLoadingWidget());

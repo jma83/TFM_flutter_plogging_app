@@ -1,32 +1,41 @@
+import 'dart:async';
+// ignore: implementation_imports
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
+import 'package:flutter_plogging/src/ui/route_coordinators/home_tab_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 
 class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   final NavigationService _navigationService;
   final LoadingService _loadingService;
   final List<TabItem> _instantiatedTabItems = [];
   final List<BottomNavigationBarItem> navbarItems;
-
+  final Map<int, TabItem> _tabsMap;
+  final Map<TabItem, HomeTabRouteCoordinator> _coordinatorByTabs;
+  StreamSubscription<TabItem?>? tabSubscription;
   int _selectedIndexTab = 0;
   HomeTabBarViewModel(
       AuthenticationService authService,
       GetUserById getUserById,
       this._navigationService,
       this._loadingService,
-      this.navbarItems)
+      this.navbarItems,
+      this._tabsMap,
+      this._coordinatorByTabs)
       : super(authService, getUserById) {
     createAuthListener();
     _navigationService.getStreamHomeTabItem().listen((event) {
       if (event == null) return;
       if (event == selectedTabItem) return;
-      onClickTab(getSelectedIndexFromTab(event), updateNavigator: false);
+      onClickTab(_getIndexFromTab(event), updateNavigator: false);
     });
   }
 
@@ -35,8 +44,21 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   }
 
   Future<bool> returnToPrevious() {
-    final coordinators = getHomeTabsByCoordinator();
-    return coordinators[selectedTabItem]!.returnToPrevious();
+    return _coordinatorByTabs[selectedTabItem]!.returnToPrevious();
+  }
+
+  Map<TabItem, HomeTabRouteCoordinator> getCoordinators() {
+    return _coordinatorByTabs;
+  }
+
+  WidgetBuilder getRoutesBuilders(String route) {
+    return (BuildContext context) =>
+        _coordinatorByTabs[getHomeTabFromRoute(route)]!.getAndUpdateWidget();
+  }
+
+  HomeTabsChangeNotifier getViewModel(TabItem tab) {
+    HomeTabRouteCoordinator homeTab = _coordinatorByTabs[tab]!;
+    return homeTab.mainWidget.viewModel as HomeTabsChangeNotifier;
   }
 
   @override
@@ -87,34 +109,21 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   }
 
   TabItem get selectedTabItem {
-    switch (_selectedIndexTab) {
-      case 1:
-        return TabItem.search;
-      case 2:
-        return TabItem.plogging;
-      case 3:
-        return TabItem.myRoutes;
-      case 4:
-        return TabItem.profile;
-      case 0:
-      default:
-        return TabItem.home;
-    }
+    return _getTabFromIndex(_selectedIndexTab);
   }
 
-  int getSelectedIndexFromTab(TabItem tab) {
-    switch (tab) {
-      case TabItem.search:
-        return 1;
-      case TabItem.plogging:
-        return 2;
-      case TabItem.myRoutes:
-        return 3;
-      case TabItem.profile:
-        return 4;
-      case TabItem.home:
-      default:
-        return 0;
-    }
+  TabItem _getTabFromIndex(int index) {
+    return _tabsMap[index] ?? _tabsMap[0]!;
+  }
+
+  int _getIndexFromTab(TabItem tab) {
+    return _tabsMap.entries.firstWhereOrNull((e) => e.value == tab)?.key ?? 0;
+  }
+
+  @override
+  // ignore: must_call_super
+  void dispose() {
+    tabSubscription?.cancel();
+    tabSubscription = null;
   }
 }

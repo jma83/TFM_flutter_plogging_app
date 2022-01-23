@@ -15,11 +15,11 @@ import 'package:injectable/injectable.dart';
 class HomePageViewModel extends HomeTabsChangeNotifier {
   List<RouteListAuthorData> _routesWithAuthor = [];
   late int _selectedRouteIndex;
-  final GetFollowersRouteList _getFollowersRouteList;
+  final GetFollowingRouteList _getFollowingRouteList;
   final ManageLikeRoute _manageLikeRoute;
   final LoadingService _loadingService;
   final GetUsersByIds _getUsersByIds;
-  HomePageViewModel(authenticationService, this._getFollowersRouteList,
+  HomePageViewModel(authenticationService, this._getFollowingRouteList,
       this._manageLikeRoute, this._loadingService, this._getUsersByIds)
       : super(authenticationService);
 
@@ -28,7 +28,7 @@ class HomePageViewModel extends HomeTabsChangeNotifier {
     _routesWithAuthor.clear();
     toggleLoading(loading: true);
     final List<RouteListData> routes =
-        await _getFollowersRouteList.execute(currentUserId);
+        await _getFollowingRouteList.execute(currentUserId);
     if (routes.isEmpty) return updateAndToggle();
     final List<UserData> users =
         await _getUsersByIds.execute(routes.map((e) => e.userId!).toList());

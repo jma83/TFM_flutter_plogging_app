@@ -5,16 +5,19 @@ import 'package:flutter_plogging/src/core/services/interfaces/i_navigation_servi
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: INavigationService)
 class NavigationService implements INavigationService {
   final GlobalKey<NavigatorState> navigatorKey;
-  final Map<TabItem, GlobalKey<NavigatorState>> homeNavigatorKeys;
+  Map<TabItem, GlobalKey<NavigatorState>> homeNavigatorKeys;
+  final Map<TabItem, GlobalKey<NavigatorState>> defaultHomeNavigatorKeys;
   final Map<TabItem, String> homeTabsRoutesMap;
   NavigationService(
-      this.navigatorKey, this.homeNavigatorKeys, this.homeTabsRoutesMap);
+      this.navigatorKey, this.homeNavigatorKeys, this.homeTabsRoutesMap)
+      : defaultHomeNavigatorKeys = homeNavigatorKeys;
   TabItem? currentHomeTabItem;
-  StreamController<TabItem?> controllerTabItem = StreamController<TabItem>();
+  StreamController<TabItem?> controllerTabItem = BehaviorSubject<TabItem>();
   @override
   Future<dynamic> navigateTo(Route route) {
     return currentNavigator.currentState!.push(route);
@@ -50,6 +53,12 @@ class NavigationService implements INavigationService {
   }
 
   setCurrentHomeTabItem(TabItem? tabItem) {
+    if (tabItem == null) {
+      homeNavigatorKeys = defaultHomeNavigatorKeys;
+      controllerTabItem.add(null);
+      currentHomeTabItem = TabItem.home;
+      return;
+    }
     controllerTabItem.add(tabItem);
     currentHomeTabItem = tabItem;
   }

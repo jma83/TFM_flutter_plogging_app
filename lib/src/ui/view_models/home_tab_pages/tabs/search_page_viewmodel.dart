@@ -60,7 +60,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
         usersFound, _followingList);
     toggleLoading();
     updatePage();
-    _updateFollowingUsers();
+    // _updateFollowingUsers();
   }
 
   _updateFollowingUsers() async {

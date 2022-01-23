@@ -26,7 +26,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   RegisterPageViewModel(authService, this._userViewModel, this._loadingService,
       this._createUser, GetUserById getUserById)
       : super(authService, getUserById) {
-    createAuthListener();
+    createAuthListener("REGISTER PAGE");
   }
 
   void validateForm() {

@@ -10,24 +10,36 @@ import 'package:stacked/stacked.dart';
 
 class ProfilePage extends StatelessWidget {
   final ProfilePageViewModel viewModel;
-  const ProfilePage(this.viewModel, {Key? key}) : super(key: key);
+  Function? functionn;
+  ProfilePage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProfilePageViewModel>.reactive(
         viewModelBuilder: () => viewModel,
-        onModelReady: (viewModel) {
-          viewModel.addListener(() {}, [ProfileNotifiers.updateProfilePage]);
-          viewModel.addListener(() => showConfirmationLogoutModal(context),
-              [ProfileNotifiers.showLogoutConfirmation]);
+        onDispose: (viewModel) {
+          viewModel.removeListener(() {}, [ProfileNotifiers.updateProfilePage]);
+          viewModel.removeListener(
+              functionn!, [ProfileNotifiers.showLogoutConfirmation]);
+          functionn = null;
         },
         builder: (context, ProfilePageViewModel viewModel, child) {
+          initListeners(context);
           return Scaffold(
               floatingActionButton: getLoggoutFloatingButton(),
               floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
               appBar: AppBar(title: const Text("My Profile")),
               body: DetailContentContainer(getListViewHeader(context)));
         });
+  }
+
+  initListeners(BuildContext context) {
+    if (functionn == null) {
+      viewModel.addListener(() {}, [ProfileNotifiers.updateProfilePage]);
+      functionn = () => showConfirmationLogoutModal(context);
+      viewModel
+          .addListener(functionn!, [ProfileNotifiers.showLogoutConfirmation]);
+    }
   }
 
   getListViewHeader(BuildContext context) {

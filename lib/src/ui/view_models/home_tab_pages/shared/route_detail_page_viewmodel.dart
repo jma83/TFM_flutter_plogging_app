@@ -52,8 +52,8 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   @override
   loadPage() async {
     _loadingService.toggleLoading();
-    await _getRouteListById.execute(_routeListData.id!);
-    await _getUserById.execute(_userData.id);
+    // await _getRouteListById.execute(_routeListData.id!);
+    // await _getUserById.execute(_userData.id);
     updatePage();
     _loadingService.toggleLoading();
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_follow.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
-class CardUser extends StatefulWidget {
+class CardUser extends StatelessWidget {
   final String name;
   final int level;
   final int followers;
@@ -31,18 +31,13 @@ class CardUser extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CardUserState createState() => _CardUserState();
-}
-
-class _CardUserState extends State<CardUser> {
-  @override
   Widget build(BuildContext context) {
     return Card(
         elevation: 5,
-        color: widget.color,
+        color: color,
         shadowColor: Colors.grey,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius)),
+            borderRadius: BorderRadius.circular(borderRadius)),
         child: InkWell(
           child: Stack(
             children: <Widget>[
@@ -51,15 +46,15 @@ class _CardUserState extends State<CardUser> {
                     height: 110,
                     width: MediaQuery.of(context).size.width,
                   ),
-                  widget.callback),
+                  callback),
               IgnorePointer(child: _createListProfile()),
               Container(
                   height: 107,
                   alignment: Alignment.bottomCenter,
                   child: InputButtonFollow(
-                    isSelf: widget.isSelf,
-                    followCallback: widget.callbackButton,
-                    following: widget.followingUserFlag,
+                    isSelf: isSelf,
+                    followCallback: callbackButton,
+                    following: followingUserFlag,
                   )),
             ],
           ),
@@ -80,7 +75,7 @@ class _CardUserState extends State<CardUser> {
                 margin: const EdgeInsets.only(top: 5),
                 alignment: Alignment.center,
                 child: Text(
-                  "Level ${widget.level}",
+                  "Level $level",
                   textAlign: TextAlign.center,
                 ),
               )
@@ -97,7 +92,7 @@ class _CardUserState extends State<CardUser> {
             children: [
               const SizedBox(height: 5),
               Text(
-                widget.name,
+                name,
                 style: const TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 8),
@@ -105,12 +100,12 @@ class _CardUserState extends State<CardUser> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Followers: ${widget.followers}",
+                    "Followers: $followers",
                     style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    "Following: ${widget.following}",
+                    "Following: $following",
                     style: const TextStyle(fontSize: 14),
                   )
                 ],

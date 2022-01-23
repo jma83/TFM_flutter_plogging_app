@@ -7,9 +7,8 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/my_route
 import 'package:stacked/stacked.dart';
 
 class MyRoutesPage extends StatelessWidget {
-  final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
   final MyRoutesPageViewModel viewModel;
-  MyRoutesPage(this.viewModel, {Key? key}) : super(key: key);
+  const MyRoutesPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,6 @@ class MyRoutesPage extends StatelessWidget {
         onModelReady: (viewModel) {
           viewModel.submitSearch(viewModel.searchValue);
           viewModel.addListener(() {}, [MyRouteNotifiers.updateMyRoutesPage]);
-          return;
         },
         builder: (context, MyRoutesPageViewModel viewModel, child) {
           return Scaffold(

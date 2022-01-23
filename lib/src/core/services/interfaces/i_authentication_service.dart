@@ -7,6 +7,9 @@ abstract class IAuthenticationService {
   Future<String?> signIn({required String email, required String password});
   Future<String?> signUp({required String email, required String password});
   Future<String?> signOut();
+  Future<String?> updateEmail({required String email});
+  Future<String?> updatePassword({required String password});
+  Stream<User?> authStateChanges();
   User? get currentUser;
   UserData? currentUserData;
 }

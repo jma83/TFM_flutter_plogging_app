@@ -42,7 +42,7 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
   @override
   loadPage() async {
     _loadingService.toggleLoading();
-    await getUserFollowers();
+    await checkUserFollow();
     updatePage();
     await getUserRoutes();
     updatePage();
@@ -68,7 +68,7 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
     _routeListData = route;
   }
 
-  getUserFollowers() async {
+  checkUserFollow() async {
     final FollowerData? follower = await _checkUserFollowed.execute(user.id);
     _userData.followerId = follower?.id;
     _userData.followingFlag = follower != null;

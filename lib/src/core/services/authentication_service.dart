@@ -1,14 +1,26 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_plogging/src/core/domain/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_authentication_service.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: IAuthenticationService)
 class AuthenticationService implements IAuthenticationService {
   final FirebaseAuth _firebaseAuth;
   UserData? _userData;
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
-  AuthenticationService(this._firebaseAuth);
+  StreamController<User?> controllerUserSession = BehaviorSubject<User?>();
+
+  AuthenticationService(this._firebaseAuth) {
+    _createListener();
+  }
+
+  _createListener() {
+    _firebaseAuth.authStateChanges().listen((event) {
+      controllerUserSession.add(event);
+    });
+  }
 
   @override
   Future<String?> signIn(
@@ -40,6 +52,28 @@ class AuthenticationService implements IAuthenticationService {
       await _firebaseAuth.signOut();
     } on FirebaseAuthException catch (e) {
       return getMessageFromErrorCode(e.code);
+    }
+    return null;
+  }
+
+  @override
+  Future<String?> updateEmail({required String email}) async {
+    if (currentUser == null) return null;
+    try {
+      await currentUser!.updateEmail(email);
+    } on FirebaseAuthException catch (e) {
+      return Future.error(getMessageFromErrorCode(e.code));
+    }
+    return null;
+  }
+
+  @override
+  Future<String?> updatePassword({required String password}) async {
+    if (currentUser == null) return null;
+    try {
+      await currentUser!.updatePassword(password);
+    } on FirebaseAuthException catch (e) {
+      return Future.error(getMessageFromErrorCode(e.code));
     }
     return null;
   }
@@ -89,5 +123,10 @@ class AuthenticationService implements IAuthenticationService {
       default:
         return "Login failed. Please try again.";
     }
+  }
+
+  @override
+  Stream<User?> authStateChanges() {
+    return controllerUserSession.stream;
   }
 }

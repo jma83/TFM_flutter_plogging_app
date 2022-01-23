@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class InputText extends StatefulWidget {
+class InputText extends StatelessWidget {
   final String label;
   final String hint;
   final Icon icon;
@@ -29,32 +29,27 @@ class InputText extends StatefulWidget {
       : super(key: key);
 
   @override
-  _InputTextState createState() => _InputTextState();
-}
-
-class _InputTextState extends State<InputText> {
-  @override
   Widget build(BuildContext context) {
     return Column(children: [
       TextField(
-        readOnly: widget.readonly,
-        controller: widget.textController ?? defaultTextEditingController,
+        readOnly: readonly,
+        controller: textController ?? defaultTextEditingController,
         textAlignVertical: TextAlignVertical.center,
-        maxLines: widget.maxLines,
-        maxLength: widget.maxLength == 0 ? null : widget.maxLength,
-        obscureText: widget.isPasswordField,
-        keyboardType: widget.inputType,
+        maxLines: maxLines,
+        maxLength: maxLength == 0 ? null : maxLength,
+        obscureText: isPasswordField,
+        keyboardType: inputType,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            labelText: widget.label,
-            hintText: widget.hint,
-            suffixIcon: widget.icon),
-        onChanged: (value) => widget.onChange(value),
+            labelText: label,
+            hintText: hint,
+            suffixIcon: icon),
+        onChanged: (value) => onChange(value),
       ),
-      SizedBox(height: widget.bottomHeight)
+      SizedBox(height: bottomHeight)
     ]);
   }
 

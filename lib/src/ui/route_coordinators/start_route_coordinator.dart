@@ -1,4 +1,4 @@
-import 'package:flutter_plogging/src/core/di/entities/route_coordinators.dart';
+import 'package:flutter_plogging/src/di/entities/route_coordinators.dart';
 import 'package:flutter_plogging/src/ui/notifiers/start_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/main_route_coordinator.dart';

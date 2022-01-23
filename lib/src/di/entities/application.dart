@@ -41,7 +41,7 @@ void $initApplication() {
         getIt<AuthenticationService>()))
     ..registerLazySingleton<SearchRouteList>(
         () => SearchRouteList(getIt<RouteModel>(), getIt<LikeModel>()))
-    ..registerLazySingleton<GetFollowersRouteList>(() => GetFollowersRouteList(
+    ..registerLazySingleton<GetFollowingRouteList>(() => GetFollowingRouteList(
         getIt<FollowerModel>(), getIt<RouteModel>(), getIt<LikeModel>()))
     ..registerLazySingleton<GetUserFollowing>(
         () => GetUserFollowing(getIt<FollowerModel>()))
@@ -68,7 +68,8 @@ void $initApplication() {
         getIt<AuthenticationService>()))
     ..registerLazySingleton<CreateUser>(() => CreateUser(getIt<UserModel>()))
     ..registerLazySingleton<CreateRoute>(() => CreateRoute(getIt<RouteModel>()))
-    ..registerLazySingleton<UpdateUser>(() => UpdateUser(getIt<UserModel>()))
+    ..registerLazySingleton<UpdateUser>(
+        () => UpdateUser(getIt<UserModel>(), getIt<AuthenticationService>()))
     ..registerLazySingleton<GetTodayUserDistance>(() => GetTodayUserDistance(
         getIt<RouteModel>(), getIt<AuthenticationService>()))
     ..registerLazySingleton<GetLikedRoutesList>(

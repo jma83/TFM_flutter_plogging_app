@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
-class WidgetRouteAuthor extends StatefulWidget {
+class WidgetRouteAuthor extends StatelessWidget {
   final String name;
   final int level;
   final String date;
@@ -17,11 +17,6 @@ class WidgetRouteAuthor extends StatefulWidget {
       : super(key: key);
 
   @override
-  _WidgetRouteAuthorState createState() => _WidgetRouteAuthorState();
-}
-
-class _WidgetRouteAuthorState extends State<WidgetRouteAuthor> {
-  @override
   Widget build(BuildContext context) {
     return CardWidgetUtils.createClickableCard(
         ListTile(
@@ -30,9 +25,9 @@ class _WidgetRouteAuthorState extends State<WidgetRouteAuthor> {
               child: SizedBox(
                   width: 50,
                   height: 50,
-                  child: widget.image == null || widget.image == ""
+                  child: image == null || image == ""
                       ? CardWidgetUtils.getImageFromAsset(avatar: true)
-                      : CardWidgetUtils.getImageFromNetwork(widget.image!,
+                      : CardWidgetUtils.getImageFromNetwork(image!,
                           avatar: true))),
           title: Row(
             children: [
@@ -42,7 +37,7 @@ class _WidgetRouteAuthorState extends State<WidgetRouteAuthor> {
                 children: [
                   const SizedBox(height: 5),
                   Text(
-                    widget.name,
+                    name,
                     style: const TextStyle(fontSize: 17),
                   ),
                   const SizedBox(height: 6),
@@ -50,7 +45,7 @@ class _WidgetRouteAuthorState extends State<WidgetRouteAuthor> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Level: ${widget.level}",
+                        "Level: $level",
                         style: const TextStyle(fontSize: 12),
                       ),
                     ],
@@ -60,31 +55,11 @@ class _WidgetRouteAuthorState extends State<WidgetRouteAuthor> {
             ],
           ),
           trailing: Text(
-            "Date: ${widget.date}",
+            "Date: $date",
             style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.end,
           ),
         ),
-        widget.callbackAuthor);
-  }
-
-  getImageFromNetwork() {
-    const String image = "assets/logo.png";
-
-    return FadeInImage.assetNetwork(
-      image: widget.image!,
-      placeholder: image,
-      fadeInDuration: const Duration(milliseconds: 200),
-      fit: BoxFit.contain,
-    );
-  }
-
-  getImageFromAsset() {
-    const String image = "assets/logo.png";
-    return const FadeInImage(
-        image: AssetImage(image),
-        placeholder: AssetImage(image),
-        fadeInDuration: Duration(milliseconds: 200),
-        fit: BoxFit.contain);
+        callbackAuthor);
   }
 }

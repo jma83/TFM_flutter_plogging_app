@@ -17,7 +17,7 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   LoginPageViewModel(_authenticationService, this._userViewModel,
       this._loadingService, GetUserById _getUserById)
       : super(_authenticationService, _getUserById) {
-    createAuthListener();
+    createAuthListener("LOGIN PAGE");
   }
 
   void validateForm() {

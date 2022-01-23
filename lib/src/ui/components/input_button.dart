@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum InputButtonType { elevated, outlined }
 
-class InputButton extends StatefulWidget {
+class InputButton extends StatelessWidget {
   final InputButtonType buttonType;
   final Function onPress;
   final Widget label;
@@ -27,66 +27,52 @@ class InputButton extends StatefulWidget {
       : super(key: key);
 
   @override
-  _InputButtonState createState() => _InputButtonState();
-}
-
-class _InputButtonState extends State<InputButton> {
-  @override
   Widget build(BuildContext context) {
-    return widget.icon == null ? createButton() : createButtonWithIcon();
+    return icon == null ? createButton() : createButtonWithIcon();
   }
 
   Widget createButtonWithIcon() {
-    if (widget.buttonType == InputButtonType.outlined) {
+    if (buttonType == InputButtonType.outlined) {
       return OutlinedButton.icon(
-          onPressed: () => widget.onPress(),
-          icon: widget.icon!,
-          label: widget.label,
+          onPressed: () => onPress(),
+          icon: icon!,
+          label: label,
           style: btnStyleOutlined);
     }
     return ElevatedButton.icon(
-        onPressed: () => widget.onPress(),
-        icon: widget.icon!,
-        label: widget.label,
-        style: btnStyle);
+        onPressed: () => onPress(), icon: icon!, label: label, style: btnStyle);
   }
 
   Widget createButton() {
-    if (widget.buttonType == InputButtonType.outlined) {
+    if (buttonType == InputButtonType.outlined) {
       return OutlinedButton(
-          onPressed: () => widget.onPress(),
-          child: widget.label,
-          style: btnStyleOutlined);
+          onPressed: () => onPress(), child: label, style: btnStyleOutlined);
     }
     return ElevatedButton(
-        onPressed: () => widget.onPress(),
-        child: widget.label,
-        style: btnStyle);
+        onPressed: () => onPress(), child: label, style: btnStyle);
   }
 
   ButtonStyle get btnStyle {
     return ElevatedButton.styleFrom(
-        primary: widget.bgColor ?? Colors.green,
+        primary: bgColor ?? Colors.green,
         side: const BorderSide(width: 1, color: Colors.grey),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         padding: EdgeInsets.symmetric(
-            horizontal: widget.horizontalPadding,
-            vertical: widget.verticalPadding),
-        fixedSize: Size.fromWidth(widget.width));
+            horizontal: horizontalPadding, vertical: verticalPadding),
+        fixedSize: Size.fromWidth(width));
   }
 
   ButtonStyle get btnStyleOutlined {
     return OutlinedButton.styleFrom(
-        backgroundColor: widget.bgColor ?? Colors.white70,
+        backgroundColor: bgColor ?? Colors.white70,
         side: const BorderSide(width: 1, color: Colors.grey),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         padding: EdgeInsets.symmetric(
-            horizontal: widget.horizontalPadding,
-            vertical: widget.verticalPadding),
-        fixedSize: Size.fromWidth(widget.width));
+            horizontal: horizontalPadding, vertical: verticalPadding),
+        fixedSize: Size.fromWidth(width));
   }
 }

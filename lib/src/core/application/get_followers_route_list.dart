@@ -8,12 +8,12 @@ import 'package:flutter_plogging/src/core/model/route_model.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class GetFollowersRouteList {
+class GetFollowingRouteList {
   final RouteModel _routeModel;
   final FollowerModel _followerModel;
   final LikeModel _likeModel;
 
-  GetFollowersRouteList(this._followerModel, this._routeModel, this._likeModel);
+  GetFollowingRouteList(this._followerModel, this._routeModel, this._likeModel);
 
   Future<List<RouteListData>> execute(String currentUserId) async {
     final List<String> userFollowingIds = await _getFollowingIds(currentUserId);

@@ -11,19 +11,30 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
   StreamSubscription<User?>? subscription;
   final AuthenticationService authService;
   final GetUserById getUserById;
+  bool updated = false;
+  String pepe = "";
 
   AuthPropertyChangeNotifier(this.authService, this.getUserById);
 
-  void createAuthListener() {
-    subscription = authService.authStateChanges.listen((User? user) async {
-      if (user == null) {
-        authService.currentUserData = null;
-
-        Future.delayed(const Duration(seconds: 1), () => notifyNotLoggedIn());
+  void createAuthListener(String pepe) {
+    this.pepe = pepe;
+    subscription = authService.authStateChanges().listen((User? user) async {
+      if (updated) {
         return;
       }
 
+      if (authService.currentUser?.uid != user?.uid) {
+        updated = true;
+        subscription?.cancel();
+      }
+
+      if (user == null) {
+        authService.currentUserData = null;
+        Future.delayed(const Duration(seconds: 1), () => notifyNotLoggedIn());
+        return;
+      }
       authService.currentUserData = await getUserById.execute(user.uid);
+
       notifyLoggedIn();
     });
   }
@@ -33,7 +44,5 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
   void notifyNotLoggedIn() {}
 
   @override
-  void dispose() {
-    subscription?.cancel();
-  }
+  void dispose() {}
 }

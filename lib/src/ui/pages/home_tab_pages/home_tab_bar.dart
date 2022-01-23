@@ -7,16 +7,14 @@ import 'package:stacked/stacked.dart';
 
 class HomeTabBar extends StatelessWidget {
   final HomeTabBarViewModel viewModel;
-  final List<BottomNavigationBarItem> navbarItems;
-  const HomeTabBar(this.viewModel, this.navbarItems, {Key? key})
-      : super(key: key);
+  const HomeTabBar(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    viewModel.onClickTab(0);
     return ViewModelBuilder<HomeTabBarViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         onModelReady: (viewModel) {
+          // viewModel.initFirstTab();
           viewModel.addListener(() {}, [HomeTabsNotifiers.updateHomeTabs]);
         },
         builder: (context, HomeTabBarViewModel viewModel, child) {
@@ -40,7 +38,7 @@ class HomeTabBar extends StatelessWidget {
     return BottomNavigationBar(
       backgroundColor: Colors.black87,
       type: BottomNavigationBarType.fixed,
-      items: navbarItems,
+      items: viewModel.bottomNavBarItems,
       currentIndex: viewModel.selectedIndex,
       selectedItemColor: Colors.green[700],
       unselectedItemColor: Colors.white60,
@@ -50,7 +48,7 @@ class HomeTabBar extends StatelessWidget {
   }
 
   Widget getOffstageTabNavigator(TabItem tabItem, String route) {
-    viewModel.updateItemsList();
+    viewModel.updateInstantiatedList();
     final bool isInstanciated = viewModel.checkIsInstantiated(tabItem);
 
     return Offstage(

@@ -39,5 +39,9 @@ class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {
   }
 
   @override
-  dispose() {}
+  dispose() {
+    /* if (authenticationService.currentUserData == null) {
+      super.dispose();
+    } */
+  }
 }

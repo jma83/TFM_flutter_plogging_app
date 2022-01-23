@@ -1,3 +1,7 @@
+// ignore: implementation_imports
+import 'dart:async';
+
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
@@ -12,19 +16,36 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   final NavigationService _navigationService;
   final LoadingService _loadingService;
   final List<TabItem> _instantiatedTabItems = [];
+  final List<BottomNavigationBarItem> _bottomNavBarItems;
+  final Map<int, TabItem> _tabsMap;
   int _selectedIndexTab = 0;
-  HomeTabBarViewModel(AuthenticationService authService,
-      GetUserById getUserById, this._navigationService, this._loadingService)
+  StreamSubscription<TabItem?>? tabSubscription;
+  HomeTabBarViewModel(
+      AuthenticationService authService,
+      GetUserById getUserById,
+      this._navigationService,
+      this._loadingService,
+      this._bottomNavBarItems,
+      this._tabsMap)
       : super(authService, getUserById) {
-    createAuthListener();
-    _navigationService.getStreamHomeTabItem().listen((event) {
-      if (event == null) return;
-      if (event == selectedTabItem) return;
-      onClickTab(getSelectedIndexFromTab(event), updateNavigator: false);
+    createAuthListener("HOME TAB");
+    _createHomeTabListener();
+  }
+
+  _createHomeTabListener() {
+    tabSubscription = _navigationService.getStreamHomeTabItem().listen((event) {
+      if (event == null || event == selectedTabItem) {
+        return; //notifyListeners(HomeTabsNotifiers.updateHomeTabs);
+      }
+      if (!checkIsInstantiated(event)) {
+        notifyListeners(HomeTabsNotifiers.instanceHomeTab);
+      }
+      _setSelectedIndex(getIndexFromTab(event));
+      notifyListeners(HomeTabsNotifiers.updateHomeTabs);
     });
   }
 
-  setSelectedIndex(int index) {
+  _setSelectedIndex(int index) {
     _selectedIndexTab = index;
   }
 
@@ -39,26 +60,20 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
     notifyListeners(HomeTabsNotifiers.homeTabsLogout);
   }
 
-  onClickTab(int index, {bool updateNavigator = true}) {
-    if (index == selectedIndex) return;
-    setSelectedIndex(index);
-    if (updateNavigator) setCurrentHomeTabItem(selectedTabItem);
-    if (!checkIsInstantiated(selectedTabItem)) {
-      notifyListeners(HomeTabsNotifiers.instanceHomeTab);
-    }
-    notifyListeners(HomeTabsNotifiers.updateHomeTabs);
+  initFirstTab() {
+    _updateTabItemNavigator(getTabFromIndex(0));
   }
 
-  setCurrentHomeTabItem(TabItem item) {
+  onClickTab(int index) {
+    if (index == selectedIndex) return;
+    _updateTabItemNavigator(getTabFromIndex(index));
+  }
+
+  _updateTabItemNavigator(TabItem item) {
     _navigationService.setCurrentHomeTabItem(item);
   }
 
-  addInstantiatedTabItems(TabItem item) {
-    _instantiatedTabItems.add(item);
-    notifyListeners(HomeTabsNotifiers.updateHomeTabs);
-  }
-
-  updateItemsList() {
+  updateInstantiatedList() {
     if (!_instantiatedTabItems.contains(selectedTabItem)) {
       _instantiatedTabItems.add(selectedTabItem);
     }
@@ -81,34 +96,24 @@ class HomeTabBarViewModel extends AuthPropertyChangeNotifier {
   }
 
   TabItem get selectedTabItem {
-    switch (_selectedIndexTab) {
-      case 1:
-        return TabItem.search;
-      case 2:
-        return TabItem.plogging;
-      case 3:
-        return TabItem.myRoutes;
-      case 4:
-        return TabItem.profile;
-      case 0:
-      default:
-        return TabItem.home;
-    }
+    return _tabsMap[_selectedIndexTab]!;
   }
 
-  int getSelectedIndexFromTab(TabItem tab) {
-    switch (tab) {
-      case TabItem.search:
-        return 1;
-      case TabItem.plogging:
-        return 2;
-      case TabItem.myRoutes:
-        return 3;
-      case TabItem.profile:
-        return 4;
-      case TabItem.home:
-      default:
-        return 0;
-    }
+  List<BottomNavigationBarItem> get bottomNavBarItems {
+    return _bottomNavBarItems;
+  }
+
+  TabItem getTabFromIndex(int index) {
+    return _tabsMap[index] ?? _tabsMap[0]!;
+  }
+
+  int getIndexFromTab(TabItem tab) {
+    return _tabsMap.entries.firstWhereOrNull((e) => e.value == tab)?.key ?? 0;
+  }
+
+  @override
+  void dispose() {
+    tabSubscription?.cancel();
+    tabSubscription = null;
   }
 }

@@ -7,9 +7,8 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_
 import 'package:stacked/stacked.dart';
 
 class LikedRoutesPage extends StatelessWidget {
-  final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
   final LikedRoutesPageViewModel viewModel;
-  LikedRoutesPage(this.viewModel, {Key? key}) : super(key: key);
+  const LikedRoutesPage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

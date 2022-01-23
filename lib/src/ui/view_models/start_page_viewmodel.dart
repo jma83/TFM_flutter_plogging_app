@@ -9,31 +9,18 @@ class StartPageViewModel extends AuthPropertyChangeNotifier {
   StartPageViewModel(
       AuthenticationService _authService, GetUserById _getUserById)
       : super(_authService, _getUserById);
-  bool alreadyDisposed = false;
 
   void checkUserRedirection() {
-    createAuthListener();
+    createAuthListener("START PAGE");
   }
 
   @override
   notifyLoggedIn() {
-    if (alreadyDisposed) {
-      return;
-    }
     notifyListeners(StartNotifiers.navigateToHome);
   }
 
   @override
   notifyNotLoggedIn() {
-    if (alreadyDisposed) {
-      return;
-    }
     notifyListeners(StartNotifiers.navigateToLogin);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    alreadyDisposed = true;
   }
 }

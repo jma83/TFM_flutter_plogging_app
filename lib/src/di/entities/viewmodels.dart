@@ -16,6 +16,8 @@ import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart'
 import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
 import 'package:flutter_plogging/src/core/application/get_today_user_distance.dart';
 import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
+import 'package:flutter_plogging/src/ui/tabs/home_nav_items.dart';
+import 'package:flutter_plogging/src/ui/tabs/home_tabs_routes_map.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';
@@ -48,7 +50,9 @@ void $initViewModels() {
         getIt<AuthenticationService>(),
         getIt<GetUserById>(),
         getIt<NavigationService>(),
-        getIt<LoadingService>()))
+        getIt<LoadingService>(),
+        bottomNavBarItems,
+        homeTabsMap))
     ..registerFactory<UserViewModel>(() => UserViewModel())
     ..registerFactory<StartPageViewModel>(() => StartPageViewModel(
         getIt<AuthenticationService>(), getIt<GetUserById>()))
@@ -65,7 +69,7 @@ void $initViewModels() {
         getIt<GetUserById>()))
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
         getIt<AuthenticationService>(),
-        getIt<GetFollowersRouteList>(),
+        getIt<GetFollowingRouteList>(),
         getIt<ManageLikeRoute>(),
         getIt<LoadingService>(),
         getIt<GetUsersByIds>()))

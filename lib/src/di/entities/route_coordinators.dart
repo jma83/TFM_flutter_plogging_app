@@ -14,13 +14,10 @@ import 'package:flutter_plogging/src/ui/route_coordinators/search_route_coordina
 import 'package:flutter_plogging/src/ui/route_coordinators/start_plogging_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter_plogging/src/ui/pages/login_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';
 
-final getIt = GetIt.instance;
-
-void $initRouteCoordinators() {
+void $initRouteCoordinators(getIt) {
   getIt
     ..registerLazySingleton(() =>
         StartRouteCoordinator(getIt<StartPage>(), getIt<NavigationService>()))

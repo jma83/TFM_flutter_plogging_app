@@ -17,7 +17,7 @@ class AuthenticationService implements IAuthenticationService {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      return getMessageFromErrorCode(e.code);
+      return _getMessageFromErrorCode(e.code);
     }
     return null;
   }
@@ -29,7 +29,7 @@ class AuthenticationService implements IAuthenticationService {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      return getMessageFromErrorCode(e.code);
+      return _getMessageFromErrorCode(e.code);
     }
     return null;
   }
@@ -39,7 +39,7 @@ class AuthenticationService implements IAuthenticationService {
     try {
       await _firebaseAuth.signOut();
     } on FirebaseAuthException catch (e) {
-      return getMessageFromErrorCode(e.code);
+      return _getMessageFromErrorCode(e.code);
     }
     return null;
   }
@@ -63,7 +63,29 @@ class AuthenticationService implements IAuthenticationService {
     _userData = currentUserData;
   }
 
-  String getMessageFromErrorCode(String errorCode) {
+  @override
+  Future<String?> updateEmail({required String email}) async {
+    if (currentUser == null) return null;
+    try {
+      await currentUser!.updateEmail(email);
+    } on FirebaseAuthException catch (e) {
+      return Future.error(_getMessageFromErrorCode(e.code));
+    }
+    return null;
+  }
+
+  @override
+  Future<String?> updatePassword({required String password}) async {
+    if (currentUser == null) return null;
+    try {
+      await currentUser!.updatePassword(password);
+    } on FirebaseAuthException catch (e) {
+      return Future.error(_getMessageFromErrorCode(e.code));
+    }
+    return null;
+  }
+
+  String _getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
       case "account-exists-with-different-credential":

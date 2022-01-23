@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:flutter_plogging/src/core/di/injection.config.dart';
+import 'package:flutter_plogging/src/di/container.dart';
 import 'package:injectable/injectable.dart';
 
 @injectableInit

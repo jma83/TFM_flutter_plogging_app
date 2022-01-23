@@ -19,7 +19,6 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/search_p
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/start_plogging_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_detail_page_view_model.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
@@ -27,9 +26,7 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';
 
-final getIt = GetIt.instance;
-
-void $initViews() {
+void $initViews(getIt) {
   getIt
     ..registerFactory(
         () => HomeTabBar(getIt<HomeTabBarViewModel>(), navbarItems))

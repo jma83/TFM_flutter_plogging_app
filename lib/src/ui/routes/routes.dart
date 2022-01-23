@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/di/injection.config.dart';
+import 'package:flutter_plogging/src/di/container.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_tab_bar.dart';
 import 'package:flutter_plogging/src/ui/pages/register_page.dart';
 import 'package:flutter_plogging/src/ui/pages/start_page.dart';

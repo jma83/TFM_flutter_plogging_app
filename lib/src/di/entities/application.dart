@@ -2,7 +2,7 @@ import 'package:flutter_plogging/src/core/application/calculate_points_distance.
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/create_route.dart';
 import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
-import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
+import 'package:flutter_plogging/src/core/application/get_following_route_list.dart';
 import 'package:flutter_plogging/src/core/application/get_liked_routes_list.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/get_route_list_by_user.dart';
@@ -25,11 +25,8 @@ import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
-import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
-
-void $initApplication() {
+void $initApplication(getIt) {
   getIt
     ..registerLazySingleton<ManageLikeRoute>(() => ManageLikeRoute(
         getIt<LikeModel>(),
@@ -41,7 +38,7 @@ void $initApplication() {
         getIt<AuthenticationService>()))
     ..registerLazySingleton<SearchRouteList>(
         () => SearchRouteList(getIt<RouteModel>(), getIt<LikeModel>()))
-    ..registerLazySingleton<GetFollowersRouteList>(() => GetFollowersRouteList(
+    ..registerLazySingleton<GetFollowingRouteList>(() => GetFollowingRouteList(
         getIt<FollowerModel>(), getIt<RouteModel>(), getIt<LikeModel>()))
     ..registerLazySingleton<GetUserFollowing>(
         () => GetUserFollowing(getIt<FollowerModel>()))
@@ -68,7 +65,8 @@ void $initApplication() {
         getIt<AuthenticationService>()))
     ..registerLazySingleton<CreateUser>(() => CreateUser(getIt<UserModel>()))
     ..registerLazySingleton<CreateRoute>(() => CreateRoute(getIt<RouteModel>()))
-    ..registerLazySingleton<UpdateUser>(() => UpdateUser(getIt<UserModel>()))
+    ..registerLazySingleton<UpdateUser>(
+        () => UpdateUser(getIt<UserModel>(), getIt<AuthenticationService>()))
     ..registerLazySingleton<GetTodayUserDistance>(() => GetTodayUserDistance(
         getIt<RouteModel>(), getIt<AuthenticationService>()))
     ..registerLazySingleton<GetLikedRoutesList>(

@@ -8,7 +8,7 @@ import 'package:flutter_plogging/src/core/application/get_users_by_ids.dart';
 import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
 import 'package:flutter_plogging/src/core/application/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/search_route_list.dart';
-import 'package:flutter_plogging/src/core/application/get_followers_route_list.dart';
+import 'package:flutter_plogging/src/core/application/get_following_route_list.dart';
 import 'package:flutter_plogging/src/core/application/search_user_list.dart';
 import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/check_user_followed.dart';
@@ -29,7 +29,6 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_d
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/application/create_route.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
@@ -40,9 +39,7 @@ import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
 import 'package:flutter_plogging/src/core/application/get_top_level_users.dart';
 
-final getIt = GetIt.instance;
-
-void $initViewModels() {
+void $initViewModels(getIt) {
   getIt
     ..registerFactory<HomeTabBarViewModel>(() => HomeTabBarViewModel(
         getIt<AuthenticationService>(),
@@ -65,7 +62,7 @@ void $initViewModels() {
         getIt<GetUserById>()))
     ..registerFactory<HomePageViewModel>(() => HomePageViewModel(
         getIt<AuthenticationService>(),
-        getIt<GetFollowersRouteList>(),
+        getIt<GetFollowingRouteList>(),
         getIt<ManageLikeRoute>(),
         getIt<LoadingService>(),
         getIt<GetUsersByIds>()))

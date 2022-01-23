@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/application/calculate_points_distance.dart';
-import 'package:flutter_plogging/src/core/application/create_route.dart';
-import 'package:flutter_plogging/src/core/application/generate_new_polyline.dart';
-import 'package:flutter_plogging/src/core/domain/route_progress_data.dart';
+import 'package:flutter_plogging/src/core/application/route/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/route/create_route.dart';
+import 'package:flutter_plogging/src/core/application/route/generate_new_polyline.dart';
+import 'package:flutter_plogging/src/core/domain/route/route_progress_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';

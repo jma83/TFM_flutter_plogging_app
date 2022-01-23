@@ -1,10 +1,10 @@
-import 'package:flutter_plogging/src/core/application/get_today_user_distance.dart';
-import 'package:flutter_plogging/src/core/domain/gender_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
+import 'package:flutter_plogging/src/core/application/route/get_today_user_distance.dart';
+import 'package:flutter_plogging/src/core/domain/gender/gender_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/profile_notifiers.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/app_constants.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';

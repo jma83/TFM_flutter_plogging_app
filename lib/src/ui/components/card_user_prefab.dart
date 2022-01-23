@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/ui/components/card_user.dart';
 
 final List<int> colorCodes = <int>[500, 400, 700, 300, 600];

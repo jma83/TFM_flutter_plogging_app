@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/model/interfaces/i_media_model.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:injectable/injectable.dart';

@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

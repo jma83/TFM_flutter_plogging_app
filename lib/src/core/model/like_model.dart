@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_plogging/src/core/domain/like_data.dart';
+import 'package:flutter_plogging/src/core/domain/like/like_data.dart';
 import 'package:flutter_plogging/src/core/model/interfaces/i_model.dart';
 import 'package:injectable/injectable.dart';
 

@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 

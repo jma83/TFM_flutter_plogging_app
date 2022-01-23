@@ -1,9 +1,9 @@
 // ignore_for_file: must_call_super
 
-import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/domain/route/route_list_author_search_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 
 class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {

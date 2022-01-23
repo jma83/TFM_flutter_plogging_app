@@ -1,8 +1,8 @@
 // ignore_for_file: constant_identifier_names
-import 'package:flutter_plogging/src/core/application/create_user.dart';
-import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
-import 'package:flutter_plogging/src/core/domain/gender_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
+import 'package:flutter_plogging/src/core/application/user/create_user.dart';
+import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/domain/gender/gender_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/register_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';

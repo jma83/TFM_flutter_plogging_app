@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_navigation_service.dart';
 import 'package:flutter_plogging/src/ui/routes/routes.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 

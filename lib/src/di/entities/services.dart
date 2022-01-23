@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/home_navigation_keys.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/home_tabs_routes_map.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
@@ -7,8 +9,6 @@ import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/core/services/storage_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_tabs_routes_map.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get_it/get_it.dart';

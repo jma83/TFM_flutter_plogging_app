@@ -1,13 +1,13 @@
 // ignore: implementation_imports
 import 'package:collection/src/iterable_extensions.dart';
-import 'package:flutter_plogging/src/core/application/get_top_level_users.dart';
-import 'package:flutter_plogging/src/core/application/get_user_following.dart';
-import 'package:flutter_plogging/src/core/application/manage_follow_user.dart';
-import 'package:flutter_plogging/src/core/application/search_user_list.dart';
-import 'package:flutter_plogging/src/core/domain/follower_data.dart';
-import 'package:flutter_plogging/src/core/domain/route_list_author_search_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
+import 'package:flutter_plogging/src/core/application/user/get_top_level_users.dart';
+import 'package:flutter_plogging/src/core/application/follower/get_user_following.dart';
+import 'package:flutter_plogging/src/core/application/follower/manage_follow_user.dart';
+import 'package:flutter_plogging/src/core/application/user/search_user_list.dart';
+import 'package:flutter_plogging/src/core/domain/follower/follower_data.dart';
+import 'package:flutter_plogging/src/core/domain/route/route_list_author_search_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/search_notifiers.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';

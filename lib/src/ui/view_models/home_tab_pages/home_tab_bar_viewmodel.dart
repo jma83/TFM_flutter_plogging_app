@@ -2,14 +2,14 @@ import 'dart:async';
 // ignore: implementation_imports
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_plogging/src/core/application/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/home_tabs_routes_map.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/home_tab_route_coordinator.dart';
-import 'package:flutter_plogging/src/ui/routes/routes.dart';
-import 'package:flutter_plogging/src/ui/tabs/home_navigation_keys.dart';
+import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
 import 'package:flutter_plogging/src/ui/view_models/auth_property_change_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 

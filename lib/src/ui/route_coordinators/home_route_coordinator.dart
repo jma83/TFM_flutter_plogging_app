@@ -1,5 +1,5 @@
-import 'package:flutter_plogging/src/core/domain/route_list_data.dart';
-import 'package:flutter_plogging/src/core/domain/user_search_data.dart';
+import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
+import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/tabs/home_page.dart';

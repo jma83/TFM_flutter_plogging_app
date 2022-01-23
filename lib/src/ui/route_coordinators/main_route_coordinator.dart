@@ -1,7 +1,7 @@
 import 'package:flutter_plogging/src/di/container.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_tab_bar.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_tab_bar_view.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/login_route_coordinator.dart';
 import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
@@ -12,7 +12,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class MainRouteCoordinator extends ParentRouteCoordinator {
   MainRouteCoordinator(
-      HomeTabBar mainWidget, NavigationService navigationService)
+      HomeTabBarView mainWidget, NavigationService navigationService)
       : super(mainWidget, navigationService) {
     mainWidget.viewModel
         .addListener(navigateToLogin, [HomeTabsNotifiers.homeTabsLogout]);
@@ -27,7 +27,7 @@ class MainRouteCoordinator extends ParentRouteCoordinator {
   }
 
   instanceHomeTab() {
-    HomeTabBar myWidget = mainWidget as HomeTabBar;
+    HomeTabBarView myWidget = mainWidget as HomeTabBarView;
     HomeTabBarViewModel viewModel = myWidget.viewModel as HomeTabBarViewModel;
     HomeTabsChangeNotifier homeTabsChangeNotifier =
         viewModel.getViewModel(viewModel.selectedTabItem);

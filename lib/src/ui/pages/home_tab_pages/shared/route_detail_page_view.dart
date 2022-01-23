@@ -9,8 +9,8 @@ import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
-class RouteDetailPage extends HomePageWidget {
-  const RouteDetailPage(RouteDetailPageViewModel viewModel, {Key? key})
+class RouteDetailPageView extends HomePageWidget {
+  const RouteDetailPageView(RouteDetailPageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

@@ -21,6 +21,7 @@ import 'package:flutter_plogging/src/core/domain/tabs/home_tabs_coordinator_map.
 import 'package:flutter_plogging/src/core/domain/tabs/home_tabs_routes_map.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
+import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/how_it_works_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/my_routes_page_viewmodel.dart';
@@ -128,5 +129,7 @@ void $initViewModels() {
         getIt<ManageLikeRoute>(),
         getIt<GetLikedRoutesList>(),
         getIt<GetUsersByIds>(),
-        getIt<LoadingService>()));
+        getIt<LoadingService>()))
+    ..registerFactory<HowItWorksPageViewModel>(
+        () => HowItWorksPageViewModel(getIt<AuthenticationService>()));
 }

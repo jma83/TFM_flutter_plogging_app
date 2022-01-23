@@ -73,7 +73,11 @@ class CardContainer extends StatelessWidget {
 
   Widget _createListTitle() {
     return ListTile(
-      leading: const Icon(Icons.photo_album, color: Colors.blue),
+      leading: const Icon(
+        Icons.travel_explore_sharp,
+        color: Colors.green,
+        size: 60,
+      ),
       title: Text(title),
       subtitle: Text(description),
     );

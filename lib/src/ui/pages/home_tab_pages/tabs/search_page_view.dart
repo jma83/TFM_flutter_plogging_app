@@ -9,8 +9,8 @@ import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
 @injectable
-class SearchPage extends HomePageWidget {
-  const SearchPage(SearchPageViewModel viewModel, {Key? key})
+class SearchPageView extends HomePageWidget {
+  const SearchPageView(SearchPageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

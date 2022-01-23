@@ -9,8 +9,8 @@ import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.da
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class HomePage extends HomePageWidget {
-  const HomePage(HomePageViewModel viewModel, {Key? key})
+class HomePageView extends HomePageWidget {
+  const HomePageView(HomePageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

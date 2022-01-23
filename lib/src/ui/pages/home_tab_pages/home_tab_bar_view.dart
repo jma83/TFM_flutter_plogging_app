@@ -6,8 +6,8 @@ import 'package:flutter_plogging/src/ui/components/tab_navigator.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeTabBar extends PageWidget {
-  const HomeTabBar(HomeTabBarViewModel viewModel, {Key? key})
+class HomeTabBarView extends PageWidget {
+  const HomeTabBarView(HomeTabBarViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

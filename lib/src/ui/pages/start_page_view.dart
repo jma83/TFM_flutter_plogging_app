@@ -5,8 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
 @injectable
-class StartPage extends PageWidget {
-  const StartPage(StartPageViewModel viewModel, {Key? key})
+class StartPageView extends PageWidget {
+  const StartPageView(StartPageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

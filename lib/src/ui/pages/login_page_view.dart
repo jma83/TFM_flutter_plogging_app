@@ -7,8 +7,8 @@ import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:stacked/stacked.dart';
 
-class LoginPage extends PageWidget {
-  const LoginPage(LoginPageViewModel viewModel, {Key? key})
+class LoginPageView extends PageWidget {
+  const LoginPageView(LoginPageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

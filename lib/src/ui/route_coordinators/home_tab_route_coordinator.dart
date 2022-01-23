@@ -4,8 +4,8 @@ import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/user_detail_notifier.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/route_detail_page.dart';
-import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/user_detail_page.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/route_detail_page_view.dart';
+import 'package:flutter_plogging/src/ui/pages/home_tab_pages/shared/user_detail_page_view.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/routes/route_names.dart';
 import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
@@ -44,8 +44,8 @@ class HomeTabRouteCoordinator extends ParentRouteCoordinator {
 
   void genericNavigateToRoute(RouteListData routeListData,
       UserSearchData userData, Function navigateToUserDetail) {
-    RouteDetailPage newRouteDetailPage =
-        navigationService.getRouteWidget(Ruta.RouteDetail) as RouteDetailPage;
+    RouteDetailPageView newRouteDetailPage = navigationService
+        .getRouteWidget(Ruta.RouteDetail) as RouteDetailPageView;
     RouteDetailPageViewModel viewModel =
         newRouteDetailPage.viewModel as RouteDetailPageViewModel;
 
@@ -66,8 +66,8 @@ class HomeTabRouteCoordinator extends ParentRouteCoordinator {
 
   void genericNavigateToUser(
       UserSearchData userData, Function navigateToRoute) {
-    UserDetailPage nextUserDetailPage =
-        navigationService.getRouteWidget(Ruta.UserDetail) as UserDetailPage;
+    UserDetailPageView nextUserDetailPage =
+        navigationService.getRouteWidget(Ruta.UserDetail) as UserDetailPageView;
     UserDetailPageViewModel viewModel =
         nextUserDetailPage.viewModel as UserDetailPageViewModel;
     viewModel.setUserData(userData);

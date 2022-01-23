@@ -12,8 +12,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 enum MapButtonType { zoomIn, zoomOut, myLocation }
 
 @injectable
-class StartPloggingPage extends HomePageWidget {
-  const StartPloggingPage(StartPloggingPageViewModel viewModel, {Key? key})
+class StartPloggingPageView extends HomePageWidget {
+  const StartPloggingPageView(StartPloggingPageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

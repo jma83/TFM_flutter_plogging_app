@@ -8,8 +8,8 @@ import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
 @injectable
-class EditProfilePage extends HomePageWidget {
-  const EditProfilePage(EditProfilePageViewModel viewModel, {Key? key})
+class EditProfilePageView extends HomePageWidget {
+  const EditProfilePageView(EditProfilePageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

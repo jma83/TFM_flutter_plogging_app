@@ -9,8 +9,8 @@ import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.da
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/profile_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class ProfilePage extends HomePageWidget {
-  const ProfilePage(ProfilePageViewModel viewModel, {Key? key})
+class ProfilePageView extends HomePageWidget {
+  const ProfilePageView(ProfilePageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

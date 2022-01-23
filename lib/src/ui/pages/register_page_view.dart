@@ -5,9 +5,9 @@ import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class RegisterPage extends PageWidget {
+class RegisterPageView extends PageWidget {
   @override
-  const RegisterPage(RegisterPageViewModel viewModel, {Key? key})
+  const RegisterPageView(RegisterPageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

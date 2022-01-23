@@ -1,6 +1,6 @@
 import 'package:flutter_plogging/src/di/container.dart';
 import 'package:flutter_plogging/src/ui/notifiers/start_notifiers.dart';
-import 'package:flutter_plogging/src/ui/pages/start_page.dart';
+import 'package:flutter_plogging/src/ui/pages/start_page_view.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/main_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/login_route_coordinator.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/parent_route_coordinator.dart';
@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class StartRouteCoordinator extends ParentRouteCoordinator {
-  StartRouteCoordinator(StartPage mainWidget, navigationService)
+  StartRouteCoordinator(StartPageView mainWidget, navigationService)
       : super(mainWidget, navigationService) {
     mainWidget.viewModel
         .addListener(() => navigateToHome(), [StartNotifiers.navigateToHome]);

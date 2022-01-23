@@ -10,8 +10,8 @@ import 'package:stacked/stacked.dart';
 
 final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
 
-class UserDetailPage extends HomePageWidget {
-  const UserDetailPage(UserDetailPageViewModel viewModel, {Key? key})
+class UserDetailPageView extends HomePageWidget {
+  const UserDetailPageView(UserDetailPageViewModel viewModel, {Key? key})
       : super(viewModel, key: key);
 
   @override

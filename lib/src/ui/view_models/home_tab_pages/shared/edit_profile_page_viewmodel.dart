@@ -13,6 +13,7 @@ import 'package:injectable/injectable.dart';
 class EditProfilePageViewModel extends HomeTabsChangeNotifier {
   String _email = "";
   String _username = "";
+  String _oldPassword = "";
   String _password = "";
   String _confirmPassword = "";
   String _age = "";
@@ -59,12 +60,22 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
         image: user.image,
         level: user.level,
         xp: user.xp,
-        initialCreationDate: user.creationDate);
-    _updateUser.execute(user.id, newUser).then((_) {
+        creationDate: user.creationDate);
+    final email = _email.isNotEmpty ? _email : null;
+    final oldPassword = _oldPassword.isNotEmpty ? _oldPassword : null;
+    final newPassword = _password.isNotEmpty ? _password : null;
+
+    _updateUser
+        .execute(user.id, newUser,
+            email: email, oldPassword: oldPassword, newPassword: newPassword)
+        .then((value) {
+      if (value != null) {
+        setError(value);
+        return;
+      }
       authenticationService.currentUserData = newUser;
       notifyListeners(EditProfileNotifiers.updateProfileData);
-      _loadingService.setLoading(false);
-    });
+    }).whenComplete(() => _loadingService.setLoading(false));
   }
 
   toggleLoading() {
@@ -87,6 +98,10 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
 
   void setUsername(String username) {
     _username = username;
+  }
+
+  void setOldPassword(String password) {
+    _oldPassword = password;
   }
 
   void setPassword(String password) {

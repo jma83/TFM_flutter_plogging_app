@@ -17,7 +17,8 @@ class UserSearchData extends UserData {
             following: user.following,
             xp: user.xp,
             level: user.level,
-            image: user.image);
+            image: user.image,
+            creationDate: user.creationDate);
 
   static List<UserSearchData> createListFromUsersAndFollows(
       List<UserData> users, List<FollowerData> follows) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/ui/components/form_container.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
@@ -18,29 +19,14 @@ class RegisterPageView extends PageWidget {
             () => showErrorAlert(context, viewModel), ["error_signup"]),
         builder: (context, RegisterPageViewModel viewModel, child) {
           return Scaffold(
-              appBar: AppBar(title: const Text("Plogging Challenge")),
-              body: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white,
-                      Colors.white38,
-                      Colors.green,
-                    ],
-                  )),
-                  child: Center(
-                      child: ListView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 20),
-                    children: [
-                      const SizedBox(height: 20),
-                      _getTitle(),
-                      const Divider(height: 40),
-                      _getForm(viewModel)
-                    ],
-                  ))));
+            appBar: AppBar(title: const Text("Plogging Challenge")),
+            body: FormContainer(widgetList: [
+              const SizedBox(height: 20),
+              _getTitle(),
+              const Divider(height: 40),
+              _getForm(viewModel)
+            ]),
+          );
         });
   }
 

@@ -64,25 +64,40 @@ class AuthenticationService implements IAuthenticationService {
   }
 
   @override
-  Future<String?> updateEmail({required String email}) async {
+  Future<String?> updateEmail(
+      {required String email, required String password}) async {
     if (currentUser == null) return null;
     try {
+      await _reauthenticate(password);
       await currentUser!.updateEmail(email);
     } on FirebaseAuthException catch (e) {
-      return Future.error(_getMessageFromErrorCode(e.code));
+      return _getMessageFromErrorCode(e.code);
     }
     return null;
   }
 
   @override
-  Future<String?> updatePassword({required String password}) async {
+  Future<String?> updatePassword(
+      {required String oldPassword, required String newPassword}) async {
     if (currentUser == null) return null;
     try {
-      await currentUser!.updatePassword(password);
+      await _reauthenticate(oldPassword);
+      await currentUser!.updatePassword(newPassword);
     } on FirebaseAuthException catch (e) {
-      return Future.error(_getMessageFromErrorCode(e.code));
+      return _getMessageFromErrorCode(e.code);
     }
     return null;
+  }
+
+  Future<UserCredential> _reauthenticate(String currentPassword) async {
+    final AuthCredential cred = EmailAuthProvider.credential(
+        email: currentUser!.email!, password: currentPassword);
+    try {
+      return await currentUser!.reauthenticateWithCredential(cred);
+    } on FirebaseAuthException catch (e) {
+      // ignore: use_rethrow_when_possible
+      throw e;
+    }
   }
 
   String _getMessageFromErrorCode(String errorCode) {
@@ -93,7 +108,7 @@ class AuthenticationService implements IAuthenticationService {
         return "Email already used. Go to login page.";
       case "ERROR_WRONG_PASSWORD":
       case "wrong-password":
-        return "Wrong email/password combination.";
+        return "Wrong password combination.";
       case "ERROR_USER_NOT_FOUND":
       case "user-not-found":
         return "No user found with this email.";
@@ -108,6 +123,10 @@ class AuthenticationService implements IAuthenticationService {
       case "ERROR_INVALID_EMAIL":
       case "invalid-email":
         return "Email address is invalid.";
+      case "requires-recent-login":
+        return "Email update needs also old password";
+      case "too-many-requests":
+        return "Operation failed. Please try again later.";
       default:
         return "Login failed. Please try again.";
     }

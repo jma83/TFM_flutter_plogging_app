@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/ui/components/form_container.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/edit_profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
@@ -29,23 +30,7 @@ class EditProfilePageView extends HomePageWidget {
         builder: (context, EditProfilePageViewModel viewModel, child) {
           return Scaffold(
               appBar: AppBar(title: const Text("Edit profile data")),
-              body: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white,
-                      Colors.white38,
-                      Colors.green,
-                    ],
-                  )),
-                  child: Center(
-                      child: ListView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 20),
-                    children: [_getForm(viewModel)],
-                  ))));
+              body: FormContainer(widgetList: [_getForm(viewModel)]));
         });
   }
 
@@ -58,6 +43,7 @@ class EditProfilePageView extends HomePageWidget {
         callbackValidateForm: viewModel.validateForm,
         isRegister: false,
         callbackSetAge: viewModel.setAge,
+        callbackSetOldPassword: viewModel.setOldPassword,
         callbackSetPassword: viewModel.setPassword,
         callbackSetConfirmPassword: viewModel.setConfirmPassword,
         callbackSetEmail: viewModel.setEmail,

@@ -10,21 +10,25 @@ class UpdateUser {
   UpdateUser(this.userModel, this.authenticationService);
 
   Future<String?> execute(String id, UserData user,
-      {String? email, String? password}) async {
+      {String? email, String? oldPassword, String? newPassword}) async {
     String? result;
     try {
       if (email != null && email != authenticationService.currentUser!.email) {
-        result = await authenticationService.updateEmail(email: email);
+        if (oldPassword == null) {
+          return "Email update needs also old password";
+        }
+        result = await authenticationService.updateEmail(
+            email: email, password: oldPassword);
       }
-      if (password != null &&
-          password != authenticationService.currentUser!.email) {
-        result = await authenticationService.updatePassword(password: password);
+      if (result == null && oldPassword != null && newPassword != null) {
+        result = await authenticationService.updatePassword(
+            newPassword: newPassword, oldPassword: oldPassword);
       }
       if (result == null) {
         await userModel.updateElement(id, user);
       }
     } catch (_) {
-      rethrow;
+      return "Error. User update failed. Please, try again later";
     }
     return result;
   }

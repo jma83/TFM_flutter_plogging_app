@@ -13,6 +13,7 @@ class ProfileFormFields extends StatelessWidget {
   final Function? callbackSetUsername;
   final Function? callbackSetPassword;
   final Function? callbackSetConfirmPassword;
+  final Function? callbackSetOldPassword;
   final Function? callbackSetAge;
   final Function? callbackSetGender;
   final Function callbackValidateForm;
@@ -29,6 +30,7 @@ class ProfileFormFields extends StatelessWidget {
       this.callbackSetUsername,
       this.callbackSetPassword,
       this.callbackSetConfirmPassword,
+      this.callbackSetOldPassword,
       this.callbackSetAge,
       this.callbackSetGender,
       Key? key})
@@ -40,7 +42,6 @@ class ProfileFormFields extends StatelessWidget {
       children: [
         InputText(
           textController: TextEditingController(text: email ?? ""),
-          readonly: !isRegister,
           inputType: TextInputType.emailAddress,
           bottomHeight: 10,
           label: "Email",
@@ -59,8 +60,9 @@ class ProfileFormFields extends StatelessWidget {
           onChange: callbackSetUsername ?? emptyFunction,
           bottomHeight: 10,
         ),
+        getOldPassword(),
         InputText(
-            label: "Password",
+            label: isRegister ? "Password" : "New Password",
             hint: "Type your password",
             icon: const Icon(Icons.lock_outline),
             maxLength: 25,
@@ -97,6 +99,19 @@ class ProfileFormFields extends StatelessWidget {
             icon: const Icon(Icons.login)),
       ],
     );
+  }
+
+  getOldPassword() {
+    return isRegister
+        ? Container()
+        : InputText(
+            label: "Old Password",
+            hint: "Type your current password",
+            icon: const Icon(Icons.lock_rounded),
+            maxLength: 25,
+            onChange: callbackSetOldPassword ?? emptyFunction,
+            isPasswordField: true,
+            bottomHeight: 10);
   }
 
   emptyFunction() {}

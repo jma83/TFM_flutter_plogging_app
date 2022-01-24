@@ -10,7 +10,6 @@ class UserData {
   int xp;
   int level;
   Timestamp creationDate;
-  Timestamp? initialCreationDate;
   String? image;
 
   UserData(
@@ -23,8 +22,8 @@ class UserData {
       this.level = 1,
       this.image = "",
       this.id = "",
-      this.initialCreationDate})
-      : creationDate = initialCreationDate ?? Timestamp.now();
+      Timestamp? creationDate})
+      : creationDate = creationDate ?? Timestamp.now();
 
   static Map<String, Object> castUserToMap(UserData user) {
     return {

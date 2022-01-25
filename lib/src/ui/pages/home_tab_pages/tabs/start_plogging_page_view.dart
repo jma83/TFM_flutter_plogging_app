@@ -24,15 +24,7 @@ class StartPloggingPageView extends HomePageWidget {
           viewModel.loadPage();
           viewModel
               .addListener(() {}, [StartPloggingNotifiers.updatePloggingPage]);
-          viewModel.confirmRouteCallback =
-              () => showRouteConfirmationAlert(context);
-          viewModel.addListener(viewModel.confirmRouteCallback!,
-              [StartPloggingNotifiers.confirmRoutePlogging]);
-        },
-        onDispose: (viewModel) {
-          viewModel.removeListener(
-              () {}, [StartPloggingNotifiers.updatePloggingPage]);
-          viewModel.removeListener(viewModel.confirmRouteCallback!,
+          viewModel.addListener(() => showRouteConfirmationAlert(context),
               [StartPloggingNotifiers.confirmRoutePlogging]);
         },
         builder: (context, StartPloggingPageViewModel viewModel, child) {
@@ -164,7 +156,7 @@ class StartPloggingPageView extends HomePageWidget {
   showRouteConfirmationAlert(BuildContext context) {
     showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (_) => Alert.createCustomOptionsAlert(
             "Create route confirmation",
             CreateRouteConfirmation(
@@ -177,7 +169,7 @@ class StartPloggingPageView extends HomePageWidget {
             currentViewModel.dismissAlert));
   }
 
-  get currentViewModel {
+  StartPloggingPageViewModel get currentViewModel {
     return viewModel as StartPloggingPageViewModel;
   }
 }

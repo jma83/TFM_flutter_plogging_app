@@ -14,6 +14,7 @@ class CardUser extends StatelessWidget {
   final Function callbackButton;
   final Color color;
   final bool isSelf;
+  final String? image;
 
   const CardUser(
       {required this.callback,
@@ -27,6 +28,7 @@ class CardUser extends StatelessWidget {
       this.color = Colors.green,
       this.followingUserFlag = false,
       this.isSelf = false,
+      this.image,
       Key? key})
       : super(key: key);
 
@@ -68,9 +70,10 @@ class CardUser extends StatelessWidget {
           height: 10,
           child: Wrap(
             children: [
-              const Image(
-                image: AssetImage("assets/logo.png"),
-              ),
+              image == null || image == ""
+                  ? CardWidgetUtils.getImageFromAsset(avatar: true)
+                  : CardWidgetUtils.getImageFromNetwork(image!,
+                      avatar: true, width: 300, height: 60, fit: BoxFit.fill),
               Container(
                 margin: const EdgeInsets.only(top: 5),
                 alignment: Alignment.center,

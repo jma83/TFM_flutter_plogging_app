@@ -43,6 +43,7 @@ import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
 import 'package:flutter_plogging/src/core/application/user/get_top_level_users.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_plogging/src/core/application/user/update_user_image.dart';
 
 final getIt = GetIt.instance;
 
@@ -95,7 +96,9 @@ void $initViewModels() {
     ..registerFactory<ProfilePageViewModel>(() => ProfilePageViewModel(
         getIt<AuthenticationService>(),
         getIt<LoadingService>(),
-        getIt<GetTodayUserDistance>()))
+        getIt<GetTodayUserDistance>(),
+        getIt<UpdateUserImage>(),
+        getIt<ImagePickerService>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageFollowUser>(),

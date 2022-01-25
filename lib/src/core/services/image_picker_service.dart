@@ -9,7 +9,7 @@ class ImagePickerService {
 
   Future<XFile?> pickImage(ImageSource source) async {
     try {
-      return await _imagePicker.pickImage(source: source);
+      return await _imagePicker.pickImage(source: source, imageQuality: 50);
     } catch (e) {
       rethrow;
     }

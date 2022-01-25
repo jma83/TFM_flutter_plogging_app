@@ -4,6 +4,7 @@ import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart'
 import 'package:flutter_plogging/src/ui/components/card_progress_user.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/ui/components/upload_image.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/profile_page_viewmodel.dart';
@@ -21,6 +22,8 @@ class ProfilePageView extends HomePageWidget {
           viewModel.addListener(() {}, [ProfileNotifiers.updateProfilePage]);
           viewModel.addListener(() => showConfirmationLogoutModal(context),
               [ProfileNotifiers.showLogoutConfirmation]);
+          viewModel.addListener(() => showUploadImageModal(context),
+              [ProfileNotifiers.showUploadImage]);
         },
         builder: (context, ProfilePageViewModel viewModel, child) {
           return Scaffold(
@@ -45,11 +48,13 @@ class ProfilePageView extends HomePageWidget {
         ? Container()
         : CardHeaderUserDetail(
             user: currentViewModel.user!,
+            image: currentViewModel.user!.image,
             creationDate: currentViewModel.formattedCreationDate,
             genderFormatted: currentViewModel.formattedGender,
             isSelf: true,
             editUserCallback: currentViewModel.navigateToEdit,
             likedRoutesCallback: currentViewModel.navigateToLikedRoutes,
+            changeImageCallback: currentViewModel.onClickImage,
             xp: currentViewModel.user!.xp);
   }
 
@@ -79,6 +84,21 @@ class ProfilePageView extends HomePageWidget {
             "Do you want to close your current session?",
             () => currentViewModel.confirmLogoutProfile(),
             () => currentViewModel.dismissAlert()));
+  }
+
+  showUploadImageModal(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => Alert.createCustomOptionsAlert(
+            "Upload profile image",
+            UploadImage(
+              image: currentViewModel.tmpImage,
+              uploadImage: currentViewModel.uploadImage,
+            ),
+            currentViewModel.updateUserImage,
+            currentViewModel.dismissAlert,
+            height: 400));
   }
 
   ProfilePageViewModel get currentViewModel {

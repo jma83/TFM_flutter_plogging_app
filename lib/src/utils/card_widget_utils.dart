@@ -35,13 +35,17 @@ class CardWidgetUtils {
   }
 
   static getImageFromNetwork(String image,
-      {bool avatar = false, BoxFit fit = BoxFit.contain, double? height}) {
+      {bool avatar = false,
+      BoxFit fit = BoxFit.contain,
+      double? height,
+      double? width}) {
     final String placeholderImg =
         avatar ? "assets/logo.png" : "assets/img1.jpg";
 
     return FadeInImage.assetNetwork(
       image: image,
       height: height,
+      width: width,
       placeholder: placeholderImg,
       fadeInDuration: const Duration(milliseconds: 200),
       fit: fit,

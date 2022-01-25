@@ -44,7 +44,6 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
   late Timer routeInterval;
-  Function? confirmRouteCallback;
   bool _hasStartedRoute = false;
 
   late StreamSubscription<Position> positionListener;

@@ -12,21 +12,25 @@ class CardHeaderUserDetail extends StatelessWidget {
   final bool hideFollow;
   final int? maxXp;
   final int? xp;
+  final String? image;
   final Function? followUserCallback;
   final Function? editUserCallback;
   final Function? likedRoutesCallback;
+  final Function? changeImageCallback;
 
   const CardHeaderUserDetail(
       {required this.user,
       required this.genderFormatted,
       required this.creationDate,
       required this.isSelf,
+      this.image,
       this.hideFollow = false,
       this.maxXp,
       this.xp,
       this.followUserCallback,
       this.editUserCallback,
       this.likedRoutesCallback,
+      this.changeImageCallback,
       Key? key})
       : super(key: key);
 
@@ -106,9 +110,21 @@ class CardHeaderUserDetail extends StatelessWidget {
     return SizedBox(
         width: MediaQuery.of(context).size.width / 3,
         height: MediaQuery.of(context).size.width / 3,
-        child: user.image == null || user.image == ""
-            ? CardWidgetUtils.getImageFromAsset(avatar: true)
-            : CardWidgetUtils.getImageFromNetwork(user.image!, avatar: true));
+        child: Stack(alignment: Alignment.bottomRight, children: [
+          image == null || image == ""
+              ? CardWidgetUtils.getImageFromAsset(avatar: true)
+              : CardWidgetUtils.getImageFromNetwork(image!,
+                  avatar: true, width: 300, fit: BoxFit.fill),
+          changeImageCallback == null
+              ? Container()
+              : FloatingActionButton.small(
+                  heroTag: "avatar_upload",
+                  onPressed: () => changeImageCallback!(),
+                  child: const Icon(
+                    Icons.camera_enhance_rounded,
+                    size: 20,
+                  ))
+        ]));
   }
 
   Widget getUsername() {

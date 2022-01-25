@@ -23,6 +23,7 @@ class CardUserPrefab extends StatelessWidget {
   Widget build(BuildContext context) {
     return CardUser(
       name: user.username,
+      image: user.image,
       followers: user.followers,
       following: user.following,
       followingUserFlag: user.followingFlag,

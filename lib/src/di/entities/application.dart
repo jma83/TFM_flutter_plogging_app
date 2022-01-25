@@ -18,6 +18,7 @@ import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/user/get_users_by_ids.dart';
 import 'package:flutter_plogging/src/core/application/user/search_user_list.dart';
 import 'package:flutter_plogging/src/core/application/user/update_user.dart';
+import 'package:flutter_plogging/src/core/application/user/update_user_image.dart';
 import 'package:flutter_plogging/src/core/model/follower_model.dart';
 import 'package:flutter_plogging/src/core/model/like_model.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
@@ -75,5 +76,7 @@ void $initApplication() {
     ..registerLazySingleton<GetLikedRoutesList>(
         () => GetLikedRoutesList(getIt<RouteModel>(), getIt<LikeModel>()))
     ..registerLazySingleton<GetTopLevelUsers>(
-        () => GetTopLevelUsers(getIt<UserModel>()));
+        () => GetTopLevelUsers(getIt<UserModel>()))
+    ..registerLazySingleton<UpdateUserImage>(() =>
+        UpdateUserImage(getIt<UserModel>(), getIt<AuthenticationService>()));
 }

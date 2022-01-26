@@ -30,7 +30,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
   }
 
   void validateForm() {
-    toggleLoading();
+    toggleLoading(value: true);
     if (!_userViewModel.validateRegister(_email, _username, _password,
         _confirmPassword, _age, Gender.getGenderIndex(_gender).toString())) {
       setError(_userViewModel.errorMessage);
@@ -41,32 +41,29 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
 
   void validationOkResponse() async {
     try {
-      final String? result =
-          await authService.signUp(email: _email, password: _password);
+      final String? result = await _createUser.execute(
+          username: _username,
+          age: int.parse(_age),
+          gender: Gender.getGenderIndex(_gender),
+          email: _email,
+          password: _password);
       if (result != null) {
         setError(result);
         return;
       }
-    } catch (e) {
+    } catch (_) {
       setError("Sorry, couldn't validate data. Please, try it again later");
-      // ignore: avoid_print
-      print(e);
     }
-    toggleLoading();
-    await _createUser.execute(UserData(
-        id: authService.currentUser!.uid,
-        username: _username,
-        age: int.parse(_age),
-        gender: Gender.getGenderIndex(_gender)));
+    toggleLoading(value: false);
   }
 
-  toggleLoading() {
-    _loadingService.toggleLoading();
+  toggleLoading({bool value = false}) {
+    _loadingService.setLoading(value);
   }
 
   setError(String errorValue) {
     _errorMessage = errorValue;
-    toggleLoading();
+    toggleLoading(value: false);
     notifyListeners(RegisterNotifiers.registerProcessError);
   }
 
@@ -101,6 +98,26 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
 
   void setGender(String gender) {
     _gender = gender;
+  }
+
+  get email {
+    return _email;
+  }
+
+  get username {
+    return _username;
+  }
+
+  get password {
+    return _password;
+  }
+
+  get confirmPassword {
+    return _confirmPassword;
+  }
+
+  get age {
+    return _age;
   }
 
   get gender {

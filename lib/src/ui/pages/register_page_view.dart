@@ -41,6 +41,12 @@ class RegisterPageView extends PageWidget {
 
   Widget _getForm(RegisterPageViewModel viewModel) {
     return ProfileFormFields(
+        email: viewModel.email,
+        age: viewModel.age,
+        gender: viewModel.gender,
+        username: viewModel.username,
+        password: viewModel.password,
+        confirmPassword: viewModel.confirmPassword,
         callbackValidateForm: viewModel.validateForm,
         isRegister: true,
         callbackSetAge: viewModel.setAge,

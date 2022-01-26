@@ -124,6 +124,18 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
     return _gender;
   }
 
+  String get oldPassword {
+    return _oldPassword;
+  }
+
+  String get password {
+    return _password;
+  }
+
+  String get confirmPassword {
+    return _confirmPassword;
+  }
+
   String get age {
     return _age;
   }

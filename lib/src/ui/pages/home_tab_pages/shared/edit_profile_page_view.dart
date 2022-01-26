@@ -40,6 +40,8 @@ class EditProfilePageView extends HomePageWidget {
         username: viewModel.username,
         age: viewModel.age,
         gender: viewModel.gender,
+        password: viewModel.password,
+        confirmPassword: viewModel.confirmPassword,
         callbackValidateForm: viewModel.validateForm,
         isRegister: false,
         callbackSetAge: viewModel.setAge,

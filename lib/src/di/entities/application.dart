@@ -67,7 +67,8 @@ void $initApplication() {
         getIt<RouteModel>(),
         getIt<LikeModel>(),
         getIt<AuthenticationService>()))
-    ..registerLazySingleton<CreateUser>(() => CreateUser(getIt<UserModel>()))
+    ..registerLazySingleton<CreateUser>(
+        () => CreateUser(getIt<UserModel>(), getIt<AuthenticationService>()))
     ..registerLazySingleton<CreateRoute>(() => CreateRoute(getIt<RouteModel>()))
     ..registerLazySingleton<UpdateUser>(
         () => UpdateUser(getIt<UserModel>(), getIt<AuthenticationService>()))

@@ -9,6 +9,9 @@ class ProfileFormFields extends StatelessWidget {
   final String? age;
   final String? gender;
   final String? email;
+  final String? password;
+  final String? confirmPassword;
+  final String? oldPassword;
   final Function? callbackSetEmail;
   final Function? callbackSetUsername;
   final Function? callbackSetPassword;
@@ -26,6 +29,9 @@ class ProfileFormFields extends StatelessWidget {
       this.age,
       this.gender,
       this.email,
+      this.password,
+      this.confirmPassword,
+      this.oldPassword,
       this.callbackSetEmail,
       this.callbackSetUsername,
       this.callbackSetPassword,
@@ -62,6 +68,7 @@ class ProfileFormFields extends StatelessWidget {
         ),
         getOldPassword(),
         InputText(
+            textController: TextEditingController(text: password ?? ""),
             label: isRegister ? "Password" : "New Password",
             hint: "Type your password",
             icon: const Icon(Icons.lock_outline),
@@ -70,6 +77,7 @@ class ProfileFormFields extends StatelessWidget {
             isPasswordField: true,
             bottomHeight: 10),
         InputText(
+            textController: TextEditingController(text: confirmPassword ?? ""),
             label: "Confirm password",
             hint: "Confirm your password",
             icon: const Icon(Icons.lock_outline),
@@ -105,6 +113,7 @@ class ProfileFormFields extends StatelessWidget {
     return isRegister
         ? Container()
         : InputText(
+            textController: TextEditingController(text: oldPassword ?? ""),
             label: "Old Password",
             hint: "Type your current password",
             icon: const Icon(Icons.lock_rounded),

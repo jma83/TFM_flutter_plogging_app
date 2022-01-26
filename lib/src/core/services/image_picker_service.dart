@@ -17,7 +17,8 @@ class ImagePickerService {
 
   Future<XFile?> pickVideo({ImageSource source = ImageSource.camera}) async {
     try {
-      return await _imagePicker.pickVideo(source: source);
+      return await _imagePicker.pickVideo(
+          source: source, maxDuration: const Duration(minutes: 1));
     } catch (e) {
       rethrow;
     }

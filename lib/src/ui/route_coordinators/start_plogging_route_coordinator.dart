@@ -9,7 +9,7 @@ class StartPloggingRouteCoordinator extends HomeTabRouteCoordinator {
   StartPloggingRouteCoordinator(StartPloggingPageView mainWidget,
       NavigationService navigationService, tabBarItem)
       : super(mainWidget, navigationService, tabBarItem) {
-    mainWidget.viewModel.addListener(
-        () => returnToPrevious(), [StartPloggingNotifiers.returnToPrevious]);
+    mainWidget.viewModel
+        .addListener(() => goBack(), [StartPloggingNotifiers.returnToPrevious]);
   }
 }

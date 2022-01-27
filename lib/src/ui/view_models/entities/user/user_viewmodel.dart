@@ -1,9 +1,8 @@
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel_strategies.dart';
 import 'package:injectable/injectable.dart';
-import 'package:property_change_notifier/property_change_notifier.dart';
 
 @injectable
-class UserViewModel extends PropertyChangeNotifier<String> {
+class UserViewModel {
   String _errorMessage = "";
 
   bool validateLogin(String email, String password) {
@@ -74,7 +73,7 @@ class UserViewModel extends PropertyChangeNotifier<String> {
     return true;
   }
 
-  get errorMessage {
+  String get errorMessage {
     return _errorMessage;
   }
 

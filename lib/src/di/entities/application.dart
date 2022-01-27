@@ -7,6 +7,7 @@ import 'package:flutter_plogging/src/core/application/like/get_liked_routes_list
 import 'package:flutter_plogging/src/core/application/route/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/route/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/route/get_today_user_distance.dart';
+import 'package:flutter_plogging/src/core/application/user/add_user_xp.dart';
 import 'package:flutter_plogging/src/core/application/user/get_top_level_users.dart';
 import 'package:flutter_plogging/src/core/application/follower/get_user_followers.dart';
 import 'package:flutter_plogging/src/core/application/follower/get_user_following.dart';
@@ -79,5 +80,7 @@ void $initApplication() {
     ..registerLazySingleton<GetTopLevelUsers>(
         () => GetTopLevelUsers(getIt<UserModel>()))
     ..registerLazySingleton<UpdateUserImage>(() =>
-        UpdateUserImage(getIt<UserModel>(), getIt<AuthenticationService>()));
+        UpdateUserImage(getIt<UserModel>(), getIt<AuthenticationService>()))
+    ..registerLazySingleton<AddUserXp>(
+        () => AddUserXp(getIt<UserModel>(), getIt<AuthenticationService>()));
 }

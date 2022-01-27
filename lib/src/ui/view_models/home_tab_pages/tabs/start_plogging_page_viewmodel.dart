@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/application/route/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/route/create_route.dart';
 import 'package:flutter_plogging/src/core/application/route/generate_new_polyline.dart';
+import 'package:flutter_plogging/src/core/application/user/add_user_xp.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_progress_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/geolocator_service.dart';
 import 'package:flutter_plogging/src/core/services/image_picker_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/start_plogging_notifiers.dart';
+import 'package:flutter_plogging/src/ui/view_models/entities/route/route_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
+import 'package:flutter_plogging/src/utils/app_constants.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
 import 'package:geolocator/geolocator.dart';
@@ -30,8 +33,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
           timestamp: DateTime.now());
 */
 
-const double minDistance = 5.0;
-
 @injectable
 class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   final CreateRoute _createRoute;
@@ -40,11 +41,14 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   final ImagePickerService _imagePickerService;
   final CalculatePointsDistance _calculatePointsDistance;
   final GenerateNewPolyline _generateNewPolyline;
+  final AddUserXp _addUserXp;
+  final RouteViewModel _routeViewModel;
 
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
   late Timer routeInterval;
   bool _hasStartedRoute = false;
+  String _errorMessage = "";
 
   late StreamSubscription<Position> positionListener;
   late StreamSubscription<ServiceStatus> statusListener;
@@ -57,22 +61,22 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       this._imagePickerService,
       this._routeProgressData,
       this._calculatePointsDistance,
-      this._generateNewPolyline)
+      this._generateNewPolyline,
+      this._addUserXp,
+      this._routeViewModel)
       : super(authenticationService);
 
   @override
   loadPage() {
     createConnectionStatusListener();
+    createPositionListener();
   }
 
   createListeners() {
-    createPositionListener();
     createDrawRouteInterval();
   }
 
   removeListeners() {
-    positionListener.cancel();
-    statusListener.cancel();
     routeInterval.cancel();
   }
 
@@ -91,15 +95,18 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         .listen((ServiceStatus status) {
       _routeProgressData.serviceStatus = status;
       setCameraToCurrentLocation(first: true);
+      notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
 
   createDrawRouteInterval() {
-    routeInterval = Timer.periodic(const Duration(seconds: 5), (_) async {
+    routeInterval = Timer.periodic(
+        const Duration(seconds: AppConstants.secondsToDraw), (_) async {
       if (!hasMinDistanceToDraw()) return;
       addPolyline();
       saveInPointList();
       setLastPosition();
+      setCameraToCurrentLocation();
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
@@ -110,7 +117,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     }
     createListeners();
     setStartDate();
-    toggleRouteStatus();
+    toggleRouteStatus(status: true);
     setLastPosition();
     notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }
@@ -119,13 +126,26 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     if (!_hasStartedRoute) return;
     removeListeners();
     completeProgressRouteData();
-    toggleRouteStatus();
-    notifyListeners(StartPloggingNotifiers.confirmRoutePlogging);
+    toggleRouteStatus(status: false);
+    if (validateRoute()) {
+      notifyListeners(StartPloggingNotifiers.confirmRoutePlogging);
+    }
   }
 
-  confirmRoute() {
+  validateRoute() {
+    if (!_routeViewModel.validateRoute(
+        _routeProgressData.distance!, _routeProgressData.duration!)) {
+      _errorMessage = _routeViewModel.errorMessage;
+      notifyListeners(StartPloggingNotifiers.errorRoutePlogging);
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> confirmRoute() async {
     confirmProgressRouteData();
-    _createRoute.execute(_routeProgressData);
+    await _createRoute.execute(_routeProgressData);
+    await _addUserXp.execute(_routeProgressData);
     dismissAlert();
     notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }
@@ -150,14 +170,13 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     _routeProgressData.description = _routeProgressData.description;
   }
 
-  toggleRouteStatus() {
-    _hasStartedRoute = !_hasStartedRoute;
+  toggleRouteStatus({bool status = false}) {
+    _hasStartedRoute = status;
   }
 
   saveInPointList() {
-    _routeProgressData.polylinePointList.add(LatLng(
-        _routeProgressData.currentPosition.latitude,
-        _routeProgressData.currentPosition.longitude));
+    _routeProgressData.polylinePointList
+        .add(getLatLongFromPostion(_routeProgressData.currentPosition));
   }
 
   setLastPosition() {
@@ -201,19 +220,16 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
     final double distance =
         _calculatePointsDistance.executeByPositions(positionList);
-    if (distance < minDistance) return false;
+    if (distance < AppConstants.minDistance) return false;
     return true;
   }
 
   void addPolyline() {
-    final Polyline? polyline = _generateNewPolyline.executeNew([
-      LatLng(_routeProgressData.lastPosition!.latitude,
-          _routeProgressData.lastPosition!.longitude),
-      LatLng(_routeProgressData.currentPosition.latitude,
-          _routeProgressData.currentPosition.longitude)
+    final Polyline polyline = _generateNewPolyline.executeNew([
+      getLatLongFromPostion(_routeProgressData.lastPosition!),
+      getLatLongFromPostion(_routeProgressData.currentPosition)
     ], Colors.red);
-    if (polyline == null) return;
-    _routeProgressData.polylines[polyline.polylineId] = polyline;
+    _routeProgressData.polylines.addAll({polyline.polylineId: polyline});
   }
 
   Future<void> getCurrentLocation() async {
@@ -296,5 +312,13 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   Map<PolylineId, Polyline> get polylines {
     return _routeProgressData.polylines;
+  }
+
+  String get errorMessage {
+    return _errorMessage;
+  }
+
+  LatLng getLatLongFromPostion(Position position) {
+    return LatLng(position.latitude, position.longitude);
   }
 }

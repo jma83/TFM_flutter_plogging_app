@@ -1,5 +1,10 @@
 class AppConstants {
-  static const int objectiveDistance = 7000;
-  static const int incrementXP = 50;
-  static const int maxObjectiveXP = 200;
+  static const int objectiveDistance = 7000; //meters
+  static const int incrementXP = 50; //points
+  static const int baseXP = 100; //points
+  static const int maxObjectiveXP = 200; //points
+  static const int minDistance = 500; //meters
+  static const int minDistanceToDraw = 4; //meters
+  static const int secondsToDraw = 5; //meters
+  static const int minDuration = 60; //seconds
 }

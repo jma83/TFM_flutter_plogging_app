@@ -193,7 +193,7 @@ class RouteDetailPageView extends HomePageWidget {
     );
   }
 
-  get currentViewModel {
+  RouteDetailPageViewModel get currentViewModel {
     return viewModel as RouteDetailPageViewModel;
   }
 }

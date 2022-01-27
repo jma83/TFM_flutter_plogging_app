@@ -26,6 +26,9 @@ class StartPloggingPageView extends HomePageWidget {
               .addListener(() {}, [StartPloggingNotifiers.updatePloggingPage]);
           viewModel.addListener(() => showRouteConfirmationAlert(context),
               [StartPloggingNotifiers.confirmRoutePlogging]);
+          viewModel.addListener(() => showErrorAlert(context),
+              [StartPloggingNotifiers.errorRoutePlogging]);
+          // errorRoutePlogging
         },
         builder: (context, StartPloggingPageViewModel viewModel, child) {
           return Scaffold(
@@ -151,6 +154,13 @@ class StartPloggingPageView extends HomePageWidget {
             label: const Text("End"),
             onPress: () => currentViewModel.endRoute(),
             buttonType: InputButtonType.outlined);
+  }
+
+  showErrorAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => Alert.createInfoAlert("Error",
+            currentViewModel.errorMessage, currentViewModel.dismissAlert));
   }
 
   showRouteConfirmationAlert(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/application/user/add_user_xp.dart';
 import 'package:flutter_plogging/src/core/application/user/create_user.dart';
 import 'package:flutter_plogging/src/core/application/user/update_user.dart';
 import 'package:flutter_plogging/src/core/application/route/generate_new_polyline.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_plogging/src/core/domain/route/route_progress_data.dart'
 import 'package:flutter_plogging/src/core/domain/tabs/home_bottom_nav_items.dart';
 import 'package:flutter_plogging/src/core/domain/tabs/home_tabs_coordinator_map.dart';
 import 'package:flutter_plogging/src/core/domain/tabs/home_tabs_routes_map.dart';
+import 'package:flutter_plogging/src/ui/view_models/entities/route/route_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/entities/user/user_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/how_it_works_page_viewmodel.dart';
@@ -58,6 +60,7 @@ void $initViewModels() {
         homeTabsMap,
         getHomeTabsByCoordinator()))
     ..registerFactory<UserViewModel>(() => UserViewModel())
+    ..registerFactory<RouteViewModel>(() => RouteViewModel())
     ..registerFactory<StartPageViewModel>(() => StartPageViewModel(
         getIt<AuthenticationService>(), getIt<GetUserById>()))
     ..registerFactory<RegisterPageViewModel>(() => RegisterPageViewModel(
@@ -86,7 +89,9 @@ void $initViewModels() {
             getIt<ImagePickerService>(),
             RouteProgressData(id: getIt<UuidGeneratorService>().generate()),
             getIt<CalculatePointsDistance>(),
-            getIt<GenerateNewPolyline>()))
+            getIt<GenerateNewPolyline>(),
+            getIt<AddUserXp>(),
+            getIt<RouteViewModel>()))
     ..registerFactory<MyRoutesPageViewModel>(() => MyRoutesPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),

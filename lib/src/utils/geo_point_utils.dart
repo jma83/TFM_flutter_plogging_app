@@ -27,4 +27,14 @@ class GeoPointUtils {
   static LatLng getLatLongFromPostion(Position position) {
     return LatLng(position.latitude, position.longitude);
   }
+
+  static const Position defautLocation = Position(
+      accuracy: 1.0,
+      altitude: 0,
+      heading: 0,
+      latitude: 0,
+      longitude: 0,
+      speed: 0,
+      speedAccuracy: 1.0,
+      timestamp: null);
 }

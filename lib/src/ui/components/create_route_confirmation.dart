@@ -15,6 +15,8 @@ class CreateRouteConfirmation extends StatefulWidget {
   final Function setImage;
   final Function uploadImage;
   XFile? image;
+  String name = "";
+  String description = "";
 
   CreateRouteConfirmation(
       {required this.setName,
@@ -40,6 +42,7 @@ class _CreateRouteConfirmation extends State<CreateRouteConfirmation> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         children: [
           InputText(
+              textController: TextEditingController(text: widget.name),
               label: "Name",
               hint: "Route name",
               icon: const Icon(Icons.near_me),
@@ -47,6 +50,7 @@ class _CreateRouteConfirmation extends State<CreateRouteConfirmation> {
               onChange: widget.setName),
           const SizedBox(height: 15),
           InputText(
+              textController: TextEditingController(text: widget.description),
               label: "Description",
               hint: "Route description",
               icon: const Icon(Icons.my_library_books_outlined),

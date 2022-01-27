@@ -124,15 +124,15 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     }
 
     if (distance >= 500 && distance < 1000) {
-      zoom = 18;
+      zoom = 15;
     }
 
     if (distance >= 1000 && distance < 3000) {
-      zoom = 17;
+      zoom = 13;
     }
 
     if (distance >= 3000) {
-      zoom = 15;
+      zoom = 11;
     }
 
     CameraUpdate cameraUpdate = CameraUpdate.newCameraPosition(CameraPosition(

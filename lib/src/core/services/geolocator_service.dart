@@ -60,6 +60,11 @@ class GeolocatorService {
         endPoint.latitude, endPoint.longitude);
   }
 
+  double calculateDirection(LatLng startPoint, LatLng endPoint) {
+    return Geolocator.bearingBetween(startPoint.latitude, startPoint.longitude,
+        endPoint.latitude, endPoint.longitude);
+  }
+
   Future<bool> _requestLocationPermission() async {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied ||

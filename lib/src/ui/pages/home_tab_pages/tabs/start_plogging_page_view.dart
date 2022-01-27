@@ -51,7 +51,8 @@ class StartPloggingPageView extends HomePageWidget {
       initialCameraPosition: CameraPosition(
           target: LatLng(currentViewModel.currentPosition.latitude,
               currentViewModel.currentPosition.longitude),
-          zoom: currentViewModel.currentZoom),
+          zoom: currentViewModel.currentZoom,
+          bearing: currentViewModel.currentPosition.heading),
       myLocationEnabled: currentViewModel.isServiceEnabled,
       myLocationButtonEnabled: false,
       mapType: MapType.normal,

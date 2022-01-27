@@ -5,30 +5,9 @@ import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-const Position defautLocation = Position(
-    accuracy: 1.0,
-    altitude: 0,
-    heading: 0,
-    latitude: 0,
-    longitude: 0,
-    speed: 0,
-    speedAccuracy: 1.0,
-    timestamp: null);
-
 class RouteProgressData extends RouteData {
-  Position currentPosition;
-  Position? lastPosition;
-  double currentZoom = 3;
-  List<LatLng> polylinePointList = [];
-  Map<PolylineId, Polyline> polylines = {};
-
   RouteProgressData(
-      {this.currentPosition = defautLocation,
-      this.lastPosition,
-      this.currentZoom = 3,
-      this.polylinePointList = const [],
-      this.polylines = const {},
-      id,
+      {id,
       name,
       description,
       userId,
@@ -52,15 +31,15 @@ class RouteProgressData extends RouteData {
 
   startProgressData(String userId) {
     startDate = Timestamp.now();
-    userId = userId;
+    this.userId = userId;
   }
 
-  completeProgressData(double distance) {
+  completeProgressData(double distance, List<LatLng> polylinePointList) {
     locationArray = GeoPointUtils.convertLatLngToGeopoints(polylinePointList);
     endDate = Timestamp.now();
     duration =
         DateCustomUtils.calcDateDifference(startDate!, endDate!).inSeconds;
-    distance = distance;
+    this.distance = distance;
   }
 
   confirmProgressData() {

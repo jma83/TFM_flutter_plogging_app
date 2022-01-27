@@ -44,7 +44,13 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
-  late Timer _routeInterval;
+  late Timer _saveRouteInterval;
+  late Timer _drawRouteInterval;
+  final Map<PolylineId, Polyline> _polylines = {};
+  final List<LatLng> _polylinePointList = [];
+  Position _currentPosition = GeoPointUtils.defautLocation;
+  Position? _lastPosition;
+  double _currentZoom = 3;
   bool _hasStartedRoute = false;
   String _errorMessage = "";
 
@@ -68,7 +74,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   @override
   loadPage() {
     createConnectionStatusListener();
-    createPositionListener();
+    //createPositionListener();
   }
 
   setMapController(GoogleMapController gmapController) {
@@ -77,17 +83,20 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   createListeners() {
     createDrawRouteInterval();
+    createSaveRouteInterval();
   }
 
   removeListeners() {
-    _routeInterval.cancel();
+    _saveRouteInterval.cancel();
+    _drawRouteInterval.cancel();
   }
 
   createPositionListener() {
     _positionListener = _geolocatorService
         .getStreamLocationPosition()
         .listen((Position position) {
-      _routeProgressData.currentPosition = position;
+      _currentPosition = position;
+      setCameraToCurrentLocation();
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
@@ -102,13 +111,34 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     });
   }
 
+  createSaveRouteInterval() {
+    _saveRouteInterval = Timer.periodic(
+        const Duration(seconds: AppConstants.secondsToSave), (_) async {
+      if (!hasMinDistance(AppConstants.minDistanceToSave)) return;
+      updatePoints();
+      notifyListeners(StartPloggingNotifiers.updatePloggingPage);
+    });
+  }
+
+  updatePoints() {
+    saveInPointList();
+    setLastPosition();
+  }
+
   createDrawRouteInterval() {
-    _routeInterval = Timer.periodic(
+    _drawRouteInterval = Timer.periodic(
         const Duration(seconds: AppConstants.secondsToDraw), (_) async {
-      if (!hasMinDistanceToDraw()) return;
+      _currentPosition = Position(
+          accuracy: _currentPosition.accuracy,
+          altitude: _currentPosition.altitude,
+          heading: _currentPosition.heading,
+          latitude: _currentPosition.latitude + 0.0002,
+          longitude: _currentPosition.longitude + 0.0002,
+          speed: 1,
+          speedAccuracy: 5.0,
+          timestamp: DateTime.now());
+      if (!hasMinDistance(AppConstants.minDistanceToDraw)) return;
       addPolyline();
-      saveInPointList();
-      setLastPosition();
       setCameraToCurrentLocation();
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
@@ -121,7 +151,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     createListeners();
     _routeProgressData.startProgressData(currentUser.id);
     toggleRouteStatus(status: true);
-    setLastPosition();
+    updatePoints();
     notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }
 
@@ -154,9 +184,11 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   completeProgressRouteData() {
-    final distance =
-        _calculatePointsDistance.execute(_routeProgressData.polylinePointList);
-    _routeProgressData.completeProgressData(distance);
+    final distance = _calculatePointsDistance.execute(_polylinePointList);
+    _routeProgressData.completeProgressData(distance, _polylinePointList);
+    _lastPosition = null;
+    _polylinePointList.clear();
+    _polylines.clear();
   }
 
   toggleRouteStatus({bool status = false}) {
@@ -164,47 +196,46 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   saveInPointList() {
-    _routeProgressData.polylinePointList.add(
-        GeoPointUtils.getLatLongFromPostion(
-            _routeProgressData.currentPosition));
+    _polylinePointList
+        .add(GeoPointUtils.getLatLongFromPostion(_currentPosition));
   }
 
   setLastPosition() {
-    _routeProgressData.lastPosition = _routeProgressData.currentPosition;
+    _lastPosition = _currentPosition;
   }
 
-  hasMinDistanceToDraw() {
-    final double distance = _calculatePointsDistance.executeByPositions(
-        [_routeProgressData.lastPosition!, _routeProgressData.currentPosition]);
-    if (distance < AppConstants.minDistance) return false;
+  hasMinDistance(int minDistance) {
+    final double distance = _calculatePointsDistance
+        .executeByPositions([_lastPosition!, _currentPosition]);
+    if (distance < minDistance) return false;
     return true;
   }
 
   void addPolyline() {
     final Polyline polyline = _generateNewPolyline.executeNew([
-      GeoPointUtils.getLatLongFromPostion(_routeProgressData.lastPosition!),
-      GeoPointUtils.getLatLongFromPostion(_routeProgressData.currentPosition)
+      GeoPointUtils.getLatLongFromPostion(_lastPosition!),
+      GeoPointUtils.getLatLongFromPostion(_currentPosition)
     ], Colors.red);
-    _routeProgressData.polylines.addAll({polyline.polylineId: polyline});
+    _polylines.addAll({polyline.polylineId: polyline});
   }
 
   Future<void> getCurrentLocation() async {
     try {
-      _routeProgressData.currentPosition =
-          await _geolocatorService.getCurrentLocation();
+      _currentPosition = await _geolocatorService.getCurrentLocation();
     } catch (_) {
       _errorMessage = "Error getting location";
     }
   }
 
   getAndSetCurrentLocation() async {
-    await getCurrentLocation().then((value) async =>
-        await setCameraToPosition(_routeProgressData.currentPosition));
+    await getCurrentLocation()
+        .then((value) async => await setCameraToPosition(_currentPosition));
   }
 
   Future<void> isLocationActive() async {
     return await _geolocatorService.validateLocationService().then((value) {
       _serviceStatus = value ? ServiceStatus.enabled : ServiceStatus.disabled;
+      notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
 
@@ -218,16 +249,17 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       getCurrentLocation();
       return false;
     }
-    setCameraToPosition(_routeProgressData.currentPosition);
+    setCameraToPosition(_currentPosition);
     return true;
   }
 
   setCameraToPosition(Position position, {double zoom = 18.0}) {
-    _routeProgressData.currentZoom = zoom;
+    _currentZoom = zoom;
     final CameraPosition cameraPosition = CameraPosition(
-      target: LatLng(position.latitude, position.longitude),
-      zoom: _routeProgressData.currentZoom,
-    );
+        target: LatLng(position.latitude, position.longitude),
+        zoom: _currentZoom,
+        bearing: _currentPosition.heading,
+        tilt: 45.0);
     animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
@@ -244,10 +276,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   void dismissAlert() {
-    _routeProgressData = RouteProgressData(
-        id: _uuidGeneratorService.generate(),
-        currentZoom: _routeProgressData.currentZoom,
-        currentPosition: _routeProgressData.currentPosition);
+    _routeProgressData =
+        RouteProgressData(id: _uuidGeneratorService.generate());
     notifyListeners(StartPloggingNotifiers.returnToPrevious);
   }
 
@@ -275,15 +305,15 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Position get currentPosition {
-    return _routeProgressData.currentPosition;
+    return _currentPosition;
   }
 
   double get currentZoom {
-    return _routeProgressData.currentZoom;
+    return _currentZoom;
   }
 
   Map<PolylineId, Polyline> get polylines {
-    return _routeProgressData.polylines;
+    return _polylines;
   }
 
   String get errorMessage {

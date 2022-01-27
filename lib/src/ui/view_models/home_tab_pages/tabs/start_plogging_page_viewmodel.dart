@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/application/route/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/route/create_route.dart';
@@ -45,12 +44,13 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
-  late Timer routeInterval;
+  late Timer _routeInterval;
   bool _hasStartedRoute = false;
   String _errorMessage = "";
 
-  late StreamSubscription<Position> positionListener;
-  late StreamSubscription<ServiceStatus> statusListener;
+  late StreamSubscription<Position> _positionListener;
+  late StreamSubscription<ServiceStatus> _statusListener;
+  ServiceStatus _serviceStatus = ServiceStatus.disabled;
 
   StartPloggingPageViewModel(
       AuthenticationService authenticationService,
@@ -71,16 +71,20 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     createPositionListener();
   }
 
+  setMapController(GoogleMapController gmapController) {
+    mapController = gmapController;
+  }
+
   createListeners() {
     createDrawRouteInterval();
   }
 
   removeListeners() {
-    routeInterval.cancel();
+    _routeInterval.cancel();
   }
 
   createPositionListener() {
-    positionListener = _geolocatorService
+    _positionListener = _geolocatorService
         .getStreamLocationPosition()
         .listen((Position position) {
       _routeProgressData.currentPosition = position;
@@ -89,17 +93,17 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   createConnectionStatusListener() {
-    statusListener = _geolocatorService
+    _statusListener = _geolocatorService
         .getStreamLocationStatus()
-        .listen((ServiceStatus status) {
-      _routeProgressData.serviceStatus = status;
-      setCameraToCurrentLocation(first: true);
+        .listen((ServiceStatus status) async {
+      _serviceStatus = status;
+      await setCameraToCurrentLocation(first: true);
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
 
   createDrawRouteInterval() {
-    routeInterval = Timer.periodic(
+    _routeInterval = Timer.periodic(
         const Duration(seconds: AppConstants.secondsToDraw), (_) async {
       if (!hasMinDistanceToDraw()) return;
       addPolyline();
@@ -188,31 +192,29 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     try {
       _routeProgressData.currentPosition =
           await _geolocatorService.getCurrentLocation();
-    } catch (e) {
+    } catch (_) {
       _errorMessage = "Error getting location";
-      notifyListeners(StartPloggingNotifiers.errorRoutePlogging);
     }
   }
 
   getAndSetCurrentLocation() async {
-    getCurrentLocation().then((value) async =>
+    await getCurrentLocation().then((value) async =>
         await setCameraToPosition(_routeProgressData.currentPosition));
   }
 
   Future<void> isLocationActive() async {
     return await _geolocatorService.validateLocationService().then((value) {
-      _routeProgressData.serviceStatus =
-          value ? ServiceStatus.enabled : ServiceStatus.disabled;
+      _serviceStatus = value ? ServiceStatus.enabled : ServiceStatus.disabled;
     });
   }
 
   Future<bool> setCameraToCurrentLocation({bool first = false}) async {
     if (first) await isLocationActive();
-    if (_routeProgressData.serviceStatus == ServiceStatus.enabled && first) {
+    if (_serviceStatus == ServiceStatus.enabled && first) {
       getAndSetCurrentLocation();
       return true;
     }
-    if (_routeProgressData.serviceStatus == ServiceStatus.disabled) {
+    if (_serviceStatus == ServiceStatus.disabled) {
       getCurrentLocation();
       return false;
     }
@@ -245,8 +247,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     _routeProgressData = RouteProgressData(
         id: _uuidGeneratorService.generate(),
         currentZoom: _routeProgressData.currentZoom,
-        currentPosition: _routeProgressData.currentPosition,
-        serviceStatus: _routeProgressData.serviceStatus);
+        currentPosition: _routeProgressData.currentPosition);
     notifyListeners(StartPloggingNotifiers.returnToPrevious);
   }
 
@@ -261,10 +262,6 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   void setRouteImage(XFile? image) {
     _routeProgressData.image = image?.path;
-  }
-
-  setMapController(GoogleMapController gmapController) {
-    mapController = gmapController;
   }
 
   Future<XFile?> uploadRouteImage(ImageSource imageSource) async {
@@ -291,5 +288,18 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   String get errorMessage {
     return _errorMessage;
+  }
+
+  bool get isServiceEnabled {
+    return _serviceStatus == ServiceStatus.enabled;
+  }
+
+  @override
+  void dispose() {
+    if (authenticationService.currentUserData == null) {
+      super.dispose();
+      _positionListener.cancel();
+      _statusListener.cancel();
+    }
   }
 }

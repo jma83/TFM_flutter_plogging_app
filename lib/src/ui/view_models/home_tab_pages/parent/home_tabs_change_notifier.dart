@@ -1,5 +1,6 @@
 // ignore_for_file: must_call_super
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
@@ -15,7 +16,12 @@ class HomeTabsChangeNotifier extends PropertyChangeNotifier<String> {
   UserData get currentUser {
     final user = authenticationService.currentUserData;
     if (user == null) {
-      return UserData(username: "", age: 0, gender: 0);
+      return UserData(
+          id: "",
+          username: "",
+          age: 0,
+          gender: 0,
+          creationDate: Timestamp.now());
     }
 
     return authenticationService.currentUserData!;

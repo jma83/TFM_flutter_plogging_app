@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_if_null_operators
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserData {
@@ -12,18 +14,18 @@ class UserData {
   Timestamp creationDate;
   String? image;
 
-  UserData(
-      {required this.username,
-      required this.age,
-      required this.gender,
-      this.followers = 0,
-      this.following = 0,
-      this.xp = 0,
-      this.level = 1,
-      this.image = "",
-      this.id = "",
-      Timestamp? creationDate})
-      : creationDate = creationDate ?? Timestamp.now();
+  UserData({
+    required this.id,
+    required this.username,
+    required this.age,
+    required this.gender,
+    required this.creationDate,
+    this.followers = 0,
+    this.following = 0,
+    this.xp = 0,
+    this.level = 1,
+    this.image = "",
+  });
 
   static Map<String, Object> castUserToMap(UserData user) {
     return {
@@ -51,6 +53,7 @@ class UserData {
         following: map[UserFieldData.following] as int,
         xp: map[UserFieldData.xp] as int,
         level: map[UserFieldData.level] as int,
+        creationDate: map[UserFieldData.creationDate] as Timestamp,
         image: image);
   }
 }
@@ -65,4 +68,5 @@ class UserFieldData {
   static const String xp = "xp";
   static const String level = "level";
   static const String image = "image";
+  static const String creationDate = "creationDate";
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/model/user_model.dart';
 import 'package:flutter_plogging/src/core/services/authentication_service.dart';
@@ -23,7 +24,8 @@ class CreateUser {
           id: _authService.currentUser!.uid,
           username: username,
           age: age,
-          gender: gender));
+          gender: gender,
+          creationDate: Timestamp.now()));
       return result;
     } catch (_) {
       return "Error during registration. Please, try again later";

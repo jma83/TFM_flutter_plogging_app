@@ -52,7 +52,7 @@ class StartPloggingPageView extends HomePageWidget {
           target: LatLng(currentViewModel.currentPosition.latitude,
               currentViewModel.currentPosition.longitude),
           zoom: currentViewModel.currentZoom),
-      myLocationEnabled: true,
+      myLocationEnabled: currentViewModel.isServiceEnabled,
       myLocationButtonEnabled: false,
       mapType: MapType.normal,
       zoomGesturesEnabled: false,

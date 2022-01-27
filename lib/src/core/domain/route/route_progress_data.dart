@@ -16,7 +16,6 @@ const Position defautLocation = Position(
     timestamp: null);
 
 class RouteProgressData extends RouteData {
-  ServiceStatus serviceStatus;
   Position currentPosition;
   Position? lastPosition;
   double currentZoom = 3;
@@ -24,8 +23,7 @@ class RouteProgressData extends RouteData {
   Map<PolylineId, Polyline> polylines = {};
 
   RouteProgressData(
-      {this.serviceStatus = ServiceStatus.disabled,
-      this.currentPosition = defautLocation,
+      {this.currentPosition = defautLocation,
       this.lastPosition,
       this.currentZoom = 3,
       this.polylinePointList = const [],

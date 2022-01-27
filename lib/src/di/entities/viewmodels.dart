@@ -12,6 +12,7 @@ import 'package:flutter_plogging/src/core/application/route/search_route_list.da
 import 'package:flutter_plogging/src/core/application/follower/get_following_route_list.dart';
 import 'package:flutter_plogging/src/core/application/user/search_user_list.dart';
 import 'package:flutter_plogging/src/core/application/route/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/route/calculate_points_direction.dart';
 import 'package:flutter_plogging/src/core/application/follower/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/route/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/like/get_liked_routes_list.dart';
@@ -89,6 +90,7 @@ void $initViewModels() {
             getIt<ImagePickerService>(),
             RouteProgressData(id: getIt<UuidGeneratorService>().generate()),
             getIt<CalculatePointsDistance>(),
+            getIt<CalculatePointsDirection>(),
             getIt<GenerateNewPolyline>(),
             getIt<AddUserXp>(),
             getIt<RouteViewModel>()))

@@ -3,4 +3,5 @@ class StartPloggingNotifiers {
   static const String confirmRoutePlogging = "confirmRoutePlogging";
   static const String errorRoutePlogging = "errorRoutePlogging";
   static const String returnToPrevious = "startPloggingReturnToPrevious";
+  static const String userLevelUp = "userLevelUp";
 }

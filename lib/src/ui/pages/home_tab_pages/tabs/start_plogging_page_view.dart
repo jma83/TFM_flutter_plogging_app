@@ -28,6 +28,8 @@ class StartPloggingPageView extends HomePageWidget {
               [StartPloggingNotifiers.confirmRoutePlogging]);
           viewModel.addListener(() => showErrorAlert(context),
               [StartPloggingNotifiers.errorRoutePlogging]);
+          viewModel.addListener(() => showLevelAlert(context),
+              [StartPloggingNotifiers.userLevelUp]);
           // errorRoutePlogging
         },
         builder: (context, StartPloggingPageViewModel viewModel, child) {
@@ -56,6 +58,7 @@ class StartPloggingPageView extends HomePageWidget {
       myLocationEnabled: currentViewModel.isServiceEnabled,
       myLocationButtonEnabled: false,
       mapType: MapType.normal,
+      scrollGesturesEnabled: !currentViewModel.hasStartedRoute,
       zoomGesturesEnabled: false,
       zoomControlsEnabled: false,
       onMapCreated: (GoogleMapController controller) {
@@ -162,6 +165,15 @@ class StartPloggingPageView extends HomePageWidget {
         context: context,
         builder: (_) => Alert.createInfoAlert("Error",
             currentViewModel.errorMessage, currentViewModel.dismissAlert));
+  }
+
+  showLevelAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => Alert.createInfoAlert(
+            "Congratulations!",
+            "You have reached level ${currentViewModel.currentUser.level}!",
+            currentViewModel.dismissAlert));
   }
 
   showRouteConfirmationAlert(BuildContext context) {

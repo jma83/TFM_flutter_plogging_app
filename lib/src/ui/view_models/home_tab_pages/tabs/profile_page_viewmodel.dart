@@ -118,4 +118,8 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
   int get objectiveProgress {
     return _objectiveProgress;
   }
+
+  int get maxXp {
+    return currentUser.level * AppConstants.incrementXP + AppConstants.baseXP;
+  }
 }

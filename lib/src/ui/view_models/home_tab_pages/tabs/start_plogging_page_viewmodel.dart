@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/core/application/route/calculate_points_direction.dart';
 import 'package:flutter_plogging/src/core/application/route/calculate_points_distance.dart';
 import 'package:flutter_plogging/src/core/application/route/create_route.dart';
 import 'package:flutter_plogging/src/core/application/route/generate_new_polyline.dart';
@@ -33,30 +34,35 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 @injectable
 class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
+  // Services and Use cases
   final CreateRoute _createRoute;
   final UuidGeneratorService _uuidGeneratorService;
   final GeolocatorService _geolocatorService;
   final ImagePickerService _imagePickerService;
   final CalculatePointsDistance _calculatePointsDistance;
+  final CalculatePointsDirection _calculatePointsDirection;
   final GenerateNewPolyline _generateNewPolyline;
   final AddUserXp _addUserXp;
   final RouteViewModel _routeViewModel;
 
+  // ViewModel state attributes
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
   late Timer _saveRouteInterval;
   late Timer _drawRouteInterval;
   final Map<PolylineId, Polyline> _polylines = {};
   final List<LatLng> _polylinePointList = [];
-  Position _currentPosition = GeoPointUtils.defautLocation;
   Position? _lastPosition;
   double _currentZoom = 3;
+  double _currentDirection = 0;
   bool _hasStartedRoute = false;
-  String _errorMessage = "";
+  String? _errorMessage;
+  ServiceStatus _serviceStatus = ServiceStatus.disabled;
+  Position _currentPosition = GeoPointUtils.defautLocation;
 
+  // Stream listeners
   late StreamSubscription<Position> _positionListener;
   late StreamSubscription<ServiceStatus> _statusListener;
-  ServiceStatus _serviceStatus = ServiceStatus.disabled;
 
   StartPloggingPageViewModel(
       AuthenticationService authenticationService,
@@ -66,6 +72,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       this._imagePickerService,
       this._routeProgressData,
       this._calculatePointsDistance,
+      this._calculatePointsDirection,
       this._generateNewPolyline,
       this._addUserXp,
       this._routeViewModel)
@@ -74,7 +81,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   @override
   loadPage() {
     createConnectionStatusListener();
-    //createPositionListener();
+    createPositionListener();
   }
 
   setMapController(GoogleMapController gmapController) {
@@ -94,11 +101,18 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   createPositionListener() {
     _positionListener = _geolocatorService
         .getStreamLocationPosition()
-        .listen((Position position) {
+        .listen((Position position) async {
       _currentPosition = position;
-      setCameraToCurrentLocation();
+      updateDirection();
+      await setCameraToCurrentLocation();
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
+  }
+
+  updateDirection() {
+    if (_lastPosition == null) return;
+    _currentDirection = _calculatePointsDirection
+        .executeByPositions([_lastPosition!, _currentPosition]);
   }
 
   createConnectionStatusListener() {
@@ -120,34 +134,19 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     });
   }
 
-  updatePoints() {
-    saveInPointList();
-    setLastPosition();
-  }
-
   createDrawRouteInterval() {
     _drawRouteInterval = Timer.periodic(
         const Duration(seconds: AppConstants.secondsToDraw), (_) async {
-      _currentPosition = Position(
-          accuracy: _currentPosition.accuracy,
-          altitude: _currentPosition.altitude,
-          heading: _currentPosition.heading,
-          latitude: _currentPosition.latitude + 0.0002,
-          longitude: _currentPosition.longitude + 0.0002,
-          speed: 1,
-          speedAccuracy: 5.0,
-          timestamp: DateTime.now());
       if (!hasMinDistance(AppConstants.minDistanceToDraw)) return;
       addPolyline();
-      setCameraToCurrentLocation();
+      await setCameraToCurrentLocation();
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
 
   beginRoute() async {
-    if (!await setCameraToCurrentLocation()) {
-      return;
-    }
+    if (_hasStartedRoute) return;
+    if (!await setCameraToCurrentLocation()) return;
     createListeners();
     _routeProgressData.startProgressData(currentUser.id);
     toggleRouteStatus(status: true);
@@ -160,26 +159,35 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     removeListeners();
     completeProgressRouteData();
     toggleRouteStatus(status: false);
-    if (validateRoute()) {
-      notifyListeners(StartPloggingNotifiers.confirmRoutePlogging);
-    }
+    validateRoute();
+  }
+
+  updatePoints() {
+    saveInPointList();
+    setLastPosition();
   }
 
   validateRoute() {
     if (!_routeViewModel.validateRoute(
         _routeProgressData.distance!, _routeProgressData.duration!)) {
       _errorMessage = _routeViewModel.errorMessage;
-      notifyListeners(StartPloggingNotifiers.errorRoutePlogging);
-      return false;
+      return notifyListeners(StartPloggingNotifiers.errorRoutePlogging);
     }
-    return true;
+    return notifyListeners(StartPloggingNotifiers.confirmRoutePlogging);
   }
 
   Future<void> confirmRoute() async {
     _routeProgressData.confirmProgressData();
     await _createRoute.execute(_routeProgressData);
-    await _addUserXp.execute(_routeProgressData);
+    final int currentLevel = currentUser.level;
+    _errorMessage = await _addUserXp.execute(_routeProgressData);
+    if (_errorMessage != null) {
+      return notifyListeners(StartPloggingNotifiers.errorRoutePlogging);
+    }
     dismissAlert();
+    if (currentLevel != currentUser.level) {
+      return notifyListeners(StartPloggingNotifiers.userLevelUp);
+    }
     notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }
 
@@ -228,8 +236,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   getAndSetCurrentLocation() async {
-    await getCurrentLocation()
-        .then((value) async => await setCameraToPosition(_currentPosition));
+    await getCurrentLocation().then(
+        (value) async => await setCameraToPosition(_currentPosition, zoom: 18));
   }
 
   Future<void> isLocationActive() async {
@@ -249,16 +257,16 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       getCurrentLocation();
       return false;
     }
-    setCameraToPosition(_currentPosition);
+    setCameraToPosition(_currentPosition, zoom: first ? 18 : null);
     return true;
   }
 
-  setCameraToPosition(Position position, {double zoom = 18.0}) {
-    _currentZoom = zoom;
+  setCameraToPosition(Position position, {double? zoom}) {
+    if (zoom != null) _currentZoom = zoom;
     final CameraPosition cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude),
         zoom: _currentZoom,
-        bearing: _currentPosition.heading,
+        bearing: _currentDirection,
         tilt: 45.0);
     animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
@@ -275,9 +283,11 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     mapController.animateCamera(cameraUpdate);
   }
 
-  void dismissAlert() {
-    _routeProgressData =
-        RouteProgressData(id: _uuidGeneratorService.generate());
+  void dismissAlert({bool resetRoute = true}) {
+    if (resetRoute) {
+      _routeProgressData =
+          RouteProgressData(id: _uuidGeneratorService.generate());
+    }
     notifyListeners(StartPloggingNotifiers.returnToPrevious);
   }
 
@@ -317,7 +327,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   String get errorMessage {
-    return _errorMessage;
+    return _errorMessage ?? "";
   }
 
   bool get isServiceEnabled {

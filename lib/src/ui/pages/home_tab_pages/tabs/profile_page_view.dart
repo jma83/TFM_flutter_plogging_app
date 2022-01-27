@@ -55,7 +55,9 @@ class ProfilePageView extends HomePageWidget {
             editUserCallback: currentViewModel.navigateToEdit,
             likedRoutesCallback: currentViewModel.navigateToLikedRoutes,
             changeImageCallback: currentViewModel.onClickImage,
-            xp: currentViewModel.user!.xp);
+            xp: currentViewModel.user!.xp,
+            maxXp: currentViewModel.maxXp,
+          );
   }
 
   Widget getLoggoutFloatingButton() {

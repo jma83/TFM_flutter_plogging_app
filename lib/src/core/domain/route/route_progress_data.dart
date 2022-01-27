@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_data.dart';
+import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
+import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -49,4 +51,25 @@ class RouteProgressData extends RouteData {
             image: image,
             distance: distance,
             locationArray: locationArray);
+
+  startProgressData(String userId) {
+    startDate = Timestamp.now();
+    userId = userId;
+  }
+
+  completeProgressData(double distance) {
+    locationArray = GeoPointUtils.convertLatLngToGeopoints(polylinePointList);
+    endDate = Timestamp.now();
+    duration =
+        DateCustomUtils.calcDateDifference(startDate!, endDate!).inSeconds;
+    distance = distance;
+  }
+
+  confirmProgressData() {
+    final DateTime now = DateTime.now();
+    name = name == ""
+        ? "Route ${now.day}-${now.month}-${now.year}, ${now.hour}:${now.minute}:${now.second}"
+        : name;
+    description = description ?? "";
+  }
 }

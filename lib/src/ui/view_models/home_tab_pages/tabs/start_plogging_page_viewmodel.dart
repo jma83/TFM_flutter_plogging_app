@@ -15,7 +15,6 @@ import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/start_plogging_
 import 'package:flutter_plogging/src/ui/view_models/entities/route/route_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/app_constants.dart';
-import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
 import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -116,7 +115,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       return;
     }
     createListeners();
-    setStartDate();
+    _routeProgressData.startProgressData(currentUser.id);
     toggleRouteStatus(status: true);
     setLastPosition();
     notifyListeners(StartPloggingNotifiers.updatePloggingPage);
@@ -143,7 +142,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> confirmRoute() async {
-    confirmProgressRouteData();
+    _routeProgressData.confirmProgressData();
     await _createRoute.execute(_routeProgressData);
     await _addUserXp.execute(_routeProgressData);
     dismissAlert();
@@ -151,23 +150,9 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   completeProgressRouteData() {
-    _routeProgressData.distance =
+    final distance =
         _calculatePointsDistance.execute(_routeProgressData.polylinePointList);
-    _routeProgressData.locationArray = GeoPointUtils.convertLatLngToGeopoints(
-        _routeProgressData.polylinePointList);
-    _routeProgressData.endDate = Timestamp.now();
-    _routeProgressData.duration = DateCustomUtils.calcDateDifference(
-            _routeProgressData.startDate!, _routeProgressData.endDate!)
-        .inSeconds;
-    _routeProgressData.userId = authenticationService.currentUser!.uid;
-  }
-
-  confirmProgressRouteData() {
-    final DateTime now = DateTime.now();
-    _routeProgressData.name = _routeProgressData.name == ""
-        ? "Route ${now.day}-${now.month}-${now.year}, ${now.hour}:${now.minute}:${now.second}"
-        : _routeProgressData.name;
-    _routeProgressData.description = _routeProgressData.description;
+    _routeProgressData.completeProgressData(distance);
   }
 
   toggleRouteStatus({bool status = false}) {
@@ -175,59 +160,26 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   saveInPointList() {
-    _routeProgressData.polylinePointList
-        .add(getLatLongFromPostion(_routeProgressData.currentPosition));
+    _routeProgressData.polylinePointList.add(
+        GeoPointUtils.getLatLongFromPostion(
+            _routeProgressData.currentPosition));
   }
 
   setLastPosition() {
     _routeProgressData.lastPosition = _routeProgressData.currentPosition;
   }
 
-  setStartDate() {
-    _routeProgressData.startDate = Timestamp.now();
-  }
-
-  setEndDate() {
-    _routeProgressData.endDate = Timestamp.now();
-  }
-
-  setRouteName(String name) {
-    _routeProgressData.name = name;
-  }
-
-  setRouteDescription(String description) {
-    _routeProgressData.description = description;
-  }
-
-  void setRouteImage(XFile? image) {
-    _routeProgressData.image = image?.path;
-  }
-
-  setMapController(GoogleMapController gmapController) {
-    mapController = gmapController;
-  }
-
-  Future<XFile?> uploadRouteImage(ImageSource imageSource) async {
-    final XFile? image = await _imagePickerService.pickImage(imageSource);
-    setRouteImage(image);
-    return image;
-  }
-
   hasMinDistanceToDraw() {
-    List<Position> positionList = [];
-    positionList.add(_routeProgressData.lastPosition!);
-    positionList.add(_routeProgressData.currentPosition);
-
-    final double distance =
-        _calculatePointsDistance.executeByPositions(positionList);
+    final double distance = _calculatePointsDistance.executeByPositions(
+        [_routeProgressData.lastPosition!, _routeProgressData.currentPosition]);
     if (distance < AppConstants.minDistance) return false;
     return true;
   }
 
   void addPolyline() {
     final Polyline polyline = _generateNewPolyline.executeNew([
-      getLatLongFromPostion(_routeProgressData.lastPosition!),
-      getLatLongFromPostion(_routeProgressData.currentPosition)
+      GeoPointUtils.getLatLongFromPostion(_routeProgressData.lastPosition!),
+      GeoPointUtils.getLatLongFromPostion(_routeProgressData.currentPosition)
     ], Colors.red);
     _routeProgressData.polylines.addAll({polyline.polylineId: polyline});
   }
@@ -237,8 +189,8 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       _routeProgressData.currentPosition =
           await _geolocatorService.getCurrentLocation();
     } catch (e) {
-      // ignore: avoid_print
-      print("error getting location $e");
+      _errorMessage = "Error getting location";
+      notifyListeners(StartPloggingNotifiers.errorRoutePlogging);
     }
   }
 
@@ -298,6 +250,29 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(StartPloggingNotifiers.returnToPrevious);
   }
 
+  // Modal confirmation data
+  setRouteName(String name) {
+    _routeProgressData.name = name;
+  }
+
+  setRouteDescription(String description) {
+    _routeProgressData.description = description;
+  }
+
+  void setRouteImage(XFile? image) {
+    _routeProgressData.image = image?.path;
+  }
+
+  setMapController(GoogleMapController gmapController) {
+    mapController = gmapController;
+  }
+
+  Future<XFile?> uploadRouteImage(ImageSource imageSource) async {
+    final XFile? image = await _imagePickerService.pickImage(imageSource);
+    setRouteImage(image);
+    return image;
+  }
+
   bool get hasStartedRoute {
     return _hasStartedRoute;
   }
@@ -316,9 +291,5 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   String get errorMessage {
     return _errorMessage;
-  }
-
-  LatLng getLatLongFromPostion(Position position) {
-    return LatLng(position.latitude, position.longitude);
   }
 }

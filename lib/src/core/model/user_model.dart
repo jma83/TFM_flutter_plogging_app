@@ -22,10 +22,6 @@ class UserModel implements IMediaModel<UserData> {
 
   @override
   Future<void> updateElement(String collectionId, UserData data) async {
-    if (data.image != null && data.image != "") {
-      await setImage(data.id, File(data.image!));
-      data.image = await getImage(data.id);
-    }
     final Map<String, Object> userMap = UserData.castUserToMap(data);
     await entity.doc(collectionId).update(userMap);
   }
@@ -37,14 +33,19 @@ class UserModel implements IMediaModel<UserData> {
 
   @override
   Future<UserData?> queryElementById(String id) async {
-    final docData = await entity.doc(id).get();
-    if (docData.data() == null) {
-      return null;
+    UserData? result;
+    try {
+      final docData = await entity.doc(id).get();
+      if (docData.data() == null) {
+        return null;
+      }
+      Map<String, dynamic> mapData = docData.data() as Map<String, dynamic>;
+      result = UserData.castMapToUser(mapData, id);
+      result.image = await getImage(id);
+      return result;
+    } catch (_) {
+      return result;
     }
-    Map<String, dynamic> mapData = docData.data() as Map<String, dynamic>;
-    UserData result = UserData.castMapToUser(mapData, id);
-    result.image = await getImage(id);
-    return result;
   }
 
   @override
@@ -96,7 +97,12 @@ class UserModel implements IMediaModel<UserData> {
 
   @override
   Future<String> getImage(String id) async {
-    return await _storageService.getImage(entityName, id, "profile.png");
+    try {
+      return await _storageService.getImage(entityName, id, "profile.png");
+    } catch (e) {
+      // ignore: use_rethrow_when_possible
+      throw e;
+    }
   }
 
   @override
@@ -110,5 +116,15 @@ class UserModel implements IMediaModel<UserData> {
         .map((e) =>
             UserData.castMapToUser(e.data() as Map<String, dynamic>, e.id))
         .toList();
+  }
+
+  @override
+  Future<void> setAndSaveImage(String id, UserData data, String image) async {
+    if (image != "" && image != data.image) {
+      await setImage(data.id, File(image));
+      data.image = await getImage(data.id);
+    }
+    final Map<String, Object> userMap = UserData.castUserToMap(data);
+    await entity.doc(id).update(userMap);
   }
 }

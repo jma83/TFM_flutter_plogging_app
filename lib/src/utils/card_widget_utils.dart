@@ -34,32 +34,43 @@ class CardWidgetUtils {
         ));
   }
 
-  static getImageFromNetwork(String image,
+  static Widget getImageFromNetwork(String imageSrc,
       {bool avatar = false,
       BoxFit fit = BoxFit.contain,
+      bool rounded = false,
       double? height,
       double? width}) {
     final String placeholderImg =
         avatar ? "assets/logo.png" : "assets/img1.jpg";
-
-    return FadeInImage.assetNetwork(
-      image: image,
+    final FadeInImage image = FadeInImage(
+      image: NetworkImage(imageSrc),
       height: height,
       width: width,
-      placeholder: placeholderImg,
+      placeholder: AssetImage(placeholderImg),
+      placeholderErrorBuilder: (context, ob, stack) =>
+          Image.asset(placeholderImg, fit: fit, height: height, width: width),
       fadeInDuration: const Duration(milliseconds: 200),
       fit: fit,
     );
+    return rounded ? getRoundedImage(image) : image;
   }
 
-  static getImageFromAsset(
-      {bool avatar = false, BoxFit fit = BoxFit.contain, double? height}) {
-    final String image = avatar ? "assets/logo.png" : "assets/img1.jpg";
-    return FadeInImage(
-        image: AssetImage(image),
-        placeholder: AssetImage(image),
+  static Widget getImageFromAsset(
+      {bool avatar = false,
+      BoxFit fit = BoxFit.contain,
+      bool rounded = false,
+      double? height}) {
+    final String imageDefault = avatar ? "assets/logo.png" : "assets/img1.jpg";
+    final FadeInImage image = FadeInImage(
+        image: AssetImage(imageDefault),
+        placeholder: AssetImage(imageDefault),
         height: height,
         fadeInDuration: const Duration(milliseconds: 200),
         fit: fit);
+    return rounded ? getRoundedImage(image) : image;
+  }
+
+  static getRoundedImage(FadeInImage image) {
+    return ClipRRect(borderRadius: BorderRadius.circular(100.0), child: image);
   }
 }

@@ -9,6 +9,10 @@ class GetUserById {
   GetUserById(this._userModel);
 
   Future<UserData?> execute(String id) async {
-    return await _userModel.queryElementById(id);
+    try {
+      return await _userModel.queryElementById(id);
+    } catch (_) {
+      rethrow;
+    }
   }
 }

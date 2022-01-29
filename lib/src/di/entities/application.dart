@@ -1,5 +1,6 @@
 import 'package:flutter_plogging/src/core/application/route/calculate_points_direction.dart';
 import 'package:flutter_plogging/src/core/application/route/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/route/calculate_route_camera_position.dart';
 import 'package:flutter_plogging/src/core/application/follower/check_user_followed.dart';
 import 'package:flutter_plogging/src/core/application/route/create_route.dart';
 import 'package:flutter_plogging/src/core/application/route/generate_new_polyline.dart';
@@ -85,5 +86,7 @@ void $initApplication() {
     ..registerLazySingleton<AddUserXp>(
         () => AddUserXp(getIt<UserModel>(), getIt<AuthenticationService>()))
     ..registerLazySingleton<CalculatePointsDirection>(
-        () => CalculatePointsDirection(getIt<GeolocatorService>()));
+        () => CalculatePointsDirection(getIt<GeolocatorService>()))
+    ..registerLazySingleton<CalculateRouteCameraPosition>(
+        () => CalculateRouteCameraPosition(getIt<GeolocatorService>()));
 }

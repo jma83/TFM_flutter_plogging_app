@@ -1,6 +1,7 @@
 import 'package:flutter_plogging/src/core/application/user/add_user_xp.dart';
 import 'package:flutter_plogging/src/core/application/user/create_user.dart';
 import 'package:flutter_plogging/src/core/application/user/update_user.dart';
+import 'package:flutter_plogging/src/core/application/route/calculate_route_camera_position.dart';
 import 'package:flutter_plogging/src/core/application/route/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/route/get_route_list_by_user.dart';
 import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
@@ -116,7 +117,7 @@ void $initViewModels() {
     ..registerFactory<RouteDetailPageViewModel>(() => RouteDetailPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageLikeRoute>(),
-        getIt<CalculatePointsDistance>(),
+        getIt<CalculateRouteCameraPosition>(),
         getIt<GenerateNewPolyline>(),
         getIt<UuidGeneratorService>().generate(),
         getIt<GetRouteListById>(),

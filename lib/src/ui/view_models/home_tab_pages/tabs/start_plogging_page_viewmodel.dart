@@ -50,7 +50,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   late RouteProgressData _routeProgressData;
   late Timer _saveRouteInterval;
   late Timer _drawRouteInterval;
-  final Map<PolylineId, Polyline> _polylines = {};
+  final List<Polyline> _polylines = [];
   final List<LatLng> _polylinePointList = [];
   Position? _lastPosition;
   double _currentZoom = 3;
@@ -88,7 +88,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     mapController = gmapController;
   }
 
-  createListeners() {
+  createRouteListeners() {
     createDrawRouteInterval();
     createSaveRouteInterval();
   }
@@ -102,6 +102,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     _positionListener = _geolocatorService
         .getStreamLocationPosition()
         .listen((Position position) async {
+      if (!isServiceEnabled) return;
       if (hasStartedRoute) {
         updateDirection(
             firstPosition: _currentPosition, secondPosition: position);
@@ -110,16 +111,6 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       _currentPosition = position;
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
-  }
-
-  updateDirection(
-      {required Position firstPosition, required Position secondPosition}) {
-    if (_lastPosition! != _currentPosition) {
-      firstPosition = _lastPosition!;
-      secondPosition = _currentPosition;
-    }
-    _currentDirection = _calculatePointsDirection
-        .executeByPositions([firstPosition, secondPosition]);
   }
 
   createConnectionStatusListener() {
@@ -154,7 +145,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   beginRoute() async {
     if (_hasStartedRoute) return;
     if (!await setCameraToCurrentLocation()) return;
-    createListeners();
+    createRouteListeners();
     _routeProgressData.startProgressData(currentUser.id);
     toggleRouteStatus(status: true);
     updatePoints();
@@ -172,6 +163,16 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   updatePoints() {
     saveInPointList();
     setLastPosition();
+  }
+
+  updateDirection(
+      {required Position firstPosition, required Position secondPosition}) {
+    if (_lastPosition! != _currentPosition) {
+      firstPosition = _lastPosition!;
+      secondPosition = _currentPosition;
+    }
+    _currentDirection = _calculatePointsDirection
+        .executeByPositions([firstPosition, secondPosition]);
   }
 
   validateRoute() {
@@ -232,7 +233,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       GeoPointUtils.getLatLongFromPostion(_lastPosition!),
       GeoPointUtils.getLatLongFromPostion(_currentPosition)
     ], Colors.red);
-    _polylines.addAll({polyline.polylineId: polyline});
+    _polylines.add(polyline);
   }
 
   Future<void> getCurrentLocation() async {
@@ -330,7 +331,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     return _currentZoom;
   }
 
-  Map<PolylineId, Polyline> get polylines {
+  List<Polyline> get polylines {
     return _polylines;
   }
 

@@ -23,12 +23,12 @@ class BadgeRouteAuthor extends StatelessWidget {
           leading: Container(
               margin: const EdgeInsets.only(top: 12),
               child: SizedBox(
-                  width: 50,
-                  height: 50,
+                  width: 45,
+                  height: 45,
                   child: image == null || image == ""
                       ? CardWidgetUtils.getImageFromAsset(avatar: true)
                       : CardWidgetUtils.getImageFromNetwork(image!,
-                          avatar: true))),
+                          avatar: true, rounded: true))),
           title: Row(
             children: [
               Column(

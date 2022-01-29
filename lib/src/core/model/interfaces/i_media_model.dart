@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 abstract class IMediaModel<T> extends IModel<T> {
+  Future<void> setAndSaveImage(String id, T data, String image);
   Future<void> setImage(String id, File file);
   Future<String> getImage(String id);
 }

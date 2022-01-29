@@ -10,9 +10,11 @@ const int maxLengthDescription = 100;
 // ignore: must_be_immutable
 class UploadImage extends StatefulWidget {
   final Function uploadImage;
+  final bool isListView;
   XFile? image;
 
-  UploadImage({required this.uploadImage, this.image, Key? key})
+  UploadImage(
+      {required this.uploadImage, this.isListView = true, this.image, Key? key})
       : super(key: key);
 
   @override
@@ -22,27 +24,35 @@ class UploadImage extends StatefulWidget {
 class _UploadImage extends State<UploadImage> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: 300, height: 800, child: _getForm());
+    return SizedBox(width: 300, child: _getForm());
   }
 
   Widget _getForm() {
-    return ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        children: [
-          imageSource,
-          const SizedBox(height: 15),
-          InputButton(
-              label: const Text("Add image from Camera"),
-              buttonType: InputButtonType.elevated,
-              onPress: () => updateImage(ImageSource.camera),
-              icon: const Icon(Icons.camera_alt_outlined)),
-          const SizedBox(height: 15),
-          InputButton(
-              label: const Text("Add image from Gallery"),
-              buttonType: InputButtonType.outlined,
-              onPress: () => updateImage(ImageSource.gallery),
-              icon: const Icon(Icons.camera_alt_outlined)),
-        ]);
+    return !widget.isListView
+        ? Column(children: _getFormContent())
+        : ListView(
+            children: _getFormContent(),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20));
+  }
+
+  List<Widget> _getFormContent() {
+    return [
+      imageSource,
+      const SizedBox(height: 15),
+      InputButton(
+          horizontalPadding: 20,
+          label: const Text("Add image from Camera"),
+          buttonType: InputButtonType.elevated,
+          onPress: () => updateImage(ImageSource.camera),
+          icon: const Icon(Icons.camera_alt_outlined)),
+      const SizedBox(height: 15),
+      InputButton(
+          horizontalPadding: 20,
+          label: const Text("Add image from Gallery"),
+          buttonType: InputButtonType.outlined,
+          onPress: () => updateImage(ImageSource.gallery),
+          icon: const Icon(Icons.camera_alt_outlined)),
+    ];
   }
 
   updateImage(ImageSource imageSource) async {

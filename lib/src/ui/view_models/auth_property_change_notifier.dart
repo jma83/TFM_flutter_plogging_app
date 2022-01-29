@@ -1,5 +1,3 @@
-// ignore_for_file: must_call_super
-
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,17 +21,23 @@ class AuthPropertyChangeNotifier extends PropertyChangeNotifier<String> {
         return;
       }
 
-      authService.currentUserData = await getUserById.execute(user.uid);
-      notifyLoggedIn();
+      try {
+        authService.currentUserData = await getUserById.execute(user.uid);
+        notifyLoggedIn();
+      } catch (_) {
+        errorDuringLogin();
+      }
     });
   }
 
   // Implements on child
   void notifyLoggedIn() {}
   void notifyNotLoggedIn() {}
+  void errorDuringLogin() {}
 
   @override
   void dispose() {
+    super.dispose();
     subscription?.cancel();
   }
 }

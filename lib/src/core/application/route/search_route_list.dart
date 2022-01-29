@@ -3,6 +3,7 @@ import 'package:flutter_plogging/src/core/domain/route/route_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
 import 'package:flutter_plogging/src/core/model/like_model.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
+import 'package:flutter_plogging/src/utils/iterable_utils.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -25,7 +26,7 @@ class SearchRouteList {
 
   Future<List<LikeData>> _getRouteIdsWithLike(
       List<RouteData> routes, String userId) async {
-    return await _likeModel.matchRoutesWithUserLikes(
-        userId, routes.map((e) => e.id!).toList());
+    return await IterableUtils.requestProgressiveInMatchLikes(
+        _likeModel, routes.map((e) => e.id!).toList(), userId);
   }
 }

@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_plogging/src/utils/app_constants.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -17,16 +18,11 @@ class StorageService {
           .child(entityName)
           .child(entityId)
           .child(resourceName)
-          .getDownloadURL();
+          .getDownloadURL()
+          .timeout(const Duration(seconds: AppConstants.maxTimeLoadingImage));
     } on FirebaseException catch (e) {
-      if (e.code == "permission-denied" || e.code == "unauthorized") {
-        print('User does not have permission to get from this reference.');
-      }
-      if (e.code == "object-not-found") {
-        print('Resource not found');
-      }
-
-      return Future.value("");
+      // ignore: use_rethrow_when_possible
+      throw e;
     }
   }
 
@@ -40,16 +36,8 @@ class StorageService {
           .child(resourceName)
           .putFile(file);
     } on FirebaseException catch (e) {
-      if (e.code == "permission-denied" || e.code == "unauthorized") {
-        print('User does not have permission to get from this reference.');
-        return;
-      }
-      if (e.code == "object-not-found") {
-        print('Resource not found');
-        return;
-      }
-
-      print("Error generico! $e");
+      // ignore: use_rethrow_when_possible
+      throw e;
     }
   }
 }

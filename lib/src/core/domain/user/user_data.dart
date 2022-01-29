@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_if_null_operators
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_plogging/src/core/domain/entity_data.dart';
 
-class UserData {
+class UserData extends EntityData {
   String id;
   String username;
   int age;

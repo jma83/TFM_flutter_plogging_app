@@ -5,6 +5,7 @@ import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
 import 'package:flutter_plogging/src/core/model/follower_model.dart';
 import 'package:flutter_plogging/src/core/model/like_model.dart';
 import 'package:flutter_plogging/src/core/model/route_model.dart';
+import 'package:flutter_plogging/src/utils/iterable_utils.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -37,8 +38,10 @@ class GetFollowingRouteList {
     if (userFollowingIds.isEmpty) {
       return [];
     }
-    return await _routeModel.queryElementInCriteria(
-        RouteFieldData.userId, userFollowingIds);
+    return (await IterableUtils.requestProgressiveIn(
+            _routeModel, userFollowingIds, RouteFieldData.userId))
+        .map((e) => e as RouteData)
+        .toList();
   }
 
   Future<List<LikeData>> _matchRoutesWithUserLikes(
@@ -46,7 +49,8 @@ class GetFollowingRouteList {
     if (routes.isEmpty) {
       return [];
     }
-    return await _likeModel.matchRoutesWithUserLikes(
-        userId, routes.map((e) => e.id!).toList());
+
+    return await IterableUtils.requestProgressiveInMatchLikes(
+        _likeModel, routes.map((e) => e.id!).toList(), userId);
   }
 }

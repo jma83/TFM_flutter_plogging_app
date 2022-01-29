@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_plogging/src/ui/components/upload_image.dart';
 
 const int maxLengthName = 20;
 const int maxLengthDescription = 100;
@@ -14,7 +11,6 @@ class CreateRouteConfirmation extends StatefulWidget {
   final Function setDescription;
   final Function setImage;
   final Function uploadImage;
-  XFile? image;
   String name = "";
   String description = "";
 
@@ -23,7 +19,6 @@ class CreateRouteConfirmation extends StatefulWidget {
       required this.setDescription,
       required this.setImage,
       required this.uploadImage,
-      this.image,
       Key? key})
       : super(key: key);
 
@@ -34,7 +29,7 @@ class CreateRouteConfirmation extends StatefulWidget {
 class _CreateRouteConfirmation extends State<CreateRouteConfirmation> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: 300, height: 800, child: _getForm());
+    return SizedBox(width: 300, child: _getForm());
   }
 
   Widget _getForm() {
@@ -54,66 +49,16 @@ class _CreateRouteConfirmation extends State<CreateRouteConfirmation> {
               label: "Description",
               hint: "Route description",
               icon: const Icon(Icons.my_library_books_outlined),
-              maxLength: 100,
+              maxLength: 150,
               inputType: TextInputType.multiline,
               onChange: widget.setDescription,
               isPasswordField: false,
-              maxLines: 8),
-          imageSource,
+              maxLines: 7),
           const SizedBox(height: 15),
-          InputButton(
-              label: const Text("Add image from Camera"),
-              buttonType: InputButtonType.elevated,
-              onPress: () => updateImage(ImageSource.camera),
-              icon: const Icon(Icons.camera_alt_outlined)),
-          const SizedBox(height: 15),
-          InputButton(
-              label: const Text("Add image from Gallery"),
-              buttonType: InputButtonType.outlined,
-              onPress: () => updateImage(ImageSource.gallery),
-              icon: const Icon(Icons.camera_alt_outlined)),
+          UploadImage(
+            uploadImage: widget.uploadImage,
+            isListView: false,
+          ),
         ]);
-  }
-
-  updateImage(ImageSource imageSource) async {
-    final image = await widget.uploadImage(imageSource);
-
-    if (image == null) return;
-    setState(() => widget.image = image as XFile);
-  }
-
-  Widget get imageSource {
-    if (widget.image != null) {
-      return Column(
-        children: [
-          const SizedBox(height: 15),
-          const Text(
-            "Uploaded Image: ",
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(height: 5),
-          Image.file(
-            File(widget.image!.path),
-            width: 200,
-            height: 200,
-          ),
-          const SizedBox(height: 5),
-          InputButton(
-              label: const Text(""),
-              width: 10,
-              horizontalPadding: 0,
-              buttonType: InputButtonType.elevated,
-              bgColor: Colors.red,
-              onPress: removeImage,
-              icon: const Icon(Icons.close_rounded))
-        ],
-      );
-    }
-    return Container();
-  }
-
-  removeImage() {
-    widget.setImage(null);
-    setState(() => widget.image = null);
   }
 }

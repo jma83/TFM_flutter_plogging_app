@@ -1,4 +1,6 @@
-class FollowerData {
+import 'package:flutter_plogging/src/core/domain/entity_data.dart';
+
+class FollowerData extends EntityData {
   String id;
   String userId;
   String userFollowedId;

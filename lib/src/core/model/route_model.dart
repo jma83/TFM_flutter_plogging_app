@@ -134,4 +134,14 @@ class RouteModel implements IMediaModel<RouteData> {
             RouteData.castMapToRoute(e.data() as Map<String, dynamic>, e.id))
         .toList();
   }
+
+  @override
+  Future<void> setAndSaveImage(String id, RouteData data, String image) async {
+    if (image != "" && image != data.image) {
+      await setImage(data.id!, File(data.image!));
+      data.image = await getImage(data.id!);
+    }
+    final Map<String, Object> userMap = RouteData.castRouteToMap(data);
+    await entity.doc(id).update(userMap);
+  }
 }

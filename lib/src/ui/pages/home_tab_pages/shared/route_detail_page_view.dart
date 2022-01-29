@@ -1,11 +1,15 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
+import 'package:flutter_plogging/src/ui/components/map_view_utils.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/components/badge_route_author.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
+import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
@@ -45,7 +49,7 @@ class RouteDetailPageView extends HomePageWidget {
         const SizedBox(
           height: 16,
         ),
-        getMap(context),
+        getMapWrapper(context),
         const SizedBox(
           height: 22,
         ),
@@ -62,18 +66,34 @@ class RouteDetailPageView extends HomePageWidget {
     );
   }
 
+  Widget getMapWrapper(BuildContext context) {
+    return MapViewUtils(
+      mapWidget: getMap(context),
+      myLocationCallback: currentViewModel.setCameraPosition,
+      zoomInCallback: currentViewModel.zoomIn,
+      zoomOutCallback: currentViewModel.zoomOut,
+      offsetTopMyLocation: 200,
+      offsetTopZoom: 60,
+    );
+  }
+
   Widget getMap(BuildContext context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width / 1.6,
+        height: MediaQuery.of(context).size.width / 1.5,
         child: GoogleMap(
-          polylines: Set<Polyline>.of(currentViewModel.polylines.values),
+          polylines: Set<Polyline>.of(currentViewModel.polylines),
           initialCameraPosition:
               const CameraPosition(target: LatLng(0, 0), zoom: 8),
           myLocationEnabled: false,
           myLocationButtonEnabled: false,
-          scrollGesturesEnabled: false,
+          scrollGesturesEnabled: true,
           mapType: MapType.normal,
+          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+            Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer(),
+            ),
+          },
           zoomGesturesEnabled: false,
           zoomControlsEnabled: false,
           onMapCreated: (GoogleMapController controller) {
@@ -85,15 +105,8 @@ class RouteDetailPageView extends HomePageWidget {
   }
 
   getImageFromNetwork() {
-    const String image = "assets/img1.jpg";
-
-    return FadeInImage.assetNetwork(
-      image: currentViewModel.route.image!,
-      placeholder: image,
-      height: 100,
-      fadeInDuration: const Duration(milliseconds: 200),
-      fit: BoxFit.cover,
-    );
+    return CardWidgetUtils.getImageFromNetwork(currentViewModel.route.image!,
+        avatar: false, fit: BoxFit.cover, height: 100);
   }
 
   getTitle(BuildContext context) {

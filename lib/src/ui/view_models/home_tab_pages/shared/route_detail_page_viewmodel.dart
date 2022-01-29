@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/core/application/route/calculate_points_distance.dart';
+import 'package:flutter_plogging/src/core/application/route/calculate_route_camera_position.dart';
 import 'package:flutter_plogging/src/core/application/route/generate_new_polyline.dart';
 import 'package:flutter_plogging/src/core/application/route/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/like/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
+import 'package:flutter_plogging/src/core/domain/route/route_camera_position_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
@@ -25,18 +26,19 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
 
   final GenerateNewPolyline _generateNewPolyline;
   final ManageLikeRoute _manageLikeRoute;
-  final CalculatePointsDistance _calculatePointsDistance;
+  final CalculateRouteCameraPosition _calculateRouteCameraPosition;
   final GetRouteListById _getRouteListById;
   final GetUserById _getUserById;
   final LoadingService _loadingService;
 
   final String _instanceId;
-  Map<PolylineId, Polyline> polylines = {};
+  List<Polyline> polylines = [];
+  RouteCameraPosition? _routeCameraPosition;
 
   RouteDetailPageViewModel(
       AuthenticationService authenticationService,
       this._manageLikeRoute,
-      this._calculatePointsDistance,
+      this._calculateRouteCameraPosition,
       this._generateNewPolyline,
       this._instanceId,
       this._getRouteListById,
@@ -93,57 +95,30 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   }
 
   void generatePolylines() {
-    Polyline? polyline = _generateNewPolyline.executeNew(
+    Polyline polyline = _generateNewPolyline.executeNew(
         GeoPointUtils.convertGeopointsToLatLng(route.locationArray),
         Colors.red);
-    polylines[polyline.polylineId] = polyline;
+    polylines.add(polyline);
   }
 
   void setCameraPosition() {
     if (route.locationArray.isEmpty) return;
-    double accLat = 0;
-    double accLong = 0;
-    double latitudeMedian = 0;
-    double longitudeMedian = 0;
-    double distance = 0;
-    double zoom = 0;
-    for (int i = 0; i < route.locationArray.length; i++) {
-      accLat += route.locationArray[i].latitude;
-      accLong += route.locationArray[i].longitude;
-      if (i != route.locationArray.length - 1) {
-        continue;
-      }
-      latitudeMedian = accLat / route.locationArray.length;
-      longitudeMedian = accLong / route.locationArray.length;
-      List<LatLng> latLngList = [];
-      latLngList
-          .add(GeoPointUtils.convertGeopointToLatLng(route.locationArray[0]));
-      latLngList.add(GeoPointUtils.convertGeopointToLatLng(
-          route.locationArray[route.locationArray.length - 1]));
-      distance = _calculatePointsDistance.execute(latLngList);
-    }
-
-    if (distance < 500) {
-      zoom = 20;
-    }
-
-    if (distance >= 500 && distance < 1000) {
-      zoom = 15;
-    }
-
-    if (distance >= 1000 && distance < 3000) {
-      zoom = 13;
-    }
-
-    if (distance >= 3000) {
-      zoom = 11;
-    }
+    _routeCameraPosition ??= _calculateRouteCameraPosition.execute(route);
 
     CameraUpdate cameraUpdate = CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(latitudeMedian, longitudeMedian),
-        zoom: zoom <= 8 ? 8 : zoom));
+        target: _routeCameraPosition!.centerPoint,
+        zoom:
+            _routeCameraPosition!.zoom <= 8 ? 8 : _routeCameraPosition!.zoom));
 
     animateCamera(cameraUpdate);
+  }
+
+  zoomOut() {
+    animateCamera(CameraUpdate.zoomOut());
+  }
+
+  zoomIn() {
+    animateCamera(CameraUpdate.zoomIn());
   }
 
   animateCamera(CameraUpdate cameraUpdate) {

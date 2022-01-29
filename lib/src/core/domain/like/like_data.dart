@@ -1,4 +1,6 @@
-class LikeData {
+import 'package:flutter_plogging/src/core/domain/entity_data.dart';
+
+class LikeData extends EntityData {
   String id;
   String userId;
   String routeId;

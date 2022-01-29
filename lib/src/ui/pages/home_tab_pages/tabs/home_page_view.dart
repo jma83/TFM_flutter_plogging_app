@@ -119,8 +119,11 @@ class HomePageView extends HomePageWidget {
 
   Widget getTitle() {
     return Container(
-        margin: const EdgeInsets.only(left: 8),
-        child: const Text("Routes feed:", style: TextStyle(fontSize: 18)));
+        margin: const EdgeInsets.only(bottom: 10),
+        child: const Text(
+          "Routes feed:",
+          style: TextStyle(fontSize: 18),
+        ));
   }
 
   HomePageViewModel get currentViewModel {

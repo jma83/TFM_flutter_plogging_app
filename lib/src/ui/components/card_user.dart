@@ -73,7 +73,11 @@ class CardUser extends StatelessWidget {
               image == null || image == ""
                   ? CardWidgetUtils.getImageFromAsset(avatar: true)
                   : CardWidgetUtils.getImageFromNetwork(image!,
-                      avatar: true, width: 300, height: 60, fit: BoxFit.fill),
+                      rounded: true,
+                      avatar: true,
+                      width: 300,
+                      height: 60,
+                      fit: BoxFit.fill),
               Container(
                 margin: const EdgeInsets.only(top: 5),
                 alignment: Alignment.center,

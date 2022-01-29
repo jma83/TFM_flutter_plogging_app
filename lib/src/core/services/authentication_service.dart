@@ -1,5 +1,3 @@
-// ignore: implementation_imports
-import 'package:collection/src/iterable_extensions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_plogging/src/core/domain/auth/auth_error_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';

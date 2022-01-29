@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_plogging/src/core/domain/entity_data.dart';
 
-class RouteData {
+class RouteData extends EntityData {
   String? id;
   String? name;
   String? description;
@@ -22,7 +23,8 @@ class RouteData {
       this.duration = 0,
       this.image = "",
       this.distance = 0,
-      this.locationArray = const []});
+      this.locationArray = const []})
+      : super();
 
   static Map<String, Object> castRouteToMap(RouteData route) {
     Map<String, Object> requiredFields = {

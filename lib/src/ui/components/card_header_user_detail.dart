@@ -112,7 +112,7 @@ class CardHeaderUserDetail extends StatelessWidget {
           user.image == null || user.image == ""
               ? CardWidgetUtils.getImageFromAsset(avatar: true)
               : CardWidgetUtils.getImageFromNetwork(user.image!,
-                  avatar: true, width: 300, fit: BoxFit.fill),
+                  avatar: true, rounded: true, width: 300, fit: BoxFit.fill),
           changeImageCallback == null
               ? Container()
               : FloatingActionButton.small(

@@ -11,18 +11,7 @@ class UpdateUserImage {
 
   Future<void> execute(String image) async {
     final UserData user = _authenticationService.currentUserData!;
-    final UserData newUser = UserData(
-        id: user.id,
-        username: user.username,
-        age: user.age,
-        gender: user.gender,
-        followers: user.followers,
-        following: user.following,
-        image: image,
-        level: user.level,
-        xp: user.xp,
-        creationDate: user.creationDate);
-    await _userModel.updateElement(user.id, newUser);
+    await _userModel.setAndSaveImage(user.id, user, image);
     _authenticationService.currentUserData =
         await _userModel.queryElementById(user.id);
   }

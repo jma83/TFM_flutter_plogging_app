@@ -28,17 +28,17 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
       : super(authenticationService);
 
   confirmLogoutProfile() {
-    _loadingService.setLoading(true);
+    toggleLoading(loading: true);
     authenticationService.signOut();
     dismissAlert();
   }
 
   @override
   loadPage() async {
-    _loadingService.setLoading(true);
+    toggleLoading(loading: true);
     await calcTodaysObjectiveProgress();
     updatePage();
-    _loadingService.setLoading(false);
+    toggleLoading(loading: false);
   }
 
   @override
@@ -79,13 +79,13 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> updateUserImage() async {
     if (tmpImage == null) return;
-    _loadingService.setLoading(true);
+    toggleLoading(loading: true);
     await _updateUserImage.execute(tmpImage!.path);
     tmpImage = null;
     updatePage();
     dismissAlert();
 
-    _loadingService.setLoading(false);
+    toggleLoading(loading: false);
   }
 
   Future<XFile?> uploadImage(ImageSource? imageSource) async {
@@ -96,6 +96,10 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
     final XFile? image = await _imagePickerService.pickImage(imageSource);
     tmpImage = image;
     return image;
+  }
+
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   String get formattedCreationDate {

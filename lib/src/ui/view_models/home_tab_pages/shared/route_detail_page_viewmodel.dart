@@ -51,11 +51,11 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   loadPage() async {
-    _loadingService.toggleLoading();
+    toggleLoading(loading: true);
     await _getRouteListById.execute(_routeListData.id!);
     await _getUserById.execute(_userData.id);
     updatePage();
-    _loadingService.toggleLoading();
+    toggleLoading(loading: false);
   }
 
   @override
@@ -86,6 +86,10 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
   loadPolylines() {
     generatePolylines();
     updatePage();
+  }
+
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   void generatePolylines() {

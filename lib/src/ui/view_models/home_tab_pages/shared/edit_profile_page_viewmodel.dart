@@ -39,7 +39,7 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
   }
 
   void validateForm() {
-    toggleLoading();
+    toggleLoading(loading: true);
     if (!_userViewModel.validateUpdate(_email, _username, _password,
         _confirmPassword, _age, Gender.getGenderIndex(_gender).toString())) {
       setError(_userViewModel.errorMessage);
@@ -75,16 +75,16 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
       }
       authenticationService.currentUserData = newUser;
       notifyListeners(EditProfileNotifiers.updateProfileData);
-    }).whenComplete(() => _loadingService.setLoading(false));
+    }).whenComplete(() => toggleLoading(loading: false));
   }
 
-  toggleLoading() {
-    _loadingService.toggleLoading();
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   setError(String errorValue) {
     _errorMessage = errorValue;
-    toggleLoading();
+    toggleLoading(loading: false);
     notifyListeners(EditProfileNotifiers.editProfileProcessError);
   }
 

@@ -29,7 +29,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> submitSearch(String value) async {
-    toggleLoading();
+    toggleLoading(loading: true);
     List<RouteListData> routes = [];
     if (value.isEmpty) {
       routes = await _getRouteListByUser.execute(currentUserId);
@@ -37,7 +37,7 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
       routes = await _searchRouteList.execute(value, currentUserId);
     }
     _routes = RouteListAuthorData.convertRoutesUniqueUser(routes, currentUser);
-    toggleLoading();
+    toggleLoading(loading: false);
     updatePage();
   }
 
@@ -80,8 +80,8 @@ class MyRoutesPageViewModel extends HomeTabsChangeNotifier {
     updatePage();
   }
 
-  toggleLoading() {
-    _loadingService.toggleLoading();
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   likeRoute(RouteListData routeData) async {

@@ -21,7 +21,7 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   }
 
   void validateForm() {
-    toggleLoading();
+    toggleLoading(loading: true);
     if (!_userViewModel.validateLogin(_email, _password)) {
       setError(_userViewModel.errorMessage);
       return;
@@ -35,12 +35,12 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
           await authService.signIn(email: _email, password: _password);
       if (result != null) {
         setError(result);
-        return toggleLoading();
+        return toggleLoading(loading: false);
       }
     } catch (e) {
       // ignore: avoid_print
       print(e);
-      return toggleLoading();
+      return toggleLoading(loading: false);
     }
     _loadingService.setLoading(true);
   }
@@ -48,11 +48,11 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
   setError(String errorValue) {
     _errorMessage = errorValue;
     notifyListeners(LoginNotifiers.loginProcessError);
-    toggleLoading();
+    toggleLoading(loading: false);
   }
 
-  toggleLoading() {
-    _loadingService.toggleLoading();
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   @override

@@ -16,9 +16,11 @@ class LoginPageView extends PageWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginPageViewModel>.reactive(
         viewModelBuilder: () => viewModel as LoginPageViewModel,
-        onModelReady: (viewModel) => viewModel.addListener(
-            () => showErrorAlert(context, viewModel),
-            [LoginNotifiers.loginProcessError]),
+        onModelReady: (viewModel) {
+          viewModel.addListener(() => showErrorAlert(context, viewModel),
+              [LoginNotifiers.loginProcessError]);
+          viewModel.toggleLoading();
+        },
         builder: (context, LoginPageViewModel viewModel, child) {
           return Scaffold(
             appBar: AppBar(title: const Text("Plogging Challenge")),

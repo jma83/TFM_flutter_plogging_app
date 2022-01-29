@@ -61,6 +61,7 @@ class StartPloggingPageView extends HomePageWidget {
       scrollGesturesEnabled: !currentViewModel.hasStartedRoute,
       zoomGesturesEnabled: false,
       zoomControlsEnabled: false,
+      compassEnabled: !currentViewModel.hasStartedRoute,
       onMapCreated: (GoogleMapController controller) {
         currentViewModel.setMapController(controller);
         currentViewModel.setCameraToCurrentLocation(first: true);

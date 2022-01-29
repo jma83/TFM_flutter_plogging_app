@@ -102,17 +102,24 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     _positionListener = _geolocatorService
         .getStreamLocationPosition()
         .listen((Position position) async {
+      if (hasStartedRoute) {
+        updateDirection(
+            firstPosition: _currentPosition, secondPosition: position);
+        await setCameraToCurrentLocation();
+      }
       _currentPosition = position;
-      updateDirection();
-      await setCameraToCurrentLocation();
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
 
-  updateDirection() {
-    if (_lastPosition == null) return;
+  updateDirection(
+      {required Position firstPosition, required Position secondPosition}) {
+    if (_lastPosition! != _currentPosition) {
+      firstPosition = _lastPosition!;
+      secondPosition = _currentPosition;
+    }
     _currentDirection = _calculatePointsDirection
-        .executeByPositions([_lastPosition!, _currentPosition]);
+        .executeByPositions([firstPosition, secondPosition]);
   }
 
   createConnectionStatusListener() {
@@ -120,7 +127,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         .getStreamLocationStatus()
         .listen((ServiceStatus status) async {
       _serviceStatus = status;
-      await setCameraToCurrentLocation(first: true);
+      if (isServiceEnabled) await setCameraToCurrentLocation(first: true);
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
@@ -194,6 +201,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   completeProgressRouteData() {
     final distance = _calculatePointsDistance.execute(_polylinePointList);
     _routeProgressData.completeProgressData(distance, _polylinePointList);
+    _currentDirection = 0;
     _lastPosition = null;
     _polylinePointList.clear();
     _polylines.clear();

@@ -54,11 +54,11 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   Future<void> submitSearch(String value, bool isFirst) async {
     _isTop = false;
-    toggleLoading();
+    toggleLoading(loading: true);
     final List<UserData> usersFound = await _searchUserList.execute(value);
     _users = UserSearchData.createListFromUsersAndFollows(
         usersFound, _followingList);
-    toggleLoading();
+    toggleLoading(loading: false);
     updatePage();
     //_updateFollowingUsers();
   }
@@ -86,8 +86,8 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     updatePage();
   }
 
-  toggleLoading() {
-    _loadingService.toggleLoading();
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   handleFollowUser(UserSearchData userData) async {

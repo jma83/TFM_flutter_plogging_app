@@ -41,12 +41,12 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   loadPage() async {
-    _loadingService.toggleLoading();
+    toggleLoading(loading: true);
     await checkUserFollow();
     updatePage();
     await getUserRoutes();
     updatePage();
-    _loadingService.toggleLoading();
+    toggleLoading(loading: false);
   }
 
   @override
@@ -99,6 +99,10 @@ class UserDetailPageViewModel extends HomeTabsChangeNotifier {
 
   void navigateToPrevious() {
     notifyListeners(UserDetailNotifier.navigateToPrevious);
+  }
+
+  toggleLoading({bool loading = false}) {
+    _loadingService.setLoading(loading);
   }
 
   get formattedCreationDate {

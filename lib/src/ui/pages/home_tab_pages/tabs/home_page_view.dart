@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_adjacent_string_concatenation
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
@@ -53,7 +55,7 @@ class HomePageView extends HomePageWidget {
         Image(image: AssetImage("assets/not-found.png"), width: 40),
         SizedBox(height: 8),
         Text(
-          "No routes found...\nBy following users, routes will appear here",
+          "No routes found in your feed...\nBy following users, routes will appear here",
           style: TextStyle(fontSize: 16),
           textAlign: TextAlign.center,
         )
@@ -94,7 +96,11 @@ class HomePageView extends HomePageWidget {
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Column(
-                  children: [getWrapHeader(viewModel), card(viewModel, index)],
+                  children: [
+                    getWrapHeader(viewModel),
+                    getTitle(),
+                    card(viewModel, index)
+                  ],
                 );
               }
               return card(viewModel, index);
@@ -111,6 +117,12 @@ class HomePageView extends HomePageWidget {
             authorUsername: viewModel.routesWithAuthor[index].userData.username,
             likeCallback: viewModel.likeRoute,
             navigateRouteCallback: viewModel.navigateToRoute));
+  }
+
+  Widget getTitle() {
+    return Container(
+        margin: const EdgeInsets.only(left: 8),
+        child: const Text("Routes feed:", style: TextStyle(fontSize: 18)));
   }
 
   HomePageViewModel get currentViewModel {

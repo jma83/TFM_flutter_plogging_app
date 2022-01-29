@@ -12,7 +12,6 @@ class CardHeaderUserDetail extends StatelessWidget {
   final bool hideFollow;
   final int? maxXp;
   final int? xp;
-  final String? image;
   final Function? followUserCallback;
   final Function? editUserCallback;
   final Function? likedRoutesCallback;
@@ -23,7 +22,6 @@ class CardHeaderUserDetail extends StatelessWidget {
       required this.genderFormatted,
       required this.creationDate,
       required this.isSelf,
-      this.image,
       this.hideFollow = false,
       this.maxXp,
       this.xp,
@@ -111,9 +109,9 @@ class CardHeaderUserDetail extends StatelessWidget {
         width: MediaQuery.of(context).size.width / 3,
         height: MediaQuery.of(context).size.width / 3,
         child: Stack(alignment: Alignment.bottomRight, children: [
-          image == null || image == ""
+          user.image == null || user.image == ""
               ? CardWidgetUtils.getImageFromAsset(avatar: true)
-              : CardWidgetUtils.getImageFromNetwork(image!,
+              : CardWidgetUtils.getImageFromNetwork(user.image!,
                   avatar: true, width: 300, fit: BoxFit.fill),
           changeImageCallback == null
               ? Container()

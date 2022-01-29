@@ -37,9 +37,9 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
         setError(result);
         return toggleLoading(loading: false);
       }
-    } catch (e) {
-      // ignore: avoid_print
-      print(e);
+    } catch (_) {
+      setError(
+          "Sorry there was an error during login. Please try again later.");
       return toggleLoading(loading: false);
     }
     _loadingService.setLoading(true);
@@ -82,5 +82,13 @@ class LoginPageViewModel extends AuthPropertyChangeNotifier {
 
   get isLoading {
     return _loadingService.isLoading;
+  }
+
+  get email {
+    return _email;
+  }
+
+  get password {
+    return _password;
   }
 }

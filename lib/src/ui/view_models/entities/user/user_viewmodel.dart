@@ -6,7 +6,8 @@ class UserViewModel {
   String _errorMessage = "";
 
   bool validateLogin(String email, String password) {
-    return executeValidation(UserEmailStrategy(), email);
+    return executeValidation(UserEmailStrategy(), email) &&
+        executeValidation(UserPasswordStrategy(detailError: false), password);
   }
 
   bool validateRegister(String email, String username, String password1,

@@ -48,7 +48,6 @@ class ProfilePageView extends HomePageWidget {
         ? Container()
         : CardHeaderUserDetail(
             user: currentViewModel.user!,
-            image: currentViewModel.user!.image,
             creationDate: currentViewModel.formattedCreationDate,
             genderFormatted: currentViewModel.formattedGender,
             isSelf: true,

@@ -47,6 +47,7 @@ class LoginPageView extends PageWidget {
     return Column(
       children: [
         InputText(
+            textController: TextEditingController(text: viewModel.email),
             label: "Email",
             hint: "Your email account",
             icon: const Icon(Icons.alternate_email),
@@ -54,6 +55,7 @@ class LoginPageView extends PageWidget {
             onChange: viewModel.setEmail),
         const SizedBox(height: 15),
         InputText(
+            textController: TextEditingController(text: viewModel.password),
             label: "Password",
             hint: "Your password account",
             icon: const Icon(Icons.lock_outline),

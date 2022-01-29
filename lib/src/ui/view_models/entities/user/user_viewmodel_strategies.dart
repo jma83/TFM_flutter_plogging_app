@@ -10,6 +10,11 @@ const empty = "Fields can't be empty. Please complete them and try again";
 abstract class UserViewModelStrategy {
   bool validResult = false;
   bool emptyResult = false;
+  bool detailError = true;
+  UserViewModelStrategy(
+      {this.validResult = false,
+      this.emptyResult = false,
+      this.detailError = true});
   void execute(String value);
   String getEmptyMessage();
   String getErrorMessage();
@@ -34,6 +39,7 @@ class UserEmailStrategy extends UserViewModelStrategy {
 }
 
 class UserPasswordStrategy extends UserViewModelStrategy {
+  UserPasswordStrategy({detailError = true}) : super(detailError: detailError);
   @override
   void execute(String value) {
     emptyResult = value.isEmpty;
@@ -42,7 +48,9 @@ class UserPasswordStrategy extends UserViewModelStrategy {
 
   @override
   String getErrorMessage() {
-    return "Error, password format is incorrect. Must contain at least an uppercase, a lowercase and a number.";
+    return detailError
+        ? "Error, password format is incorrect. Must contain at least an uppercase, a lowercase and a number."
+        : "Invalid credentials";
   }
 
   @override
@@ -60,7 +68,9 @@ class UserNameStrategy extends UserViewModelStrategy {
 
   @override
   String getErrorMessage() {
-    return "Error, the username format is incorrect. Must contain between 2 and 20 alphanumeric characters.";
+    return detailError
+        ? "Error, the username format is incorrect. Must contain between 2 and 20 alphanumeric characters."
+        : "Error username is invalid";
   }
 
   @override
@@ -79,7 +89,9 @@ class UserAgeStrategy extends UserViewModelStrategy {
 
   @override
   String getErrorMessage() {
-    return "Error, age is invalid. Must be greater or equals than 12 years old.";
+    return detailError
+        ? "Error, age is invalid. Must be greater or equals than 12 years old."
+        : "Error, age is invalid";
   }
 
   @override

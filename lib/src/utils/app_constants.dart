@@ -9,4 +9,5 @@ class AppConstants {
   static const int secondsToSave = 5; //meters
   static const int secondsToDraw = 1; //meters
   static const int minDuration = 20; //seconds
+  static const int maxTimeLoadingApp = 10; //seconds
 }

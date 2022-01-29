@@ -1,4 +1,7 @@
+// ignore: implementation_imports
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_plogging/src/core/domain/auth/auth_error_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/services/interfaces/i_authentication_service.dart';
 import 'package:injectable/injectable.dart';
@@ -101,34 +104,13 @@ class AuthenticationService implements IAuthenticationService {
   }
 
   String _getMessageFromErrorCode(String errorCode) {
-    switch (errorCode) {
-      case "ERROR_EMAIL_ALREADY_IN_USE":
-      case "account-exists-with-different-credential":
-      case "email-already-in-use":
-        return "Email already used. Go to login page.";
-      case "ERROR_WRONG_PASSWORD":
-      case "wrong-password":
-        return "Wrong password combination.";
-      case "ERROR_USER_NOT_FOUND":
-      case "user-not-found":
-        return "No user found with this email.";
-      case "ERROR_USER_DISABLED":
-      case "user-disabled":
-        return "User disabled.";
-      case "ERROR_TOO_MANY_REQUESTS":
-        return "Too many requests to log into this account.";
-      case "ERROR_OPERATION_NOT_ALLOWED":
-      case "operation-not-allowed":
-        return "Server error, please try again later.";
-      case "ERROR_INVALID_EMAIL":
-      case "invalid-email":
-        return "Email address is invalid.";
-      case "requires-recent-login":
-        return "Email update needs also old password";
-      case "too-many-requests":
-        return "Operation failed. Please try again later.";
-      default:
-        return "Login failed. Please try again.";
-    }
+    String errorMsg = genericError;
+
+    authErrorList.forEach((key, value) {
+      if (key.contains(errorCode)) {
+        errorMsg = value;
+      }
+    });
+    return errorMsg;
   }
 }

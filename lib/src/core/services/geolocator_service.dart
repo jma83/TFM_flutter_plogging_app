@@ -1,3 +1,4 @@
+import 'package:flutter_plogging/src/core/services/interfaces/i_geolocator_service.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -7,28 +8,31 @@ import 'package:injectable/injectable.dart';
 const String apiKey = "AIzaSyBQRMdZ6WuXDzw2gUFklXZuQU4L1Sk7ntg";
 
 @injectable
-class GeolocatorService {
+class GeolocatorService extends IGeolocatorService {
   final PolylinePoints _polylinePoints;
   GeolocatorService(this._polylinePoints);
 
+  @override
   Stream<ServiceStatus> getStreamLocationStatus() {
     return Geolocator.getServiceStatusStream();
   }
 
+  @override
   Stream<Position> getStreamLocationPosition() {
     return Geolocator.getPositionStream();
   }
 
+  @override
   Future<Position> getCurrentLocation() async {
     if (!await validateLocationService()) {
       if (!await _requestLocationPermission()) {
         return Future.error('Location services are disabled.');
       }
     }
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    return await Geolocator.getCurrentPosition();
   }
 
+  @override
   Future<bool> validateLocationService() async {
     LocationPermission locationPermission = await Geolocator.checkPermission();
     if (!await Geolocator.isLocationServiceEnabled()) return false;
@@ -38,6 +42,7 @@ class GeolocatorService {
     return true;
   }
 
+  @override
   Future<List<LatLng>> createPolylines(
       LatLng startPoint, LatLng endPoint) async {
     PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
@@ -55,11 +60,13 @@ class GeolocatorService {
     }).toList();
   }
 
+  @override
   double calculateDistance(LatLng startPoint, LatLng endPoint) {
     return Geolocator.distanceBetween(startPoint.latitude, startPoint.longitude,
         endPoint.latitude, endPoint.longitude);
   }
 
+  @override
   double calculateDirection(LatLng startPoint, LatLng endPoint) {
     return Geolocator.bearingBetween(startPoint.latitude, startPoint.longitude,
         endPoint.latitude, endPoint.longitude);

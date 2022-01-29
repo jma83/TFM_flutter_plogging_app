@@ -1,10 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
+import 'package:flutter_plogging/src/ui/components/text_link.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/how_it_works_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @injectable
 class HowItWorksPageView extends HomePageWidget {
@@ -26,19 +29,32 @@ class HowItWorksPageView extends HomePageWidget {
   }
 
   Widget getContent(BuildContext context) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        Image(image: AssetImage("assets/logo.png"), width: 150),
-        SizedBox(height: 12),
-        Text(
-          "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas , las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.   ",
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
-        )
-      ],
-    ));
+    return ListView(children: [
+      Center(
+          child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Image(image: AssetImage("assets/logo.png"), width: 120),
+                    Text(
+                      "Plogging challenge",
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    SizedBox(height: 40),
+                    Text(
+                      "The aim of this application is to promote the Plogging activity. \n\nPlogging is a combination of jogging with picking up litter. By doing sport, we can contribute to clean enviroments around the cities. \n\nIn this app, you can record your routes when doing Plogging and share it with other users of the platform",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 40),
+                    Text('For more info about plogging, checkout this site: '),
+                    TextLink(
+                        label: 'Plogging.org',
+                        link: 'https://www.plogging.org/what-is-plogging')
+                  ])))
+    ]);
   }
 }

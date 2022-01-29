@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_adjacent_string_concatenation
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';

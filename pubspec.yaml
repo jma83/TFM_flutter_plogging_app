@@ -49,6 +49,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   image_picker: ^0.8.4+4 
   rxdart: ^0.27.3
+  url_launcher: ^6.0.18
 
 dev_dependencies:
   flutter_test:

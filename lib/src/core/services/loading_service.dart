@@ -1,5 +1,6 @@
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:async';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_plogging/src/utils/app_constants.dart';
 
 class LoadingService {
   bool _isLoading = false;
@@ -41,7 +42,8 @@ class LoadingService {
     if (!_isLoading) {
       return _clearTimeout();
     }
-    _timer = Timer(const Duration(seconds: 6), () => _clearTimeout());
+    _timer = Timer(const Duration(seconds: AppConstants.maxTimeLoadingApp),
+        () => _clearTimeout());
   }
 
   _clearTimeout() {

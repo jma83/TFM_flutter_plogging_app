@@ -106,7 +106,8 @@ void $initViewModels() {
         getIt<LoadingService>(),
         getIt<GetTodayUserDistance>(),
         getIt<UpdateUserImage>(),
-        getIt<ImagePickerService>()))
+        getIt<ImagePickerService>(),
+        getIt<GetUserById>()))
     ..registerFactory<SearchPageViewModel>(() => SearchPageViewModel(
         getIt<AuthenticationService>(),
         getIt<ManageFollowUser>(),

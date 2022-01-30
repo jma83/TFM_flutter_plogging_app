@@ -1,4 +1,5 @@
 import 'package:flutter_plogging/src/core/application/route/get_today_user_distance.dart';
+import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
 import 'package:flutter_plogging/src/core/application/user/update_user_image.dart';
 import 'package:flutter_plogging/src/core/domain/gender/gender_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
@@ -17,6 +18,7 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
   final GetTodayUserDistance _getTodayUserDistance;
   final UpdateUserImage _updateUserImage;
   final ImagePickerService _imagePickerService;
+  final GetUserById _getUserById;
   int _objectiveProgress = 0;
   XFile? tmpImage;
   ProfilePageViewModel(
@@ -24,7 +26,8 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
       this._loadingService,
       this._getTodayUserDistance,
       this._updateUserImage,
-      this._imagePickerService)
+      this._imagePickerService,
+      this._getUserById)
       : super(authenticationService);
 
   confirmLogoutProfile() {
@@ -37,6 +40,9 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
   loadPage() async {
     toggleLoading(loading: true);
     await calcTodaysObjectiveProgress();
+
+    authenticationService.currentUserData =
+        await _getUserById.execute(currentUserId);
     updatePage();
     toggleLoading(loading: false);
   }
@@ -124,6 +130,7 @@ class ProfilePageViewModel extends HomeTabsChangeNotifier {
   }
 
   int get maxXp {
-    return currentUser.level * AppConstants.incrementXP + AppConstants.baseXP;
+    return (currentUser.level - 1) * AppConstants.incrementXP +
+        AppConstants.baseXP;
   }
 }

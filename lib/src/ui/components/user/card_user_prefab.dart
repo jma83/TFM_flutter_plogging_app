@@ -24,6 +24,7 @@ class CardUserPrefab extends StatelessWidget {
     return CardUser(
       name: user.username,
       image: user.image,
+      level: user.level,
       followers: user.followers,
       following: user.following,
       followingUserFlag: user.followingFlag,

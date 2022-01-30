@@ -40,7 +40,7 @@ class AddUserXp {
   }
 
   int _getRequiredXp(int level) {
-    return level * AppConstants.incrementXP + AppConstants.baseXP;
+    return (level - 1) * AppConstants.incrementXP + AppConstants.baseXP;
   }
 
   UserData _getNewUserData(UserData user, int countLevels, int resultXp) {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/shared/form_container.dart';
+import 'package:flutter_plogging/src/ui/components/shared/input_button.dart';
+import 'package:flutter_plogging/src/ui/components/shared/input_text.dart';
 import 'package:flutter_plogging/src/utils/alert_utils.dart';
-import 'package:flutter_plogging/src/ui/components/form_container.dart';
 import 'package:flutter_plogging/src/ui/notifiers/login_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
-import 'package:flutter_plogging/src/ui/components/input_text.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:stacked/stacked.dart';
 

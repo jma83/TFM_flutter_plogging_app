@@ -54,7 +54,8 @@ void $initApplication() {
     ..registerLazySingleton<ManageFollowUser>(() => ManageFollowUser(
         getIt<UuidGeneratorService>(),
         getIt<FollowerModel>(),
-        getIt<UserModel>()))
+        getIt<UserModel>(),
+        getIt<AuthenticationService>()))
     ..registerLazySingleton<SearchUserList>(
         () => SearchUserList(getIt<UserModel>()))
     ..registerLazySingleton<GetUserById>(() => GetUserById(getIt<UserModel>()))

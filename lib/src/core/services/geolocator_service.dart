@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 // Google Maps API Key
 const String apiKey = "AIzaSyBQRMdZ6WuXDzw2gUFklXZuQU4L1Sk7ntg";
 
-@injectable
+@LazySingleton(as: IGeolocatorService)
 class GeolocatorService extends IGeolocatorService {
   final PolylinePoints _polylinePoints;
   GeolocatorService(this._polylinePoints);

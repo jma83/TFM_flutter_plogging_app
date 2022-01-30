@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart';
-import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
-import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
-import 'package:flutter_plogging/src/ui/components/empty_results_indicator.dart';
-import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
+import 'package:flutter_plogging/src/ui/components/route/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/shared/detail_content_container.dart';
+import 'package:flutter_plogging/src/ui/components/shared/empty_results_indicator.dart';
+import 'package:flutter_plogging/src/ui/components/navigation/top_navigation_bar.dart';
+import 'package:flutter_plogging/src/ui/components/user/card_header_user_detail.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/user_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_detail_page_view_model.dart';

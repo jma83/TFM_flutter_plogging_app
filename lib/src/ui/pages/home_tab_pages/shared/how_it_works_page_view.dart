@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
-import 'package:flutter_plogging/src/ui/components/text_link.dart';
-import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
+import 'package:flutter_plogging/src/ui/components/shared/detail_content_container.dart';
+import 'package:flutter_plogging/src/ui/components/shared/text_link.dart';
+import 'package:flutter_plogging/src/ui/components/navigation/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/how_it_works_page_viewmodel.dart';
 import 'package:injectable/injectable.dart';

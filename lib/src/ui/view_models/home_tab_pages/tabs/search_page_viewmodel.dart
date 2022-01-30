@@ -62,7 +62,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
         usersFound, _followingList);
     toggleLoading(loading: false);
     updatePage();
-    //_updateFollowingUsers();
+    _updateFollowingUsers();
   }
 
   _updateFollowingUsers() async {
@@ -94,6 +94,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   handleFollowUser(UserSearchData userData) async {
     await _manageFollowUser.execute(userData, currentUserFromList, updatePage);
+    updatePage();
   }
 
   UserSearchData get currentUserFromList {
@@ -110,6 +111,14 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(SearchNotifiers.navigateToAuthor);
   }
 
+  UserSearchData checkUser(UserSearchData user) {
+    if (user.id == currentUserId) {
+      return UserSearchData(
+          user: currentUser, followerId: null, followingFlag: false);
+    }
+    return user;
+  }
+
   String get searchValue {
     return _searchValue;
   }
@@ -119,6 +128,7 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
   }
 
   List<UserSearchData> get users {
+    _users.sort((u1, u2) => u1.username.compareTo(u2.username));
     return _users;
   }
 

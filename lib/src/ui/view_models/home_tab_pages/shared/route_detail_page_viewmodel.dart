@@ -14,6 +14,7 @@ import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/parent/home_tabs_change_notifier.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
+import 'package:flutter_plogging/src/utils/distance_utils.dart';
 import 'package:flutter_plogging/src/utils/geo_point_utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -138,8 +139,16 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     notifyListeners(RouteDetailNotifier.navigateToPrevious);
   }
 
-  double truncateDistance() {
-    return double.parse((route.distance!).toStringAsFixed(2));
+  double get distance {
+    return DistanceUtils.getDistanceFormat(route.distance);
+  }
+
+  String get meassure {
+    return DistanceUtils.getMeassure(route.distance);
+  }
+
+  String get duration {
+    return DateCustomUtils.formattedDurationBySeconds(route.duration);
   }
 
   RouteListData get route {

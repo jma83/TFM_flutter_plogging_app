@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
-import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
-import 'package:flutter_plogging/src/ui/components/map_view_utils.dart';
-import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
-import 'package:flutter_plogging/src/ui/components/badge_route_author.dart';
+import 'package:flutter_plogging/src/ui/components/like/input_button_like.dart';
+import 'package:flutter_plogging/src/ui/components/route/map_view_utils.dart';
+import 'package:flutter_plogging/src/ui/components/route/badge_route_author.dart';
+import 'package:flutter_plogging/src/ui/components/shared/detail_content_container.dart';
+import 'package:flutter_plogging/src/ui/components/navigation/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
+import 'package:flutter_plogging/src/utils/distance_utils.dart';
 import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -159,11 +160,11 @@ class RouteDetailPageView extends HomePageWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          "Distance: ${currentViewModel.truncateDistance()}m",
+          "Distance : ${currentViewModel.distance} ${currentViewModel.meassure}",
           style: TextWidgetUtils.getRegularStyleText(fontSize: 14),
         ),
         Text(
-          "Duration: ${currentViewModel.route.duration}s",
+          "Duration: ${currentViewModel.duration}",
           style: TextWidgetUtils.getRegularStyleText(fontSize: 14),
         ),
       ],

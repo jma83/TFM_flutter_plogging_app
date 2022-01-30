@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_adjacent_string_concatenation
 
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/card_container.dart';
-import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
-import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
-import 'package:flutter_plogging/src/ui/components/empty_results_indicator.dart';
+import 'package:flutter_plogging/src/ui/components/route/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/shared/card_container.dart';
+import 'package:flutter_plogging/src/ui/components/shared/card_image_container.dart';
+import 'package:flutter_plogging/src/ui/components/shared/empty_results_indicator.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';

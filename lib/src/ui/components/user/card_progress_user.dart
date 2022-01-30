@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/ui/components/shared/input_button.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardProgressUser extends StatelessWidget {

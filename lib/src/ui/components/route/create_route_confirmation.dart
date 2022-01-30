@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_text.dart';
-import 'package:flutter_plogging/src/ui/components/upload_image.dart';
+import 'package:flutter_plogging/src/ui/components/shared/input_text.dart';
+import 'package:flutter_plogging/src/ui/components/shared/upload_image.dart';
 
 const int maxLengthName = 20;
 const int maxLengthDescription = 100;

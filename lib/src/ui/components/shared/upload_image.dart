@@ -1,7 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/ui/components/shared/input_button.dart';
 import 'package:image_picker/image_picker.dart';
 
 const int maxLengthName = 20;

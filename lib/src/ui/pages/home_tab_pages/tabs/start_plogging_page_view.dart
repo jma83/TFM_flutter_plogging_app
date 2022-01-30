@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/route/create_route_confirmation.dart';
+import 'package:flutter_plogging/src/ui/components/shared/input_button.dart';
 import 'package:flutter_plogging/src/utils/alert_utils.dart';
-import 'package:flutter_plogging/src/ui/components/create_route_confirmation.dart';
-import 'package:flutter_plogging/src/ui/components/input_button.dart';
-import 'package:flutter_plogging/src/ui/components/map_view_utils.dart';
+import 'package:flutter_plogging/src/ui/components/route/map_view_utils.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/start_plogging_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/start_plogging_page_viewmodel.dart';

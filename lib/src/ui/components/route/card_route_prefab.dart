@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
-import 'package:flutter_plogging/src/ui/components/card_route.dart';
+import 'package:flutter_plogging/src/ui/components/route/card_route.dart';
 import 'package:flutter_plogging/src/utils/date_custom_utils.dart';
+import 'package:flutter_plogging/src/utils/distance_utils.dart';
 
 final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
 
@@ -33,6 +36,8 @@ class CardRoutePrefab extends StatelessWidget {
       image: route.image,
       name: route.name!,
       description: route.description ?? "",
+      distance: DistanceUtils.getDistanceFormat(route.distance),
+      distanceMeasure: DistanceUtils.getMeassure(route.distance),
       authorName: authorUsername,
       date: getDateFormat(route.endDate!),
       callback: () => navigateRouteCallback(route),

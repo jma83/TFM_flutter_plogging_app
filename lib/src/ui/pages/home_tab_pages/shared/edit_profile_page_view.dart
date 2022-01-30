@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/ui/components/shared/form_container.dart';
 import 'package:flutter_plogging/src/utils/alert_utils.dart';
-import 'package:flutter_plogging/src/ui/components/form_container.dart';
-import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
+import 'package:flutter_plogging/src/ui/components/user/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/edit_profile_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/edit_profile_page_viewmodel.dart';

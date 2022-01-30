@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class BadgeRouteAuthor extends StatelessWidget {
   final String name;
@@ -43,7 +44,7 @@ class BadgeRouteAuthor extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     name,
-                    style: const TextStyle(fontSize: 17),
+                    style: TextWidgetUtils.getRegularStyleText(fontSize: 15),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -53,7 +54,8 @@ class BadgeRouteAuthor extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           "Level: $level",
-                          style: const TextStyle(fontSize: 12),
+                          style:
+                              TextWidgetUtils.getRegularStyleText(fontSize: 11),
                         ),
                         decoration: ImageWidgetUtils.badgeTextDecoration,
                       )

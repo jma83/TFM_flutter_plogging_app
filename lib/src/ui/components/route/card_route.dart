@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
+import 'package:flutter_plogging/src/ui/components/like/input_button_like.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
@@ -10,6 +10,7 @@ class CardRoute extends StatelessWidget {
   final String description;
   final String authorName;
   final double distance;
+  final String distanceMeasure;
   final String? image;
   final String imagePlaceholder;
   final double height;
@@ -28,6 +29,7 @@ class CardRoute extends StatelessWidget {
       this.description = "",
       this.authorName = "",
       this.distance = 0,
+      this.distanceMeasure = "meters",
       this.image = ImageWidgetUtils.defaultRouteImg,
       this.imagePlaceholder = ImageWidgetUtils.defaultPlaceholder,
       this.height = 130,
@@ -97,7 +99,7 @@ class CardRoute extends StatelessWidget {
       const SizedBox(height: 10),
       description != "" ? Text("Description: $description") : Container(),
       const SizedBox(height: 5),
-      Text("Distance: $distance meters"),
+      Text("Distance: $distance $distanceMeasure"),
       const SizedBox(height: 5),
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,

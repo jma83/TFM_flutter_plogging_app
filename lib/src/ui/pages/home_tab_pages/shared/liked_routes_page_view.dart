@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
-import 'package:flutter_plogging/src/ui/components/empty_results_indicator.dart';
-import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
+import 'package:flutter_plogging/src/ui/components/route/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/shared/empty_results_indicator.dart';
+import 'package:flutter_plogging/src/ui/components/navigation/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/liked_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/liked_routes_page_viewmodel.dart';

@@ -26,4 +26,14 @@ class DateCustomUtils {
     var miliseconds = dateTime.millisecondsSinceEpoch;
     return Timestamp((miliseconds / 1000).round(), 0);
   }
+
+  static String formattedDurationBySeconds(int? seconds) {
+    if (seconds == null) return "0 seconds";
+    int minutes = Duration(seconds: seconds).inMinutes;
+    int minutesInSeconds = minutes * 60;
+    int secondsLeft = seconds - minutesInSeconds;
+    String response = minutes != 0 ? "$minutes min" : "";
+    response += " $secondsLeft s";
+    return response;
+  }
 }

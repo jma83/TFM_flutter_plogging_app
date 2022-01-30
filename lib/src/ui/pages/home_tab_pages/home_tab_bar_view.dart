@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/home_tabs_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/core/domain/tabs/tab_item_data.dart';
-import 'package:flutter_plogging/src/ui/components/tab_navigator.dart';
+import 'package:flutter_plogging/src/ui/components/navigation/tab_navigator.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/home_tab_bar_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 

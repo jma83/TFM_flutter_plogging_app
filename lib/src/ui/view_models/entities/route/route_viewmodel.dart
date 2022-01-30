@@ -23,8 +23,18 @@ class RouteViewModel {
     return validationResult;
   }
 
+  bool _validateSpeed(double distance, int duration) {
+    final validationResult = AppConstants.maxSpeed >= (distance / duration);
+    if (!validationResult) {
+      _errorMessage = "Sorry. Routes with vehicles are not allowed";
+    }
+    return validationResult;
+  }
+
   bool validateRoute(double distance, int duration) {
-    return _validateDistance(distance) && _validateDuration(duration);
+    return _validateDistance(distance) &&
+        _validateDuration(duration) &&
+        _validateSpeed(distance, duration);
   }
 
   String get errorMessage {

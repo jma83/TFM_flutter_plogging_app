@@ -2,6 +2,7 @@ import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/core/model/follower_model.dart';
 import 'package:flutter_plogging/src/core/model/user_model.dart';
+import 'package:flutter_plogging/src/core/services/authentication_service.dart';
 import 'package:flutter_plogging/src/core/services/uuid_generator_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_plogging/src/core/domain/follower/follower_data.dart';
@@ -9,11 +10,12 @@ import 'package:flutter_plogging/src/core/domain/follower/follower_data.dart';
 @injectable
 class ManageFollowUser {
   final UuidGeneratorService _uuidGeneratorService;
+  final AuthenticationService _authenticationService;
   final FollowerModel _followerModel;
   final UserModel _userModel;
 
-  ManageFollowUser(
-      this._uuidGeneratorService, this._followerModel, this._userModel);
+  ManageFollowUser(this._uuidGeneratorService, this._followerModel,
+      this._userModel, this._authenticationService);
 
   Future<void> execute(UserSearchData userData, UserSearchData currentUserData,
       Function updatePageCallback) async {
@@ -58,6 +60,7 @@ class ManageFollowUser {
       UserSearchData userData, UserSearchData currentUserData, bool add) async {
     await _updateUser(userData);
     await _updateUser(currentUserData);
+    _authenticationService.currentUserData = currentUserData;
   }
 
   _updateFollowers(UserSearchData userData, bool add) {

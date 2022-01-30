@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Alert {
+class AlertUtils {
   static Widget createInfoAlert(String title, String content, Function action) {
     return AlertDialog(
         title: Text(title),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_follow.dart';
-import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardHeaderUserDetail extends StatelessWidget {
   final UserSearchData user;
@@ -53,7 +54,7 @@ class CardHeaderUserDetail extends StatelessWidget {
                 ),
                 getUsername(),
                 const SizedBox(
-                  height: 4,
+                  height: 8,
                 ),
                 getUserLevel(),
                 const SizedBox(
@@ -110,8 +111,8 @@ class CardHeaderUserDetail extends StatelessWidget {
         height: MediaQuery.of(context).size.width / 3,
         child: Stack(alignment: Alignment.bottomRight, children: [
           user.image == null || user.image == ""
-              ? CardWidgetUtils.getImageFromAsset(avatar: true)
-              : CardWidgetUtils.getImageFromNetwork(user.image!,
+              ? ImageWidgetUtils.getImageFromAsset(avatar: true)
+              : ImageWidgetUtils.getImageFromNetwork(user.image!,
                   avatar: true,
                   rounded: true,
                   width: 200,
@@ -133,7 +134,7 @@ class CardHeaderUserDetail extends StatelessWidget {
     return Center(
         child: Text(
       user.username,
-      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+      style: TextWidgetUtils.getRegularStyleText(fontSize: 23),
       textAlign: TextAlign.center,
     ));
   }
@@ -142,14 +143,11 @@ class CardHeaderUserDetail extends StatelessWidget {
     return Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-        decoration: BoxDecoration(
-            color: Colors.yellow[300],
-            border: Border.all(color: Colors.grey, width: 1),
-            borderRadius: BorderRadius.circular(20)),
-        width: 100,
+        decoration: ImageWidgetUtils.badgeTextDecoration,
+        width: 125,
         child: Text(
           "- Level ${user.level} -",
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+          style: TextWidgetUtils.getRegularStyleText(fontSize: 16),
           textAlign: TextAlign.center,
         ));
   }

@@ -5,15 +5,13 @@ class TextWidgetUtils {
   static const primaryFont = "MerriweatherSans";
   static const secondaryFont = "coolvetica";
   static const defaultFont = "Roboto";
+
   static TextStyle getTitleStyleText(
       {double fontSize = 16,
       FontWeight fontWeight = FontWeight.w500,
       Color color = Colors.black}) {
-    return TextStyle(
-        color: color,
-        fontWeight: fontWeight,
-        fontSize: fontSize,
-        fontFamily: primaryFont);
+    return getRegularStyleText(
+        color: color, fontWeight: fontWeight, fontSize: fontSize);
   }
 
   static TextStyle getRegularStyleText(

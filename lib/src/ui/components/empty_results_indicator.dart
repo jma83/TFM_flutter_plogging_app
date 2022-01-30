@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class EmptyResultsIndicator extends StatelessWidget {
@@ -15,7 +15,7 @@ class EmptyResultsIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Image(image: AssetImage(CardWidgetUtils.notFoundImg), width: 50),
+        const Image(image: AssetImage(ImageWidgetUtils.notFoundImg), width: 50),
         const SizedBox(height: 12),
         Text(
           text,

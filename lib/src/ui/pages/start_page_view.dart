@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
-import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
@@ -27,7 +27,7 @@ class StartPageView extends PageWidget {
           child: Column(
             children: [
               const Image(
-                image: AssetImage(CardWidgetUtils.defaultAvatarImg),
+                image: AssetImage(ImageWidgetUtils.defaultAvatarImg),
                 width: 220,
                 height: 220,
               ),

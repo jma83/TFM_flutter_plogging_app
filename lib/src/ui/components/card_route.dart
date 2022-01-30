@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardRoute extends StatelessWidget {
@@ -27,8 +28,8 @@ class CardRoute extends StatelessWidget {
       this.description = "",
       this.authorName = "",
       this.distance = 0,
-      this.image = "assets/img1.jpg",
-      this.imagePlaceholder = "assets/recycle.gif",
+      this.image = ImageWidgetUtils.defaultRouteImg,
+      this.imagePlaceholder = ImageWidgetUtils.defaultPlaceholder,
       this.height = 130,
       this.borderRadius = 20,
       this.color,
@@ -67,9 +68,9 @@ class CardRoute extends StatelessWidget {
                 left: 15, right: 15, top: 10, bottom: 10)),
         SizedBox(
           child: image != null && image != ""
-              ? CardWidgetUtils.getImageFromNetwork(image!,
+              ? ImageWidgetUtils.getImageFromNetwork(image!,
                   fit: BoxFit.cover, height: height, avatar: false)
-              : CardWidgetUtils.getImageFromAsset(
+              : ImageWidgetUtils.getImageFromAsset(
                   fit: BoxFit.cover, height: height, avatar: false),
           width: MediaQuery.of(context).size.width,
         ),
@@ -103,7 +104,8 @@ class CardRoute extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Date: $date"),
-          Text("Author: $authorName"),
+          Text("Author: $authorName",
+              style: TextWidgetUtils.getRegularStyleText()),
         ],
       )
     ];

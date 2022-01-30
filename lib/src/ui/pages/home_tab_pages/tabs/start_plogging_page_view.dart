@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/utils/alert_utils.dart';
 import 'package:flutter_plogging/src/ui/components/create_route_confirmation.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/map_view_utils.dart';
@@ -93,14 +93,14 @@ class StartPloggingPageView extends HomePageWidget {
   showErrorAlert(BuildContext context) {
     showDialog(
         context: context,
-        builder: (_) => Alert.createInfoAlert("Error",
+        builder: (_) => AlertUtils.createInfoAlert("Error",
             currentViewModel.errorMessage, currentViewModel.dismissAlert));
   }
 
   showLevelAlert(BuildContext context) {
     showDialog(
         context: context,
-        builder: (_) => Alert.createInfoAlert(
+        builder: (_) => AlertUtils.createInfoAlert(
             "Congratulations!",
             "You have reached level ${currentViewModel.currentUser.level}!",
             currentViewModel.dismissAlert));
@@ -110,7 +110,7 @@ class StartPloggingPageView extends HomePageWidget {
     showDialog(
         context: context,
         barrierDismissible: true,
-        builder: (_) => Alert.createCustomOptionsAlert(
+        builder: (_) => AlertUtils.createCustomOptionsAlert(
             "Create route confirmation",
             CreateRouteConfirmation(
               setName: currentViewModel.setRouteName,

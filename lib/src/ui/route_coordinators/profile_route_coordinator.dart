@@ -43,11 +43,11 @@ class ProfileRouteCoordinator extends HomeTabRouteCoordinator {
     final LikedRoutesPageViewModel viewModel =
         widget.viewModel as LikedRoutesPageViewModel;
     widget.viewModel.addListener(() {
-      viewModels.add(widget.viewModel as HomeTabsChangeNotifier);
       navigateToRoute(viewModel.selectedRoute, viewModel.selectedUser);
     }, [LikedRoutesNotifiers.navigateToRoute]);
     widget.viewModel
         .addListener(returnToPrevious, [LikedRoutesNotifiers.returnToPrevious]);
+    viewModels.add(widget.viewModel as HomeTabsChangeNotifier);
     navigationService.navigateTo(routeBuild(widget));
   }
 

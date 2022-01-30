@@ -97,6 +97,7 @@ class RegisterPageViewModel extends AuthPropertyChangeNotifier {
 
   void setGender(String gender) {
     _gender = gender;
+    notifyListeners(RegisterNotifiers.updateRegisterData);
   }
 
   get email {

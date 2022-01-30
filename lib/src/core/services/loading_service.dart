@@ -35,7 +35,7 @@ class LoadingService {
   _showLoadIcon() {
     !_isLoading
         ? EasyLoading.dismiss()
-        : EasyLoading.show(status: 'loading...');
+        : EasyLoading.show(status: 'Loading...');
   }
 
   _verifyTimeout() {

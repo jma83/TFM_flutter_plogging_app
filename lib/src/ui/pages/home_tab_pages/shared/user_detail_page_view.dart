@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
+import 'package:flutter_plogging/src/ui/components/empty_results_indicator.dart';
 import 'package:flutter_plogging/src/ui/components/top_navigation_bar.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/user_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/user_detail_page_view_model.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:stacked/stacked.dart';
-
-final List<int> colorCodes = <int>[500, 400, 700, 300, 600];
 
 class UserDetailPageView extends HomePageWidget {
   const UserDetailPageView(UserDetailPageViewModel viewModel, {Key? key})
@@ -35,7 +35,14 @@ class UserDetailPageView extends HomePageWidget {
   getListViewHeader(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(8),
-      children: [getWrapHeader(context)],
+      children: [
+        getWrapHeader(context),
+        const Center(
+          child: EmptyResultsIndicator(
+            text: "No routes found for this user",
+          ),
+        )
+      ],
     );
   }
 
@@ -66,11 +73,9 @@ class UserDetailPageView extends HomePageWidget {
                     Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 18, horizontal: 15),
-                      child: const Text(
-                        "Routes:",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
+                      child: Text("Routes:",
+                          style: TextWidgetUtils.getRegularStyleText(
+                              fontSize: 19)),
                     ),
                     card(currentViewModel, index)
                   ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_follow.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardUser extends StatelessWidget {
@@ -72,8 +73,8 @@ class CardUser extends StatelessWidget {
           child: Wrap(
             children: [
               image == null || image == ""
-                  ? CardWidgetUtils.getImageFromAsset(avatar: true)
-                  : CardWidgetUtils.getImageFromNetwork(image!,
+                  ? ImageWidgetUtils.getImageFromAsset(avatar: true)
+                  : ImageWidgetUtils.getImageFromNetwork(image!,
                       rounded: true,
                       avatar: true,
                       width: 300,
@@ -82,10 +83,7 @@ class CardUser extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(top: 5),
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Colors.yellow[300],
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.circular(20)),
+                decoration: ImageWidgetUtils.badgeTextDecoration,
                 child: Text(
                   "Level $level",
                   textAlign: TextAlign.center,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/utils/toast_utils.dart';
 
-// ignore: must_be_immutable
-class InputButtonLike extends StatefulWidget {
+class InputButtonLike extends StatelessWidget {
   final String id;
-  bool liked;
+  final bool liked;
   final Function likeCallback;
-  InputButtonLike(
+  const InputButtonLike(
       {required this.id,
       required this.liked,
       required this.likeCallback,
@@ -13,25 +13,22 @@ class InputButtonLike extends StatefulWidget {
       : super(key: key);
 
   @override
-  _InputButtonLikeState createState() => _InputButtonLikeState();
-}
-
-class _InputButtonLikeState extends State<InputButtonLike> {
-  @override
   Widget build(BuildContext context) {
-    return likeButton();
-  }
-
-  likeButton() {
-    final icon = widget.liked ? Icons.thumb_up : Icons.thumb_up_alt_outlined;
+    final icon = liked ? Icons.thumb_up : Icons.thumb_up_alt_outlined;
     return FloatingActionButton(
-        heroTag: "like_${widget.id}",
-        onPressed: () => widget.likeCallback(),
+        heroTag: "like_$id",
+        onPressed: () => buttonClick(context),
         child: Icon(icon));
   }
 
-  buttonClick() {
-    setState(() => widget.liked = !widget.liked);
-    widget.likeCallback();
+  buttonClick(BuildContext context) {
+    _showToast(context);
+    likeCallback();
+  }
+
+  void _showToast(BuildContext context) {
+    final String message =
+        !liked ? "Added to liked routes" : "Removed from liked routes";
+    ToastUtils.createToast(context, message);
   }
 }

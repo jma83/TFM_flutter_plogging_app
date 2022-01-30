@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardProgressUser extends StatelessWidget {
   final int value;
@@ -27,9 +28,9 @@ class CardProgressUser extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Today's plogging progress:",
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              style: TextWidgetUtils.getTitleStyleText(fontSize: 16),
             ),
             const SizedBox(
               height: 15,
@@ -48,13 +49,12 @@ class CardProgressUser extends StatelessWidget {
               ),
               Text(
                 "$value%\n",
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                style: TextWidgetUtils.getRegularStyleText(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
-              const Text(
+              Text(
                 "\n\nCompleted",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                style: TextWidgetUtils.getRegularStyleText(fontSize: 13),
                 textAlign: TextAlign.center,
               )
             ]),

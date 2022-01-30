@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardContainer extends StatelessWidget {

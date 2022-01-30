@@ -9,7 +9,8 @@ import 'package:flutter_plogging/src/ui/components/badge_route_author.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
-import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
@@ -108,7 +109,7 @@ class RouteDetailPageView extends HomePageWidget {
   }
 
   getImageFromNetwork() {
-    return CardWidgetUtils.getImageFromNetwork(currentViewModel.route.image!,
+    return ImageWidgetUtils.getImageFromNetwork(currentViewModel.route.image!,
         avatar: false, fit: BoxFit.cover, height: 100);
   }
 
@@ -120,12 +121,12 @@ class RouteDetailPageView extends HomePageWidget {
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
                 width: 1, color: Colors.black54, style: BorderStyle.solid)),
-        child: Text(
-          currentViewModel.route.name!,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 24),
-        ));
+        child: Text(currentViewModel.route.name!,
+            textAlign: TextAlign.center,
+            style: TextWidgetUtils.getTitleStyleText(
+                fontSize: 23,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87)));
   }
 
   getAuthorWidget() {
@@ -159,11 +160,11 @@ class RouteDetailPageView extends HomePageWidget {
       children: [
         Text(
           "Distance: ${currentViewModel.truncateDistance()}m",
-          style: const TextStyle(fontSize: 16),
+          style: TextWidgetUtils.getRegularStyleText(fontSize: 14),
         ),
         Text(
           "Duration: ${currentViewModel.route.duration}s",
-          style: const TextStyle(fontSize: 16),
+          style: TextWidgetUtils.getRegularStyleText(fontSize: 14),
         ),
       ],
     );
@@ -186,14 +187,14 @@ class RouteDetailPageView extends HomePageWidget {
   getImageTitle() {
     return currentViewModel.route.image != null &&
             currentViewModel.route.image != ""
-        ? const Text(
-            "Route Image:",
-            style: TextStyle(fontSize: 15),
+        ? Text(
+            "- Route Image -",
+            style: TextWidgetUtils.getRegularStyleText(fontSize: 14),
             textAlign: TextAlign.center,
           )
-        : const Text(
+        : Text(
             "This route has no image",
-            style: TextStyle(fontSize: 15),
+            style: TextWidgetUtils.getRegularStyleText(fontSize: 14),
             textAlign: TextAlign.center,
           );
   }

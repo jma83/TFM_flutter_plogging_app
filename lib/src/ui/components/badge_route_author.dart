@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
 
 class BadgeRouteAuthor extends StatelessWidget {
@@ -26,8 +27,8 @@ class BadgeRouteAuthor extends StatelessWidget {
                   width: 45,
                   height: 45,
                   child: image == null || image == ""
-                      ? CardWidgetUtils.getImageFromAsset(avatar: true)
-                      : CardWidgetUtils.getImageFromNetwork(image!,
+                      ? ImageWidgetUtils.getImageFromAsset(avatar: true)
+                      : ImageWidgetUtils.getImageFromNetwork(image!,
                           avatar: true,
                           height: 200,
                           width: 200,
@@ -48,10 +49,14 @@ class BadgeRouteAuthor extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Level: $level",
-                        style: const TextStyle(fontSize: 12),
-                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          "Level: $level",
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        decoration: ImageWidgetUtils.badgeTextDecoration,
+                      )
                     ],
                   ),
                 ],

@@ -118,6 +118,7 @@ class EditProfilePageViewModel extends HomeTabsChangeNotifier {
 
   void setGender(String gender) {
     _gender = gender;
+    notifyListeners(EditProfileNotifiers.updateEditProfilePage);
   }
 
   String get gender {

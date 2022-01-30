@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/utils/alert_utils.dart';
 import 'package:flutter_plogging/src/ui/components/form_container.dart';
 import 'package:flutter_plogging/src/ui/notifiers/login_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
@@ -82,7 +82,7 @@ class LoginPageView extends PageWidget {
   showErrorAlert(BuildContext context, LoginPageViewModel viewModel) {
     showDialog(
         context: context,
-        builder: (_) => Alert.createInfoAlert(
+        builder: (_) => AlertUtils.createInfoAlert(
             "Error", viewModel.errorMessage, viewModel.dismissAlert));
   }
 }

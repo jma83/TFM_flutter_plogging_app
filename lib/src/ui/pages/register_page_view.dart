@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/ui/notifiers/register_notifiers.dart';
+import 'package:flutter_plogging/src/utils/alert_utils.dart';
 import 'package:flutter_plogging/src/ui/components/form_container.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
@@ -16,8 +17,11 @@ class RegisterPageView extends PageWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<RegisterPageViewModel>.reactive(
         viewModelBuilder: () => viewModel as RegisterPageViewModel,
-        onModelReady: (viewModel) => viewModel.addListener(
-            () => showErrorAlert(context, viewModel), ["error_signup"]),
+        onModelReady: (viewModel) {
+          viewModel.addListener(() {}, [RegisterNotifiers.updateRegisterData]);
+          viewModel.addListener(() => showErrorAlert(context, viewModel),
+              [RegisterNotifiers.registerProcessError]);
+        },
         builder: (context, RegisterPageViewModel viewModel, child) {
           return Scaffold(
             appBar: AppBar(
@@ -65,7 +69,7 @@ class RegisterPageView extends PageWidget {
   showErrorAlert(BuildContext context, RegisterPageViewModel viewModel) {
     showDialog(
         context: context,
-        builder: (_) => Alert.createInfoAlert(
+        builder: (_) => AlertUtils.createInfoAlert(
             "Error", viewModel.errorMessage, viewModel.dismissAlert));
   }
 }

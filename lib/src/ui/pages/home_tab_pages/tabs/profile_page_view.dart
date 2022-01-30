@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/utils/alert_utils.dart';
 import 'package:flutter_plogging/src/ui/components/card_header_user_detail.dart';
 import 'package:flutter_plogging/src/ui/components/card_progress_user.dart';
 import 'package:flutter_plogging/src/ui/components/detail_content_container.dart';
@@ -80,7 +80,7 @@ class ProfilePageView extends HomePageWidget {
   showConfirmationLogoutModal(BuildContext context) {
     showDialog(
         context: context,
-        builder: (_) => Alert.createOptionsAlert(
+        builder: (_) => AlertUtils.createOptionsAlert(
             "Logout confirmation",
             "Do you want to close your current session?",
             () => currentViewModel.confirmLogoutProfile(),
@@ -91,7 +91,7 @@ class ProfilePageView extends HomePageWidget {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (_) => Alert.createCustomOptionsAlert(
+        builder: (_) => AlertUtils.createCustomOptionsAlert(
             "Upload profile image",
             UploadImage(
               image: currentViewModel.tmpImage,

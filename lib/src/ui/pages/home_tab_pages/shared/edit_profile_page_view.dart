@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_plogging/src/ui/components/alert.dart';
+import 'package:flutter_plogging/src/utils/alert_utils.dart';
 import 'package:flutter_plogging/src/ui/components/form_container.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/edit_profile_notifiers.dart';
@@ -56,7 +56,7 @@ class EditProfilePageView extends HomePageWidget {
   showErrorAlert(BuildContext context, EditProfilePageViewModel viewModel) {
     showDialog(
         context: context,
-        builder: (_) => Alert.createInfoAlert(
+        builder: (_) => AlertUtils.createInfoAlert(
             "Error", viewModel.errorMessage, viewModel.dismissAlert));
   }
 
@@ -64,7 +64,7 @@ class EditProfilePageView extends HomePageWidget {
       BuildContext context, EditProfilePageViewModel viewModel) {
     showDialog(
         context: context,
-        builder: (_) => Alert.createInfoAlert("Success",
+        builder: (_) => AlertUtils.createInfoAlert("Success",
             "Your data has been updated successfully", viewModel.dismissAlert));
   }
 }

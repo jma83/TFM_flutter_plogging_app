@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
+import 'package:flutter_plogging/src/utils/toast_utils.dart';
 
-// ignore: must_be_immutable
-class InputButtonFollow extends StatefulWidget {
-  bool following;
+class InputButtonFollow extends StatelessWidget {
+  final bool following;
   final bool isSelf;
   final double width;
   final Function followCallback;
-  InputButtonFollow(
+  const InputButtonFollow(
       {required this.following,
       required this.followCallback,
       this.width = 130,
@@ -16,34 +16,34 @@ class InputButtonFollow extends StatefulWidget {
       : super(key: key);
 
   @override
-  _InputButtonFollowState createState() => _InputButtonFollowState();
-}
-
-class _InputButtonFollowState extends State<InputButtonFollow> {
-  @override
   Widget build(BuildContext context) {
-    if (widget.isSelf) {
+    if (isSelf) {
       return Container();
     }
-    if (!widget.following) {
+    if (!following) {
       return InputButton(
-          width: widget.width,
+          width: width,
           label: const Text("Follow"),
-          onPress: () => buttonClick(),
+          onPress: () => buttonClick(context),
           buttonType: InputButtonType.outlined,
           horizontalPadding: 10);
     }
     return InputButton(
-        width: widget.width,
+        width: width,
         label: const Text("Following"),
-        onPress: () => buttonClick(),
+        onPress: () => buttonClick(context),
         buttonType: InputButtonType.elevated,
         bgColor: Colors.blue,
         horizontalPadding: 10);
   }
 
-  buttonClick() {
-    setState(() => widget.following = !widget.following);
-    widget.followCallback();
+  buttonClick(BuildContext context) {
+    _showToast(context);
+    followCallback();
+  }
+
+  void _showToast(BuildContext context) {
+    final String message = !following ? "Followed user!" : "Unfollowed user";
+    ToastUtils.createToast(context, message);
   }
 }

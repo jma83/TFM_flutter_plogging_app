@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 
 class CardImageContainer extends StatelessWidget {
   const CardImageContainer(
-      {this.cardType = 0,
+      {this.image,
+      this.cardType = 0,
       this.clickable = false,
       this.borderRadius = 20,
       this.height,
@@ -19,6 +21,7 @@ class CardImageContainer extends StatelessWidget {
   final double? height;
   final Function? callback;
   final String text;
+  final String? image;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +48,12 @@ class CardImageContainer extends StatelessWidget {
     final card = Column(
       children: <Widget>[
         SizedBox(
-          child: CardWidgetUtils.getImageFromAsset(
-              height: height, fit: BoxFit.cover, avatar: false, rounded: false),
+          child: ImageWidgetUtils.getImageFromAsset(
+              imageSrc: image,
+              height: height,
+              fit: BoxFit.cover,
+              avatar: false,
+              rounded: false),
           width: MediaQuery.of(context).size.width,
         ),
         Container(
@@ -66,7 +73,7 @@ class CardImageContainer extends StatelessWidget {
       alignment: Alignment.center,
       children: <Widget>[
         SizedBox(
-          child: CardWidgetUtils.getImageFromAsset(
+          child: ImageWidgetUtils.getImageFromAsset(
               height: height,
               fit: BoxFit.fitWidth,
               avatar: false,
@@ -100,8 +107,12 @@ class CardImageContainer extends StatelessWidget {
             )),
             padding: const EdgeInsets.all(10)),
         SizedBox(
-          child: CardWidgetUtils.getImageFromAsset(
-              height: height, fit: BoxFit.cover, avatar: false, rounded: false),
+          child: ImageWidgetUtils.getImageFromAsset(
+              imageSrc: image,
+              height: height,
+              fit: BoxFit.cover,
+              avatar: false,
+              rounded: false),
           width: MediaQuery.of(context).size.width,
         ),
       ],

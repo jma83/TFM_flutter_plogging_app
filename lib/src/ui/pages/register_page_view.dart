@@ -4,6 +4,7 @@ import 'package:flutter_plogging/src/ui/components/form_container.dart';
 import 'package:flutter_plogging/src/ui/components/profile_form_fields.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/register_page_viewmodel.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:stacked/stacked.dart';
 
 class RegisterPageView extends PageWidget {
@@ -19,7 +20,11 @@ class RegisterPageView extends PageWidget {
             () => showErrorAlert(context, viewModel), ["error_signup"]),
         builder: (context, RegisterPageViewModel viewModel, child) {
           return Scaffold(
-            appBar: AppBar(title: const Text("Plogging Challenge")),
+            appBar: AppBar(
+                title: const Text(
+              "Create a new account",
+              style: TextStyle(fontFamily: "coolvetica"),
+            )),
             body: FormContainer(widgetList: [
               const SizedBox(height: 20),
               _getTitle(),
@@ -31,10 +36,10 @@ class RegisterPageView extends PageWidget {
   }
 
   Widget _getTitle() {
-    return const Center(
+    return Center(
         child: Text(
       "Sign up now!",
-      style: TextStyle(fontSize: 24),
+      style: TextWidgetUtils.getTitleStyleText(fontSize: 24),
       textAlign: TextAlign.center,
     ));
   }

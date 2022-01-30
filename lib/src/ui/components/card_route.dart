@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_like.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardRoute extends StatelessWidget {
   final String id;
@@ -27,7 +28,7 @@ class CardRoute extends StatelessWidget {
       this.authorName = "",
       this.distance = 0,
       this.image = "assets/img1.jpg",
-      this.imagePlaceholder = "assets/jar-loading.gif",
+      this.imagePlaceholder = "assets/recycle.gif",
       this.height = 130,
       this.borderRadius = 20,
       this.color,
@@ -80,19 +81,18 @@ class CardRoute extends StatelessWidget {
   List<Widget> getCardInfoInColumn(BuildContext context) {
     return [
       Container(
-          padding: const EdgeInsets.all(5),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                  width: 1, color: Colors.black54, style: BorderStyle.solid)),
-          child: Text(
-            name,
+        padding: const EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+                width: 1, color: Colors.black54, style: BorderStyle.solid)),
+        child: Text(name,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                color: Colors.black87, fontWeight: FontWeight.bold),
-          )),
+            style: TextWidgetUtils.getRegularStyleText(
+                color: Colors.black87, fontWeight: FontWeight.bold)),
+      ),
       const SizedBox(height: 10),
       description != "" ? Text("Description: $description") : Container(),
       const SizedBox(height: 5),

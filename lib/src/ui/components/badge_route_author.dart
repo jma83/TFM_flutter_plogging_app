@@ -28,7 +28,11 @@ class BadgeRouteAuthor extends StatelessWidget {
                   child: image == null || image == ""
                       ? CardWidgetUtils.getImageFromAsset(avatar: true)
                       : CardWidgetUtils.getImageFromNetwork(image!,
-                          avatar: true, rounded: true))),
+                          avatar: true,
+                          height: 200,
+                          width: 200,
+                          rounded: true,
+                          fit: BoxFit.cover))),
           title: Row(
             children: [
               Column(

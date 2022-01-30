@@ -9,8 +9,6 @@ class CardImageContainer extends StatelessWidget {
       this.borderRadius = 20,
       this.height,
       this.callback,
-      this.image = "assets/img1.jpg",
-      this.imagePlaceholder = "assets/jar-loading.gif",
       this.text = "",
       Key? key})
       : super(key: key);
@@ -20,8 +18,6 @@ class CardImageContainer extends StatelessWidget {
   final double borderRadius;
   final double? height;
   final Function? callback;
-  final String image;
-  final String imagePlaceholder;
   final String text;
 
   @override
@@ -49,13 +45,8 @@ class CardImageContainer extends StatelessWidget {
     final card = Column(
       children: <Widget>[
         SizedBox(
-          child: FadeInImage(
-            image: AssetImage(image),
-            placeholder: AssetImage(imagePlaceholder),
-            height: height,
-            fadeInDuration: const Duration(milliseconds: 200),
-            fit: BoxFit.cover,
-          ),
+          child: CardWidgetUtils.getImageFromAsset(
+              height: height, fit: BoxFit.cover, avatar: false, rounded: false),
           width: MediaQuery.of(context).size.width,
         ),
         Container(
@@ -75,13 +66,11 @@ class CardImageContainer extends StatelessWidget {
       alignment: Alignment.center,
       children: <Widget>[
         SizedBox(
-          child: FadeInImage(
-            image: AssetImage(image),
-            placeholder: AssetImage(imagePlaceholder),
-            fadeInDuration: const Duration(milliseconds: 200),
-            fit: BoxFit.fitWidth,
-            height: height,
-          ),
+          child: CardWidgetUtils.getImageFromAsset(
+              height: height,
+              fit: BoxFit.fitWidth,
+              avatar: false,
+              rounded: false),
           width: MediaQuery.of(context).size.width,
         ),
         Center(
@@ -111,13 +100,8 @@ class CardImageContainer extends StatelessWidget {
             )),
             padding: const EdgeInsets.all(10)),
         SizedBox(
-          child: FadeInImage(
-            image: AssetImage(image),
-            placeholder: AssetImage(imagePlaceholder),
-            height: height,
-            fadeInDuration: const Duration(milliseconds: 200),
-            fit: BoxFit.cover,
-          ),
+          child: CardWidgetUtils.getImageFromAsset(
+              height: height, fit: BoxFit.cover, avatar: false, rounded: false),
           width: MediaQuery.of(context).size.width,
         ),
       ],

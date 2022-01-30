@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/empty_results_indicator.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/my_routes_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
@@ -43,20 +44,11 @@ class MyRoutesPageView extends HomePageWidget {
   }
 
   getEmptySearch() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        Image(image: AssetImage("assets/not-found.png"), width: 50),
-        SizedBox(height: 12),
-        Text(
-          "Couldn't find any route\nStart creating one now!",
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
-        )
-      ],
-    ));
+    return const Center(
+      child: EmptyResultsIndicator(
+        text: "Couldn't find any route\nStart creating one now!",
+      ),
+    );
   }
 
   getSearchList() {

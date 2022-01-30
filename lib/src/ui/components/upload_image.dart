@@ -40,7 +40,7 @@ class _UploadImage extends State<UploadImage> {
       imageSource,
       const SizedBox(height: 15),
       InputButton(
-          horizontalPadding: 20,
+          horizontalPadding: 15,
           label: const Text("Add image from Camera"),
           buttonType: InputButtonType.elevated,
           onPress: () => updateImage(ImageSource.camera),
@@ -51,7 +51,7 @@ class _UploadImage extends State<UploadImage> {
           label: const Text("Add image from Gallery"),
           buttonType: InputButtonType.outlined,
           onPress: () => updateImage(ImageSource.gallery),
-          icon: const Icon(Icons.camera_alt_outlined)),
+          icon: const Icon(Icons.image)),
     ];
   }
 
@@ -79,9 +79,9 @@ class _UploadImage extends State<UploadImage> {
           ),
           const SizedBox(height: 5),
           InputButton(
-              label: const Text(""),
-              width: 10,
-              horizontalPadding: 0,
+              label: const Text("Remove"),
+              width: 120,
+              horizontalPadding: 10,
               buttonType: InputButtonType.elevated,
               bgColor: Colors.red,
               onPress: removeImage,

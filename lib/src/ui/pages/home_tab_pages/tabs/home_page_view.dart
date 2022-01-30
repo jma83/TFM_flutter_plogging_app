@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_image_container.dart';
 import 'package:flutter_plogging/src/ui/components/card_route_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/empty_results_indicator.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/home_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/home_page_viewmodel.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:stacked/stacked.dart';
 
 class HomePageView extends HomePageWidget {
@@ -23,7 +25,10 @@ class HomePageView extends HomePageWidget {
         },
         builder: (context, HomePageViewModel viewModel, child) {
           return Scaffold(
-            appBar: AppBar(title: const Text("Plogging challenge")),
+            appBar: AppBar(
+                title: Text(
+              "Plogging challenge",
+            )),
             body: getRouteList(viewModel),
           );
         });
@@ -44,29 +49,19 @@ class HomePageView extends HomePageWidget {
   }
 
   getEmptySearch() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        SizedBox(height: 20),
-        Image(image: AssetImage("assets/not-found.png"), width: 40),
-        SizedBox(height: 8),
-        Text(
-          "No routes found in your feed...\nBy following users, routes will appear here",
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
-        )
-      ],
-    ));
+    return const Center(
+        child: EmptyResultsIndicator(
+            fontSize: 14,
+            text:
+                "No routes found in your feed...\n Follow users and their routes will appear here"));
   }
 
   List<Widget> getHeaderWidgets() {
     return <Widget>[
       CardContainer(
-          title: "Welcome ${currentViewModel.username}!\n" +
-              "You and the community are helping while doing sport.\n" +
-              "Keep on the good actions!",
+          title: "Welcome ${currentViewModel.username}!",
+          description:
+              "You and the community are helping while doing sport.\nKeep on the good actions!\n",
           button1: "How it works",
           button2: "Start plogging",
           cardType: 0,
@@ -94,6 +89,8 @@ class HomePageView extends HomePageWidget {
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     getWrapHeader(viewModel),
                     getTitle(),
@@ -119,10 +116,10 @@ class HomePageView extends HomePageWidget {
 
   Widget getTitle() {
     return Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        child: const Text(
+        margin: const EdgeInsets.only(bottom: 10, left: 10),
+        child: Text(
           "Routes feed:",
-          style: TextStyle(fontSize: 18),
+          style: TextWidgetUtils.getTitleStyleText(fontSize: 18),
         ));
   }
 

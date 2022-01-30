@@ -59,9 +59,12 @@ class RouteDetailPageView extends HomePageWidget {
         ),
         getImageTitle(),
         const SizedBox(
+          height: 10,
+        ),
+        getImage(context),
+        const SizedBox(
           height: 20,
         ),
-        getImage(context)
       ],
     );
   }
@@ -72,15 +75,15 @@ class RouteDetailPageView extends HomePageWidget {
       myLocationCallback: currentViewModel.setCameraPosition,
       zoomInCallback: currentViewModel.zoomIn,
       zoomOutCallback: currentViewModel.zoomOut,
-      offsetTopMyLocation: 200,
-      offsetTopZoom: 60,
+      offsetTopMyLocation: 240,
+      offsetTopZoom: 80,
     );
   }
 
   Widget getMap(BuildContext context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width / 1.5,
+        height: MediaQuery.of(context).size.width / 1.3,
         child: GoogleMap(
           polylines: Set<Polyline>.of(currentViewModel.polylines),
           initialCameraPosition:
@@ -184,26 +187,28 @@ class RouteDetailPageView extends HomePageWidget {
     return currentViewModel.route.image != null &&
             currentViewModel.route.image != ""
         ? const Text(
-            "Image:",
+            "Route Image:",
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           )
         : const Text(
-            "No image found",
+            "This route has no image",
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           );
   }
 
   getImage(BuildContext context) {
-    return SizedBox(
-      child: currentViewModel.route.image != null &&
-              currentViewModel.route.image != ""
-          ? getImageFromNetwork()
-          : Container(),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width / 2,
-    );
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SizedBox(
+          child: currentViewModel.route.image != null &&
+                  currentViewModel.route.image != ""
+              ? getImageFromNetwork()
+              : Container(),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width / 2,
+        ));
   }
 
   RouteDetailPageViewModel get currentViewModel {

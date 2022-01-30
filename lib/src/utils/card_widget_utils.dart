@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CardWidgetUtils {
+  static const defaultRouteImg = "assets/img1.jpg";
+  static const defaultAvatarImg = "assets/logo.png";
+  static const defaultPlaceholder = "assets/recycle.gif";
+  static const notFoundImg = "assets/not-found.png";
+  static final badgeTextDecoration = BoxDecoration(
+      color: Colors.yellow[300],
+      border: Border.all(color: Colors.grey, width: 1),
+      borderRadius: BorderRadius.circular(20));
+
   static Widget createClickableCard(Widget widget, Function? callback) {
     final fun = callback ?? () {};
     return Stack(
@@ -41,14 +50,14 @@ class CardWidgetUtils {
       double? height,
       double? width}) {
     final String placeholderImg =
-        avatar ? "assets/logo.png" : "assets/img1.jpg";
+        avatar ? defaultAvatarImg : defaultPlaceholder;
     final FadeInImage image = FadeInImage(
       image: NetworkImage(imageSrc),
       height: height,
       width: width,
       placeholder: AssetImage(placeholderImg),
       placeholderErrorBuilder: (context, ob, stack) =>
-          Image.asset(placeholderImg, fit: fit, height: height, width: width),
+          Image.asset(defaultRouteImg, fit: fit, height: height, width: width),
       fadeInDuration: const Duration(milliseconds: 200),
       fit: fit,
     );
@@ -60,7 +69,7 @@ class CardWidgetUtils {
       BoxFit fit = BoxFit.contain,
       bool rounded = false,
       double? height}) {
-    final String imageDefault = avatar ? "assets/logo.png" : "assets/img1.jpg";
+    final String imageDefault = avatar ? defaultAvatarImg : defaultRouteImg;
     final FadeInImage image = FadeInImage(
         image: AssetImage(imageDefault),
         placeholder: AssetImage(imageDefault),

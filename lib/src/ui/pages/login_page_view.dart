@@ -6,6 +6,7 @@ import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/login_page_viewmodel.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/ui/components/input_text.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginPageView extends PageWidget {
@@ -35,10 +36,10 @@ class LoginPageView extends PageWidget {
   }
 
   Widget _getTitle() {
-    return const Center(
+    return Center(
         child: Text(
       "Welcome! \n Access and start plogging!",
-      style: TextStyle(fontSize: 24),
+      style: TextWidgetUtils.getTitleStyleText(fontSize: 24),
       textAlign: TextAlign.center,
     ));
   }
@@ -49,7 +50,7 @@ class LoginPageView extends PageWidget {
         InputText(
             textController: TextEditingController(text: viewModel.email),
             label: "Email",
-            hint: "Your email account",
+            hint: "Your account email",
             icon: const Icon(Icons.alternate_email),
             maxLength: 0,
             onChange: viewModel.setEmail),
@@ -57,7 +58,7 @@ class LoginPageView extends PageWidget {
         InputText(
             textController: TextEditingController(text: viewModel.password),
             label: "Password",
-            hint: "Your password account",
+            hint: "Your account password",
             icon: const Icon(Icons.lock_outline),
             maxLength: 0,
             onChange: viewModel.setPassword,

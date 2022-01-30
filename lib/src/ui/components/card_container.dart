@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardContainer extends StatelessWidget {
   const CardContainer(
@@ -28,20 +29,8 @@ class CardContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _createCard();
-  }
-
-  Widget _createCard() {
-    switch (cardType) {
-      case 0:
-      default:
-        return _card0();
-    }
-  }
-
-  _card0() {
     return Card(
-        elevation: 5,
+        elevation: 10,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius)),
         child: InkWell(
@@ -76,9 +65,15 @@ class CardContainer extends StatelessWidget {
       leading: const Icon(
         Icons.travel_explore_sharp,
         color: Colors.green,
-        size: 60,
+        size: 55,
       ),
-      title: Text(title),
+      title: Container(
+        child: Text(
+          title,
+          style: TextWidgetUtils.getRegularStyleText(),
+        ),
+        margin: EdgeInsets.only(top: 10),
+      ),
       subtitle: Text(description),
     );
   }

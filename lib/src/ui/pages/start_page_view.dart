@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/pages/page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/start_page_viewmodel.dart';
+import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
@@ -23,18 +25,16 @@ class StartPageView extends PageWidget {
         backgroundColor: Colors.white,
         body: Center(
           child: Column(
-            children: const [
-              Image(
-                image: AssetImage("assets/logo.png"),
+            children: [
+              const Image(
+                image: AssetImage(CardWidgetUtils.defaultAvatarImg),
                 width: 220,
                 height: 220,
               ),
               Text(
                 "Plogging challenge",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
+                style: TextWidgetUtils.getTitleStyleText(
+                    fontWeight: FontWeight.bold, fontSize: 30),
                 textAlign: TextAlign.center,
               )
             ],

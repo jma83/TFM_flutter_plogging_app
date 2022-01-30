@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/input_button_follow.dart';
 import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 class CardUser extends StatelessWidget {
   final String name;
@@ -77,13 +78,18 @@ class CardUser extends StatelessWidget {
                       avatar: true,
                       width: 300,
                       height: 60,
-                      fit: BoxFit.fill),
+                      fit: BoxFit.cover),
               Container(
                 margin: const EdgeInsets.only(top: 5),
                 alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.yellow[300],
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(20)),
                 child: Text(
                   "Level $level",
                   textAlign: TextAlign.center,
+                  style: TextWidgetUtils.getRegularStyleText(fontSize: 12),
                 ),
               )
             ],
@@ -100,7 +106,7 @@ class CardUser extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 name,
-                style: const TextStyle(fontSize: 20),
+                style: TextWidgetUtils.getTitleStyleText(fontSize: 18),
               ),
               const SizedBox(height: 8),
               Row(

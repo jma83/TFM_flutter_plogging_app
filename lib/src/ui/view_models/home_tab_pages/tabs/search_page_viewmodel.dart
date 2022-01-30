@@ -37,11 +37,13 @@ class SearchPageViewModel extends HomeTabsChangeNotifier {
 
   @override
   loadPage() async {
+    toggleLoading(loading: true);
     await _updateFollowingUsers();
     final List<UserData> usersFound = await _getTopLevelUsers.execute();
     _users = UserSearchData.createListFromUsersAndFollows(
         usersFound, _followingList);
     updatePage();
+    toggleLoading(loading: false);
   }
 
   setSearchValue(String value) {

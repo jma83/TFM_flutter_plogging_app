@@ -39,6 +39,14 @@ class CalculateRouteCameraPosition {
   }
 
   double calculateZoom(double distance) {
-    return distance * AppConstants.distanceZoomFactor;
+    double tmpDistance = distance;
+    int contSize = 0;
+    while (tmpDistance > AppConstants.distanceZoomFactor &&
+        tmpDistance > AppConstants.minDistance) {
+      tmpDistance = tmpDistance / AppConstants.distanceZoomFactor;
+      contSize++;
+    }
+    final zoom = AppConstants.maxZoom - contSize;
+    return zoom < AppConstants.minZoom ? AppConstants.minZoom : zoom;
   }
 }

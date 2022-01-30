@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plogging/src/ui/components/card_user_prefab.dart';
+import 'package:flutter_plogging/src/ui/components/empty_results_indicator.dart';
 import 'package:flutter_plogging/src/ui/components/input_search.dart';
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/tabs/search_notifiers.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/tabs/search_page_viewmodel.dart';
+import 'package:flutter_plogging/src/utils/card_widget_utils.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
@@ -25,6 +28,7 @@ class SearchPageView extends HomePageWidget {
           return Scaffold(
               appBar: AppBar(title: const Text("Search")),
               body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InputSearch(
                       value: viewModel.searchValue,
@@ -38,9 +42,13 @@ class SearchPageView extends HomePageWidget {
                       : Column(
                           children: [
                             const SizedBox(height: 5),
-                            Text(viewModel.title,
-                                style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500))
+                            Container(
+                              child: Text(viewModel.title,
+                                  style: TextWidgetUtils.getTitleStyleText(
+                                      fontSize: 18)),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 5),
+                            )
                           ],
                         ),
                   Expanded(
@@ -55,20 +63,7 @@ class SearchPageView extends HomePageWidget {
   }
 
   getEmptySearch() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        Image(image: AssetImage("assets/not-found.png"), width: 50),
-        SizedBox(height: 12),
-        Text(
-          "Empty results",
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
-        )
-      ],
-    ));
+    return const EmptyResultsIndicator(text: "Empty search results");
   }
 
   getSearchList() {

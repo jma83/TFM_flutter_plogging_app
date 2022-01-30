@@ -99,7 +99,7 @@ class ProfilePageView extends HomePageWidget {
             ),
             currentViewModel.updateUserImage,
             currentViewModel.dismissAlert,
-            height: 400));
+            height: 300));
   }
 
   ProfilePageViewModel get currentViewModel {

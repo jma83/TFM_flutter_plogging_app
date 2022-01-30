@@ -6,6 +6,7 @@ import 'package:flutter_plogging/src/di/injection.dart';
 import 'package:flutter_plogging/src/core/services/navigation_service.dart';
 import 'package:flutter_plogging/src/core/services/loading_service.dart';
 import 'package:flutter_plogging/src/ui/route_coordinators/start_route_coordinator.dart';
+import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.green,
             backgroundColor: Colors.black,
+            fontFamily: TextWidgetUtils.defaultFont,
             appBarTheme: const AppBarTheme(
               color: Colors.black87,
             )),

@@ -70,9 +70,9 @@ class MapViewUtils extends StatelessWidget {
     IconData iconData = buttonTypeData[1];
     return ClipOval(
       child: Material(
-        color: Colors.black54, // button color
+        color: Colors.black54,
         child: InkWell(
-          splashColor: Colors.blue, // inkwell color
+          splashColor: Colors.blue,
           child: SizedBox(
             width: 50,
             height: 50,

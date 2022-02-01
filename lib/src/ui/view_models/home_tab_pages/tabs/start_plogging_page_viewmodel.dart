@@ -155,6 +155,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   endRoute() {
     if (!_hasStartedRoute) return;
     removeListeners();
+    updatePoints();
     completeProgressRouteData();
     toggleRouteStatus(status: false);
     validateRoute();

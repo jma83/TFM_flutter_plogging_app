@@ -49,7 +49,6 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   late GoogleMapController mapController;
   late RouteProgressData _routeProgressData;
   late Timer _saveRouteInterval;
-  late Timer _drawRouteInterval;
   final List<Polyline> _polylines = [];
   final List<LatLng> _polylinePointList = [];
   Position? _lastPosition;
@@ -89,13 +88,11 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   createRouteListeners() {
-    createDrawRouteInterval();
     createSaveRouteInterval();
   }
 
   removeListeners() {
     _saveRouteInterval.cancel();
-    _drawRouteInterval.cancel();
   }
 
   createPositionListener() {
@@ -104,6 +101,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         .listen((Position position) async {
       if (!isServiceEnabled) return;
       if (hasStartedRoute) {
+        draw();
         updateDirection(
             firstPosition: _currentPosition, secondPosition: position);
         await setCameraToCurrentLocation();
@@ -111,6 +109,12 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       _currentPosition = position;
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
+  }
+
+  Future<void> draw() async {
+    if (!hasMinDistance(AppConstants.minDistanceToSave)) return;
+    addPolyline();
+    await setCameraToCurrentLocation();
   }
 
   createConnectionStatusListener() {
@@ -132,18 +136,9 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     });
   }
 
-  createDrawRouteInterval() {
-    _drawRouteInterval = Timer.periodic(
-        const Duration(seconds: AppConstants.secondsToDraw), (_) async {
-      if (!hasMinDistance(AppConstants.minDistanceToDraw)) return;
-      addPolyline();
-      await setCameraToCurrentLocation();
-      notifyListeners(StartPloggingNotifiers.updatePloggingPage);
-    });
-  }
-
   beginRoute() async {
     if (_hasStartedRoute) return;
+    _currentZoom = 18;
     if (!await setCameraToCurrentLocation()) return;
     createRouteListeners();
     _routeProgressData.startProgressData(currentUser.id);
@@ -251,10 +246,10 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   Future<void> isLocationActive() async {
-    return await _geolocatorService.validateLocationService().then((value) {
-      _serviceStatus = value ? ServiceStatus.enabled : ServiceStatus.disabled;
-      notifyListeners(StartPloggingNotifiers.updatePloggingPage);
-    });
+    _serviceStatus = await _geolocatorService.validateLocationService()
+        ? ServiceStatus.enabled
+        : ServiceStatus.disabled;
+    notifyListeners(StartPloggingNotifiers.updatePloggingPage);
   }
 
   Future<bool> setCameraToCurrentLocation({bool first = false}) async {
@@ -264,7 +259,9 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       return true;
     }
     if (_serviceStatus == ServiceStatus.disabled) {
-      getCurrentLocation();
+      if (!first) {
+        getCurrentLocation();
+      }
       return false;
     }
     setCameraToPosition(_currentPosition, zoom: first ? 18 : null);
@@ -272,8 +269,9 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   setCameraToPosition(Position position, {double? zoom}) {
+    CameraPosition cameraPosition;
     if (zoom != null) _currentZoom = zoom;
-    final CameraPosition cameraPosition = CameraPosition(
+    cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude),
         zoom: _currentZoom,
         bearing: _currentDirection,
@@ -281,16 +279,18 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
-  zoomOut() {
-    animateCamera(CameraUpdate.zoomOut());
+  zoomOut() async {
+    await animateCamera(CameraUpdate.zoomOut());
+    if (_currentZoom > 0) _currentZoom--;
   }
 
-  zoomIn() {
-    animateCamera(CameraUpdate.zoomIn());
+  zoomIn() async {
+    await animateCamera(CameraUpdate.zoomIn());
+    if (_currentZoom < 20) _currentZoom++;
   }
 
-  animateCamera(CameraUpdate cameraUpdate) {
-    mapController.animateCamera(cameraUpdate);
+  Future<void> animateCamera(CameraUpdate cameraUpdate) async {
+    return await mapController.animateCamera(cameraUpdate);
   }
 
   void dismissAlert({bool resetRoute = true}) {

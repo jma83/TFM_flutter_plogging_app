@@ -9,9 +9,8 @@ class AppConstants {
   static const double defaultZoom = 18; //zoom
   static const int secondsToSave = 3; //meters
   static const int minDuration = 50; //seconds
-  static const double maxZoom = 20; // zoom
-  static const double minZoom = 8; // zoom
-  static const double distanceZoomFactor = 1.38; // zoom/meters
+  // static const double maxZoom = 18; // zoom
+  // static const double minZoom = 8; // zoom
   static const int maxTimeLoadingApp = 10; //seconds
   static const int maxTimeLoadingImage = 5; //seconds
 }

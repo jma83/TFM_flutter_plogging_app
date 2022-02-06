@@ -4,7 +4,6 @@ import 'package:flutter_plogging/src/core/application/route/generate_new_polylin
 import 'package:flutter_plogging/src/core/application/route/get_route_list_by_id.dart';
 import 'package:flutter_plogging/src/core/application/like/manage_like_route.dart';
 import 'package:flutter_plogging/src/core/application/user/get_user_by_id.dart';
-import 'package:flutter_plogging/src/core/domain/route/route_camera_position_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_author_search_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
@@ -34,7 +33,6 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
 
   final String _instanceId;
   List<Polyline> polylines = [];
-  RouteCameraPosition? _routeCameraPosition;
 
   RouteDetailPageViewModel(
       AuthenticationService authenticationService,
@@ -102,16 +100,10 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     polylines.add(polyline);
   }
 
-  void setCameraPosition() {
+  void setCameraPosition() async {
     if (route.locationArray.isEmpty) return;
-    _routeCameraPosition ??= _calculateRouteCameraPosition.execute(route);
-
-    CameraUpdate cameraUpdate = CameraUpdate.newCameraPosition(CameraPosition(
-        target: _routeCameraPosition!.centerPoint,
-        zoom:
-            _routeCameraPosition!.zoom <= 8 ? 8 : _routeCameraPosition!.zoom));
-
-    animateCamera(cameraUpdate);
+    CameraUpdate cameraUpdate = _calculateRouteCameraPosition.execute(route);
+    await animateCamera(cameraUpdate);
   }
 
   zoomOut() {
@@ -122,8 +114,10 @@ class RouteDetailPageViewModel extends HomeTabsChangeNotifier {
     animateCamera(CameraUpdate.zoomIn());
   }
 
-  animateCamera(CameraUpdate cameraUpdate) {
-    mapController.animateCamera(cameraUpdate);
+  Future<void> animateCamera(CameraUpdate cameraUpdate) async {
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      mapController.animateCamera(cameraUpdate);
+    });
   }
 
   String getRouteDateWithFormat() {

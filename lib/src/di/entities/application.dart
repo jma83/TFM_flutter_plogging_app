@@ -89,5 +89,5 @@ void $initApplication() {
     ..registerLazySingleton<CalculatePointsDirection>(
         () => CalculatePointsDirection(getIt<GeolocatorService>()))
     ..registerLazySingleton<CalculateRouteCameraPosition>(
-        () => CalculateRouteCameraPosition(getIt<GeolocatorService>()));
+        () => CalculateRouteCameraPosition());
 }

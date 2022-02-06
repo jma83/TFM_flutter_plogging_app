@@ -27,7 +27,7 @@ class HomePageView extends HomePageWidget {
         builder: (context, HomePageViewModel viewModel, child) {
           return Scaffold(
             appBar: AppBar(
-                title: Text(
+                title: const Text(
               "Plogging challenge",
             )),
             body: getRouteList(viewModel),

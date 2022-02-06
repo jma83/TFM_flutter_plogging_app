@@ -9,7 +9,6 @@ import 'package:flutter_plogging/src/ui/components/navigation/top_navigation_bar
 import 'package:flutter_plogging/src/ui/notifiers/home_tabs/shared/route_detail_notifier.dart';
 import 'package:flutter_plogging/src/ui/pages/home_tab_pages/home_page_widget.dart';
 import 'package:flutter_plogging/src/ui/view_models/home_tab_pages/shared/route_detail_page_viewmodel.dart';
-import 'package:flutter_plogging/src/utils/distance_utils.dart';
 import 'package:flutter_plogging/src/utils/image_widget_utils.dart';
 import 'package:flutter_plogging/src/utils/text_widget_utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

@@ -6,6 +6,7 @@ class AppConstants {
   static const int minDistance = 500; //meters
   static const int maxSpeed = 9; //meters/seconds
   static const int minDistanceToSave = 10; //meters
+  static const double defaultZoom = 18; //zoom
   static const int secondsToSave = 5; //meters
   static const int minDuration = 50; //seconds
   static const double maxZoom = 20; // zoom

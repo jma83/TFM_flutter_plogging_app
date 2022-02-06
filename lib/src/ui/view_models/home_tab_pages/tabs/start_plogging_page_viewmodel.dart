@@ -20,17 +20,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-/* 
-      _currentPosition = Position(
-          accuracy: _currentPosition.accuracy,
-          altitude: _currentPosition.altitude,
-          heading: _currentPosition.heading,
-          latitude: _currentPosition.latitude + 0.0002,
-          longitude: _currentPosition.longitude + 0.0002,
-          speed: 1,
-          speedAccuracy: 5.0,
-          timestamp: DateTime.now());
-*/
 
 @injectable
 class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
@@ -87,34 +76,15 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     mapController = gmapController;
   }
 
-  createRouteListeners() {
-    createSaveRouteInterval();
-  }
-
-  removeListeners() {
-    _saveRouteInterval.cancel();
-  }
-
   createPositionListener() {
     _positionListener = _geolocatorService
         .getStreamLocationPosition()
         .listen((Position position) async {
       if (!isServiceEnabled) return;
-      if (hasStartedRoute) {
-        draw();
-        updateDirection(
-            firstPosition: _currentPosition, secondPosition: position);
-        await setCameraToCurrentLocation();
-      }
+      drawAndUpdate(position);
       _currentPosition = position;
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
-  }
-
-  Future<void> draw() async {
-    if (!hasMinDistance(AppConstants.minDistanceToSave)) return;
-    addPolyline();
-    await setCameraToCurrentLocation();
   }
 
   createConnectionStatusListener() {
@@ -127,7 +97,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     });
   }
 
-  createSaveRouteInterval() {
+  createRouteInterval() {
     _saveRouteInterval = Timer.periodic(
         const Duration(seconds: AppConstants.secondsToSave), (_) async {
       if (!hasMinDistance(AppConstants.minDistanceToSave)) return;
@@ -136,11 +106,15 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     });
   }
 
+  removeRouteInterval() {
+    _saveRouteInterval.cancel();
+  }
+
   beginRoute() async {
     if (_hasStartedRoute) return;
-    _currentZoom = 18;
+    setZoom(AppConstants.defaultZoom);
     if (!await setCameraToCurrentLocation()) return;
-    createRouteListeners();
+    createRouteInterval();
     _routeProgressData.startProgressData(currentUser.id);
     toggleRouteStatus(status: true);
     updatePoints();
@@ -149,7 +123,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   endRoute() {
     if (!_hasStartedRoute) return;
-    removeListeners();
+    removeRouteInterval();
     updatePoints();
     completeProgressRouteData();
     toggleRouteStatus(status: false);
@@ -169,6 +143,21 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     }
     _currentDirection = _calculatePointsDirection
         .executeByPositions([firstPosition, secondPosition]);
+  }
+
+  Future<void> drawAndUpdate(Position position) async {
+    if (hasStartedRoute) {
+      draw();
+      updateDirection(
+          firstPosition: _currentPosition, secondPosition: position);
+      await setCameraToCurrentLocation();
+    }
+  }
+
+  Future<void> draw() async {
+    if (!hasMinDistance(AppConstants.minDistanceToSave)) return;
+    addPolyline();
+    await setCameraToCurrentLocation();
   }
 
   validateRoute() {
@@ -209,12 +198,16 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   saveInPointList() {
-    _polylinePointList
-        .add(GeoPointUtils.getLatLongFromPostion(_currentPosition));
+    if (_currentPosition != GeoPointUtils.defautLocation) {
+      _polylinePointList
+          .add(GeoPointUtils.getLatLongFromPostion(_currentPosition));
+    }
   }
 
   setLastPosition() {
-    _lastPosition = _currentPosition;
+    if (_currentPosition != GeoPointUtils.defautLocation) {
+      _lastPosition = _currentPosition;
+    }
   }
 
   hasMinDistance(int minDistance) {
@@ -241,8 +234,9 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
   }
 
   getAndSetCurrentLocation() async {
-    await getCurrentLocation().then(
-        (value) async => await setCameraToPosition(_currentPosition, zoom: 18));
+    await getCurrentLocation().then((value) async => await setCameraToPosition(
+        _currentPosition,
+        zoom: AppConstants.defaultZoom));
   }
 
   Future<void> isLocationActive() async {
@@ -259,18 +253,17 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
       return true;
     }
     if (_serviceStatus == ServiceStatus.disabled) {
-      if (!first) {
-        getCurrentLocation();
-      }
+      if (!first) getCurrentLocation();
       return false;
     }
-    setCameraToPosition(_currentPosition, zoom: first ? 18 : null);
+    setCameraToPosition(_currentPosition,
+        zoom: first ? AppConstants.defaultZoom : null);
     return true;
   }
 
   setCameraToPosition(Position position, {double? zoom}) {
     CameraPosition cameraPosition;
-    if (zoom != null) _currentZoom = zoom;
+    if (zoom != null) setZoom(zoom);
     cameraPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude),
         zoom: _currentZoom,
@@ -281,12 +274,17 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
 
   zoomOut() async {
     await animateCamera(CameraUpdate.zoomOut());
-    if (_currentZoom > 0) _currentZoom--;
+    setZoom(_currentZoom - 1);
   }
 
   zoomIn() async {
     await animateCamera(CameraUpdate.zoomIn());
-    if (_currentZoom < 20) _currentZoom++;
+    setZoom(_currentZoom + 1);
+  }
+
+  void setZoom(double zoom) {
+    if (zoom > 20 || zoom < 0) return;
+    _currentZoom = zoom;
   }
 
   Future<void> animateCamera(CameraUpdate cameraUpdate) async {

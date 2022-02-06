@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_data.dart';
 import 'package:flutter_plogging/src/core/domain/user/user_search_data.dart';
 import 'package:flutter_plogging/src/core/model/follower_model.dart';
@@ -43,7 +44,8 @@ class ManageFollowUser {
     final FollowerData followerData = FollowerData(
         id: followerId,
         userId: currentUserData.id,
-        userFollowedId: userSearchData.id);
+        userFollowedId: userSearchData.id,
+        creationDate: Timestamp.now());
     userSearchData.followerId = followerId;
 
     await _followerModel.addElement(followerData);

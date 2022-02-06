@@ -37,7 +37,8 @@ class UserData extends EntityData {
       UserFieldData.following: user.following,
       UserFieldData.xp: user.xp,
       UserFieldData.level: user.level,
-      UserFieldData.image: user.image != null ? user.image! : ""
+      UserFieldData.image: user.image != null ? user.image! : "",
+      UserFieldData.creationDate: user.creationDate
     };
   }
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_plogging/src/core/domain/like/like_data.dart';
 import 'package:flutter_plogging/src/core/domain/route/route_list_data.dart';
 import 'package:flutter_plogging/src/core/model/like_model.dart';
@@ -34,7 +35,8 @@ class ManageLikeRoute {
     final newLike = LikeData(
         userId: _authenticationService.currentUser!.uid,
         routeId: routeData.id!,
-        id: likeId);
+        id: likeId,
+        creationDate: Timestamp.now());
     await _likeModel.addElement(newLike);
   }
 }

@@ -81,8 +81,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         .getStreamLocationPosition()
         .listen((Position position) async {
       if (!isServiceEnabled) return;
-      drawAndUpdate(position);
-      _currentPosition = position;
+      update(position);
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
   }
@@ -101,6 +100,7 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
     _saveRouteInterval = Timer.periodic(
         const Duration(seconds: AppConstants.secondsToSave), (_) async {
       if (!hasMinDistance(AppConstants.minDistanceToSave)) return;
+      draw();
       updatePoints();
       notifyListeners(StartPloggingNotifiers.updatePloggingPage);
     });
@@ -145,13 +145,13 @@ class StartPloggingPageViewModel extends HomeTabsChangeNotifier {
         .executeByPositions([firstPosition, secondPosition]);
   }
 
-  Future<void> drawAndUpdate(Position position) async {
+  Future<void> update(Position position) async {
     if (hasStartedRoute) {
-      draw();
       updateDirection(
           firstPosition: _currentPosition, secondPosition: position);
       await setCameraToCurrentLocation();
     }
+    _currentPosition = position;
   }
 
   Future<void> draw() async {

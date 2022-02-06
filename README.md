@@ -13,6 +13,9 @@
 - Comprobar instalación correcta
 	- flutter doctor
 	
-- Ejecutar los siguientes comandos:
+- Ejecutar app en modo debug con los siguiente comandos:
 	- flutter clean
 	- flutter run
+- Construir app en modo release con los siguiente comandos:
+	- flutter clean
+	- flutter build apk

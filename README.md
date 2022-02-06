@@ -1,8 +1,8 @@
 # flutter_plogging
 
-Autor: Javier Martínez Arias
-Trabajo fin de máster
-Proyecto realizado en Flutter
+- Autor: Javier Martínez Arias
+- Trabajo fin de máster
+- Proyecto realizado en Flutter
 
 ## Getting Started
 

@@ -11,8 +11,8 @@
 - Descargar SDK Flutter: https://docs.flutter.dev/get-started/install
 - Instalar y configurar
 - Comprobar instalación correcta
-	flutter doctor
+	- flutter doctor
 	
 - Ejecutar los siguientes comandos:
-	flutter clean
-	flutter run
+	- flutter clean
+	- flutter run

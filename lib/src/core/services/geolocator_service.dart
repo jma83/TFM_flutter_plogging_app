@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 
 // Google Maps API Key
-const String apiKey = "AIzaSyBQRMdZ6WuXDzw2gUFklXZuQU4L1Sk7ntg";
+const String apiKey = "";
 
 @LazySingleton(as: IGeolocatorService)
 class GeolocatorService extends IGeolocatorService {
